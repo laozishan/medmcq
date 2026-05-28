@@ -1,0 +1,384 @@
+[
+  {
+    "id": "pcd-001",
+    "title": "Primary ciliary dyskinesia",
+    "domain": "Pediatrics",
+    "topic": "Respiratory System",
+    "difficulty": "easy",
+    "source": "Generated from structured question and KG data",
+    "taskLabel": "Task 1",
+    "vignette": "A 7-year-old boy has had a chronic wet cough since infancy. He has recurrent ear infections requiring tympanostomy tubes and several episodes of sinusitis. His growth is normal, and he has no greasy stools. Chest radiograph shows bronchiectatic changes. Which underlying defect best explains his condition?",
+    "stem": "Which underlying defect best explains this child's presentation?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Defective CFTR chloride channel function"
+      },
+      {
+        "id": "B",
+        "text": "Defective dynein arms causing impaired ciliary motility"
+      },
+      {
+        "id": "C",
+        "text": "IgA deficiency with recurrent mucosal infection"
+      },
+      {
+        "id": "D",
+        "text": "Alpha-1 antitrypsin deficiency"
+      },
+      {
+        "id": "E",
+        "text": "Surfactant protein B deficiency"
+      }
+    ],
+    "correctOptionId": "B",
+    "explanation": {
+      "whyCorrect": "Chronic sinopulmonary disease beginning in infancy, recurrent otitis media, sinusitis, bronchiectasis, and preserved pancreatic function point to primary ciliary dyskinesia. The core mechanism is impaired ciliary motility from dynein arm dysfunction.",
+      "evidence": [
+        "Chronic wet cough since infancy suggests lifelong mucociliary clearance failure.",
+        "Recurrent ear infections and sinusitis involve ciliated epithelium outside the lower airway.",
+        "Normal growth and absence of greasy stools make cystic fibrosis less likely."
+      ],
+      "distractors": {
+        "A": "CFTR dysfunction would often produce pancreatic insufficiency, poor growth, or greasy stools.",
+        "C": "IgA deficiency can cause recurrent infections but does not specifically explain bronchiectasis with classic ciliary-site disease.",
+        "D": "Alpha-1 antitrypsin deficiency causes early emphysema or liver disease, not recurrent otitis and sinusitis from infancy.",
+        "E": "Surfactant protein B deficiency usually presents as severe neonatal respiratory failure."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "ev_cough",
+          "type": "evidence",
+          "label": "Chronic wet cough since infancy",
+          "phrase": "chronic wet cough since infancy",
+          "tooltip": "A lifelong wet cough suggests impaired mucociliary clearance rather than episodic asthma."
+        },
+        {
+          "id": "ev_ears",
+          "type": "evidence",
+          "label": "Recurrent ear infections",
+          "phrase": "recurrent ear infections",
+          "tooltip": "The middle ear depends on ciliary clearance through the Eustachian tube."
+        },
+        {
+          "id": "ev_pancreas",
+          "type": "evidence",
+          "label": "No greasy stools",
+          "phrase": "no greasy stools",
+          "tooltip": "Preserved pancreatic function helps separate PCD from cystic fibrosis."
+        },
+        {
+          "id": "finding_clearance",
+          "type": "finding",
+          "label": "Impaired mucociliary clearance"
+        },
+        {
+          "id": "mechanism_dynein",
+          "type": "mechanism",
+          "label": "Dynein arm dysfunction"
+        },
+        {
+          "id": "dx_pcd",
+          "type": "diagnosis",
+          "label": "Primary ciliary dyskinesia"
+        }
+      ],
+      "edges": [
+        {
+          "from": "ev_cough",
+          "to": "finding_clearance",
+          "label": "supports",
+          "tooltip": "Persistent wet cough is a clinical sign of impaired airway clearance."
+        },
+        {
+          "from": "ev_ears",
+          "to": "finding_clearance",
+          "label": "same ciliated epithelium pattern",
+          "tooltip": "Upper and lower airway involvement creates a multi-site ciliary pattern."
+        },
+        {
+          "from": "ev_pancreas",
+          "to": "dx_pcd",
+          "label": "helps exclude CF",
+          "tooltip": "PCD affects motile cilia, not pancreatic duct chloride transport."
+        },
+        {
+          "from": "mechanism_dynein",
+          "to": "finding_clearance",
+          "label": "causes"
+        },
+        {
+          "from": "finding_clearance",
+          "to": "dx_pcd",
+          "label": "explains"
+        },
+        {
+          "from": "mechanism_dynein",
+          "to": "dx_pcd",
+          "label": "underlying defect"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cf-001",
+    "title": "Cystic fibrosis",
+    "domain": "Pediatrics",
+    "topic": "Respiratory System",
+    "difficulty": "medium",
+    "source": "Generated from structured question and KG data",
+    "taskLabel": "Task 2",
+    "vignette": "A 5-year-old girl has recurrent pneumonia, chronic productive cough, failure to thrive, and foul-smelling greasy stools. Sweat chloride testing is elevated. Which mechanism best explains the combination of pulmonary and gastrointestinal disease?",
+    "stem": "Which mechanism best explains this patient's disease?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Abnormal CFTR-mediated chloride transport"
+      },
+      {
+        "id": "B",
+        "text": "Defective dynein arms in respiratory cilia"
+      },
+      {
+        "id": "C",
+        "text": "Immune complex deposition in small vessels"
+      },
+      {
+        "id": "D",
+        "text": "T-cell mediated destruction of alveoli"
+      },
+      {
+        "id": "E",
+        "text": "Reduced surfactant production by type II pneumocytes"
+      }
+    ],
+    "correctOptionId": "A",
+    "explanation": {
+      "whyCorrect": "Cystic fibrosis is caused by CFTR dysfunction. Dehydrated airway secretions cause chronic infection and bronchiectasis, while pancreatic duct obstruction causes malabsorption, greasy stools, and poor growth.",
+      "evidence": [
+        "Elevated sweat chloride is a diagnostic clue for CFTR dysfunction.",
+        "Greasy stools and failure to thrive suggest pancreatic exocrine insufficiency.",
+        "Recurrent pneumonia reflects thick mucus and chronic bacterial infection."
+      ],
+      "distractors": {
+        "B": "Primary ciliary dyskinesia causes impaired ciliary motility but usually spares pancreatic exocrine function.",
+        "C": "Immune complex vasculitis does not explain elevated sweat chloride or pancreatic insufficiency.",
+        "D": "T-cell mediated alveolar destruction is not the mechanism of cystic fibrosis.",
+        "E": "Surfactant problems present in neonates rather than causing sweat chloride elevation and greasy stools."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "ev_sweat",
+          "type": "evidence",
+          "label": "Elevated sweat chloride",
+          "phrase": "Sweat chloride testing is elevated",
+          "tooltip": "High sweat chloride is the classic diagnostic marker of CFTR dysfunction."
+        },
+        {
+          "id": "ev_stools",
+          "type": "evidence",
+          "label": "Greasy stools",
+          "phrase": "foul-smelling greasy stools",
+          "tooltip": "Fat malabsorption implies pancreatic exocrine insufficiency."
+        },
+        {
+          "id": "ev_pneumonia",
+          "type": "evidence",
+          "label": "Recurrent pneumonia",
+          "phrase": "recurrent pneumonia",
+          "tooltip": "Thick mucus predisposes to recurrent bacterial infection."
+        },
+        {
+          "id": "mechanism_cftr",
+          "type": "mechanism",
+          "label": "CFTR chloride transport defect"
+        },
+        {
+          "id": "finding_mucus",
+          "type": "finding",
+          "label": "Dehydrated thick mucus"
+        },
+        {
+          "id": "finding_pancreas",
+          "type": "finding",
+          "label": "Pancreatic duct obstruction"
+        },
+        {
+          "id": "dx_cf",
+          "type": "diagnosis",
+          "label": "Cystic fibrosis"
+        }
+      ],
+      "edges": [
+        {
+          "from": "ev_sweat",
+          "to": "mechanism_cftr",
+          "label": "diagnostic clue"
+        },
+        {
+          "from": "mechanism_cftr",
+          "to": "finding_mucus",
+          "label": "dehydrates airway surface"
+        },
+        {
+          "from": "mechanism_cftr",
+          "to": "finding_pancreas",
+          "label": "obstructs ducts"
+        },
+        {
+          "from": "finding_mucus",
+          "to": "ev_pneumonia",
+          "label": "causes"
+        },
+        {
+          "from": "finding_pancreas",
+          "to": "ev_stools",
+          "label": "causes"
+        },
+        {
+          "from": "mechanism_cftr",
+          "to": "dx_cf",
+          "label": "defines"
+        }
+      ]
+    }
+  },
+  {
+    "id": "obvious-asthma-001",
+    "title": "Regeneration example",
+    "domain": "Pediatrics",
+    "topic": "Respiratory System",
+    "difficulty": "hard",
+    "source": "Generated from structured question and KG data",
+    "taskLabel": "Task 3",
+    "vignette": "A 10-year-old boy with known asthma develops wheezing every time he plays soccer. He uses an albuterol inhaler and improves within minutes. He has no fever and a normal chest radiograph. Which diagnosis is most likely?",
+    "stem": "Which diagnosis is most likely?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Exercise-induced bronchoconstriction"
+      },
+      {
+        "id": "B",
+        "text": "Bacterial pneumonia"
+      },
+      {
+        "id": "C",
+        "text": "Foreign body aspiration"
+      },
+      {
+        "id": "D",
+        "text": "Cystic fibrosis"
+      },
+      {
+        "id": "E",
+        "text": "Primary ciliary dyskinesia"
+      }
+    ],
+    "correctOptionId": "A",
+    "regenerable": true,
+    "clueCandidates": [
+      {
+        "id": "ev_known_asthma",
+        "label": "known asthma"
+      },
+      {
+        "id": "ev_albuterol",
+        "label": "albuterol response"
+      }
+    ],
+    "explanation": {
+      "whyCorrect": "Symptoms triggered by exercise and relieved by albuterol support exercise-induced bronchoconstriction.",
+      "evidence": [
+        "Wheezing during soccer is a trigger-linked pattern.",
+        "Rapid improvement with albuterol supports reversible bronchoconstriction.",
+        "No fever and normal chest radiograph argue against pneumonia."
+      ],
+      "distractors": {
+        "B": "Pneumonia would more likely include fever, focal findings, or radiographic infiltrate.",
+        "C": "Foreign body aspiration usually causes sudden onset symptoms and localized findings.",
+        "D": "Cystic fibrosis would be chronic with recurrent infections or malabsorption.",
+        "E": "Primary ciliary dyskinesia would cause chronic wet cough, sinusitis, and otitis media."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "ev_known_asthma",
+          "type": "evidence",
+          "label": "Known asthma",
+          "phrase": "known asthma",
+          "tooltip": "This makes the original item too obvious for a reasoning task."
+        },
+        {
+          "id": "ev_exercise",
+          "type": "evidence",
+          "label": "Exercise trigger",
+          "phrase": "plays soccer",
+          "tooltip": "Exercise is a classic trigger for bronchoconstriction."
+        },
+        {
+          "id": "ev_albuterol",
+          "type": "evidence",
+          "label": "Rapid albuterol response",
+          "phrase": "improves within minutes",
+          "tooltip": "Rapid bronchodilator response supports reversible airway narrowing."
+        },
+        {
+          "id": "mechanism_bronchospasm",
+          "type": "mechanism",
+          "label": "Reversible bronchospasm"
+        },
+        {
+          "id": "dx_eib",
+          "type": "diagnosis",
+          "label": "Exercise-induced bronchoconstriction"
+        }
+      ],
+      "edges": [
+        {
+          "from": "ev_known_asthma",
+          "to": "dx_eib",
+          "label": "overly direct clue"
+        },
+        {
+          "from": "ev_exercise",
+          "to": "mechanism_bronchospasm",
+          "label": "triggers"
+        },
+        {
+          "from": "ev_albuterol",
+          "to": "mechanism_bronchospasm",
+          "label": "reverses"
+        },
+        {
+          "from": "mechanism_bronchospasm",
+          "to": "dx_eib",
+          "label": "explains"
+        }
+      ]
+    },
+    "regenerateTemplate": {
+      "vignette": "A 10-year-old boy develops cough, chest tightness, and wheezing near the end of soccer practice. Symptoms recur with intense running and improve after rest or a short-acting bronchodilator. He is afebrile, has normal oxygen saturation, and has no focal lung findings between episodes.",
+      "stem": "Which diagnosis best accounts for these recurrent exertional symptoms?",
+      "explanation": {
+        "whyCorrect": "The revised vignette removes the named diagnosis and makes the learner reason from exertional, reversible airway symptoms. Exercise-induced bronchoconstriction remains most likely because symptoms are reproducible with intense exercise and resolve with rest or bronchodilator therapy.",
+        "evidence": [
+          "Symptoms are reproducible with intense running.",
+          "Improvement after rest or a short-acting bronchodilator supports reversibility.",
+          "Afebrile status and normal oxygen saturation make infection less likely."
+        ],
+        "distractors": {
+          "B": "Pneumonia is less likely without fever, persistent symptoms, or focal findings.",
+          "C": "Foreign body aspiration would not recur predictably with exercise.",
+          "D": "Cystic fibrosis would involve chronic respiratory and gastrointestinal features.",
+          "E": "Primary ciliary dyskinesia would produce chronic wet cough and recurrent upper airway infections."
+        }
+      }
+    }
+  }
+]

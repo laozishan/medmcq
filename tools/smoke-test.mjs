@@ -1,60 +1,51 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { JSDOM, VirtualConsole } from 'jsdom';
-import { prototypeHtml } from '../src/prototypeMarkup.js';
 
-const runtimePath = path.resolve(import.meta.dirname, '..', 'public', 'prototype-runtime.js');
-const runtime = await readFile(runtimePath, 'utf8');
-const virtualConsole = new VirtualConsole();
-const errors = [];
+const questionsPath = path.resolve(import.meta.dirname, '..', 'src', 'data', 'questions.json');
+const questions = JSON.parse(await readFile(questionsPath, 'utf8'));
 
-virtualConsole.on('error', (message) => errors.push(String(message)));
-virtualConsole.on('jsdomError', (error) => errors.push(error.message));
+if (!Array.isArray(questions) || questions.length === 0) {
+  throw new Error('questions.json must contain at least one question.');
+}
 
-const dom = new JSDOM(`<!doctype html><html><body>${prototypeHtml}</body></html>`, {
-  pretendToBeVisual: true,
-  runScripts: 'outside-only',
-  url: 'http://127.0.0.1:4173/',
-  virtualConsole,
-});
+const ids = new Set();
 
-dom.window.alert = (message) => errors.push(`alert: ${message}`);
-dom.window.eval(runtime);
+for (const question of questions) {
+  const context = question.id ?? '(missing id)';
+  if (!question.id || ids.has(question.id)) throw new Error(`Invalid or duplicate question id: ${context}`);
+  ids.add(question.id);
 
-const mustHaveGlobals = ['startStudy', 'loadTask', 'acceptQuestion', 'openBank', 'openRegenerate'];
-for (const name of mustHaveGlobals) {
-  if (typeof dom.window[name] !== 'function') {
-    throw new Error(`Missing runtime global: ${name}`);
+  for (const key of ['title', 'domain', 'topic', 'difficulty', 'vignette', 'stem', 'correctOptionId']) {
+    if (!question[key]) throw new Error(`${context} is missing ${key}.`);
+  }
+
+  if (!Array.isArray(question.options) || question.options.length !== 5) {
+    throw new Error(`${context} must define exactly five options.`);
+  }
+  if (!question.options.some((option) => option.id === question.correctOptionId)) {
+    throw new Error(`${context} correctOptionId does not match any option.`);
+  }
+
+  if (!question.explanation?.whyCorrect || !Array.isArray(question.explanation?.evidence)) {
+    throw new Error(`${context} explanation is incomplete.`);
+  }
+
+  const graph = question.graph;
+  if (!Array.isArray(graph?.nodes) || !Array.isArray(graph?.edges)) {
+    throw new Error(`${context} graph must define nodes and edges.`);
+  }
+
+  const nodeIds = new Set(graph.nodes.map((node) => node.id));
+  for (const node of graph.nodes) {
+    if (!node.id || !node.type || !node.label) {
+      throw new Error(`${context} has an incomplete graph node.`);
+    }
+  }
+  for (const edge of graph.edges) {
+    if (!nodeIds.has(edge.from) || !nodeIds.has(edge.to)) {
+      throw new Error(`${context} graph edge references a missing node: ${edge.from} -> ${edge.to}`);
+    }
   }
 }
 
-dom.window.startStudy();
-if (dom.window.document.getElementById('appPage').style.display !== 'block') {
-  throw new Error('App page did not open after startStudy().');
-}
-
-for (const taskId of [1, 2, 3]) {
-  dom.window.loadTask(taskId);
-  const stem = dom.window.document.getElementById('stem').textContent.trim();
-  const options = dom.window.document.querySelectorAll('#options .option');
-  if (!stem || options.length !== 5) {
-    throw new Error(`Task ${taskId} did not render a stem with five options.`);
-  }
-}
-
-dom.window.acceptQuestion();
-const bank = JSON.parse(dom.window.localStorage.getItem('resp_mcq_bank') ?? '[]');
-if (bank.length !== 1) {
-  throw new Error('acceptQuestion() did not persist a question to localStorage.');
-}
-
-dom.window.openBank();
-if (!dom.window.document.getElementById('bankModal').classList.contains('open')) {
-  throw new Error('Question bank modal did not open.');
-}
-
-if (errors.length) {
-  throw new Error(`Runtime emitted errors:\n${errors.join('\n')}`);
-}
-
-console.log('Smoke test passed: setup, task rendering, accept flow, and bank modal work.');
+console.log(`Smoke test passed: ${questions.length} JSON-driven questions and graphs are valid.`);

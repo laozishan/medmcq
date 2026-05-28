@@ -1,6 +1,6 @@
 # MedMCQ React Prototype
 
-React/Vite version of the MedMCQ expert review prototype.
+React/Vite version of the MedMCQ expert review workspace. The UI is implemented as fixed React components, while questions, explanations, and knowledge graphs live in JSON.
 
 ## Local development
 
@@ -22,7 +22,16 @@ npm run preview
 npm run smoke
 ```
 
-The smoke test verifies setup navigation, Task 1/2/3 rendering, accept-to-bank persistence, and the question bank modal.
+The smoke test validates the question JSON schema, answer choices, explanation fields, and knowledge graph node/edge references.
+
+## Editing questions
+
+Edit [src/data/questions.json](src/data/questions.json) to add or update questions. Each entry owns:
+
+- `vignette`, `stem`, `options`, and `correctOptionId`
+- `explanation.whyCorrect`, `explanation.evidence`, and `explanation.distractors`
+- `graph.nodes` and `graph.edges`
+- optional `regenerateTemplate` for Task 3-style revision
 
 ## Deploy
 
