@@ -161,7 +161,8 @@ mark.active { border-color: #c48a1d; box-shadow: 0 0 0 2px rgba(196,138,29,.15);
 .graph-canvas svg { width: 100%; height: auto; min-height: 360px; display: block; }
 .graph-edge path { fill: none; stroke: #b9b1aa; stroke-width: 2; marker-end: url(#arrow); }
 .graph-edge text { font-size: 11px; fill: var(--muted); text-anchor: middle; paint-order: stroke; stroke: #fff; stroke-width: 4px; }
-.graph-node { cursor: pointer; }
+.graph-node { cursor: grab; touch-action: none; }
+.graph-node.dragging { cursor: grabbing; }
 .graph-node rect { transition: .16s; }
 .graph-node.active rect { stroke-width: 3; filter: drop-shadow(0 5px 10px rgba(0,0,0,.16)); }
 .graph-node text { font-size: 10px; font-weight: 900; fill: var(--muted); text-anchor: middle; text-transform: uppercase; letter-spacing: .04em; }
@@ -217,7 +218,7 @@ mark.active { border-color: #c48a1d; box-shadow: 0 0 0 2px rgba(196,138,29,.15);
   font-size: 10px;
   font-weight: 900;
 }
-.mini-graph-card svg { width: 100%; display: block; background: #fff; }
+.mini-graph-card svg { width: 100%; display: block; background: #fff; touch-action: none; }
 .mini-graph-card path { fill: none; stroke: #b9b1aa; stroke-width: 2; }
 .mini-graph-card text { font-size: 10px; fill: var(--muted); text-anchor: middle; paint-order: stroke; stroke: #fff; stroke-width: 4px; }
 .mini-node-label {
@@ -231,6 +232,10 @@ mark.active { border-color: #c48a1d; box-shadow: 0 0 0 2px rgba(196,138,29,.15);
   color: var(--text);
   overflow: hidden;
 }
+.mini-draggable-node { cursor: grab; touch-action: none; }
+.mini-draggable-node.dragging { cursor: grabbing; }
+.mini-draggable-node rect { transition: stroke-width .12s, filter .12s; }
+.mini-draggable-node.dragging rect { stroke-width: 2.6; filter: drop-shadow(0 4px 9px rgba(0,0,0,.16)); }
 .mini-graph-card p { margin: 0; padding: 0 10px 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
 .mini-evidence-row { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 10px 10px; }
 .mini-evidence-row button {

@@ -10,9 +10,48 @@ export function KnowledgeGraph({
   onNodeDelete,
 }) {
   const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [nodePositions, setNodePositions] = useState({});
+  const [dragState, setDragState] = useState(null);
   const layout = useMemo(() => layoutGraph(graph), [graph]);
-  const nodeMap = useMemo(() => graphNodeMap(layout.nodes), [layout.nodes]);
+  const positionedNodes = useMemo(
+    () => layout.nodes.map((node) => ({ ...node, ...(nodePositions[node.id] ?? {}) })),
+    [layout.nodes, nodePositions],
+  );
+  const nodeMap = useMemo(() => graphNodeMap(positionedNodes), [positionedNodes]);
   const selectedNode = selectedNodeId ? nodeMap[selectedNodeId] : null;
+
+  function startNodeDrag(event, node) {
+    const svg = event.currentTarget.ownerSVGElement;
+    const point = svgPoint(svg, event);
+    event.preventDefault();
+    event.stopPropagation();
+    svg.setPointerCapture?.(event.pointerId);
+    setSelectedNodeId(node.id);
+    setDragState({
+      id: node.id,
+      pointerId: event.pointerId,
+      offsetX: point.x - node.x,
+      offsetY: point.y - node.y,
+    });
+  }
+
+  function dragNode(event) {
+    if (!dragState) return;
+    const point = svgPoint(event.currentTarget, event);
+    setNodePositions((current) => ({
+      ...current,
+      [dragState.id]: {
+        x: clamp(point.x - dragState.offsetX, 84, layout.width - 84),
+        y: clamp(point.y - dragState.offsetY, 38, layout.height - 38),
+      },
+    }));
+  }
+
+  function stopNodeDrag(event) {
+    if (!dragState) return;
+    event.currentTarget.releasePointerCapture?.(dragState.pointerId);
+    setDragState(null);
+  }
 
   return (
     <section className="side-panel kg-panel">
@@ -32,7 +71,14 @@ export function KnowledgeGraph({
       </div>
 
       <div className="graph-canvas">
-        <svg viewBox={`0 0 ${layout.width} ${layout.height}`} role="img" aria-label="Knowledge graph">
+        <svg
+          viewBox={`0 0 ${layout.width} ${layout.height}`}
+          role="img"
+          aria-label="Knowledge graph"
+          onPointerMove={dragNode}
+          onPointerUp={stopNodeDrag}
+          onPointerCancel={stopNodeDrag}
+        >
           <defs>
             <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
               <path d="M0,0 L0,6 L7,3 z" fill="#9c9590" />
@@ -52,14 +98,15 @@ export function KnowledgeGraph({
               </g>
             );
           })}
-          {layout.nodes.map((node) => {
+          {positionedNodes.map((node) => {
             const config = NODE_TYPES[node.type] ?? NODE_TYPES.finding;
             const active = node.id === activeEvidenceId || node.id === selectedNodeId;
             return (
               <g
                 key={node.id}
-                className={`graph-node ${active ? 'active' : ''}`}
+                className={`graph-node ${active ? 'active' : ''} ${dragState?.id === node.id ? 'dragging' : ''}`}
                 transform={`translate(${node.x - 72} ${node.y - 31})`}
+                onPointerDown={(event) => startNodeDrag(event, node)}
                 onClick={() => setSelectedNodeId(node.id)}
                 onMouseEnter={() => node.type === 'evidence' && onEvidenceHover(node.id)}
                 onMouseLeave={() => node.type === 'evidence' && onEvidenceHover(null)}
@@ -106,4 +153,15 @@ export function KnowledgeGraph({
       </div>
     </section>
   );
+}
+
+function svgPoint(svg, event) {
+  const point = svg.createSVGPoint();
+  point.x = event.clientX;
+  point.y = event.clientY;
+  return point.matrixTransform(svg.getScreenCTM().inverse());
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
 }
