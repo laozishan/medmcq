@@ -247,7 +247,7 @@ mark.active { border-color: #c48a1d; box-shadow: 0 0 0 2px rgba(196,138,29,.18);
 mark.active-supports { background: #bfeccc; border-color: #1f7a55; box-shadow: 0 0 0 2px rgba(31,122,85,.18); }
 mark.active-weakens { background: #ffd59f; border-color: #c46a1e; box-shadow: 0 0 0 2px rgba(196,106,30,.18); }
 mark.active-contradicts { background: #ffc7c7; border-color: #a23a3a; box-shadow: 0 0 0 2px rgba(162,58,58,.18); }
-mark.active-missing { background: #e5e5e5; border-color: #909090; box-shadow: 0 0 0 2px rgba(144,144,144,.16); }
+mark.active-missing { background: #e0e0e0; border-color: #777; box-shadow: 0 0 0 2px rgba(119,119,119,.16); }
 .card-head { display: flex; justify-content: space-between; gap: 14px; align-items: start; }
 .card h1 { font-size: 17px; line-height: 1.45; margin: 8px 0 0; }
 .difficulty { border-radius: 999px; padding: 4px 10px; font-size: 11px; font-weight: 900; text-transform: capitalize; }

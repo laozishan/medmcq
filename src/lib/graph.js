@@ -37,7 +37,7 @@ export function graphNodeMap(nodes) {
 export function phrasesFromGraph(graph) {
   return (graph.nodes ?? [])
     .filter((node) => node.phrase)
-    .map((node) => ({ id: node.id, phrase: node.phrase }));
+    .map((node) => ({ id: node.id, phrase: node.phrase, persistent: true }));
 }
 
 export function phrasesFromMiniGraphs(miniGraphs = []) {
@@ -47,6 +47,7 @@ export function phrasesFromMiniGraphs(miniGraphs = []) {
         .map((item, index) => ({
           id: miniEvidenceKey(miniGraph.optionId, role, index, item.label),
           phrase: item.phrase ?? item.evidencePhrase,
+          persistent: false,
         }))
         .filter((item) => item.phrase),
     ),

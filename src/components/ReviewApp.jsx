@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { QuestionPanel } from './QuestionPanel.jsx';
 import { ExplanationPanel } from './ExplanationPanel.jsx';
 import { KnowledgeGraph } from './KnowledgeGraph.jsx';
@@ -31,6 +31,7 @@ export function ReviewApp({
   const [rejectOpen, setRejectOpen] = useState(false);
   const [regenerateOpen, setRegenerateOpen] = useState(false);
   const [toast, setToast] = useState('');
+  const supportPaneRef = useRef(null);
   const toastTimerRef = useRef(null);
   const { showText, showGraph } = modeVisibility(mode);
   const activeEvidenceId = hoverState.id;
@@ -38,6 +39,10 @@ export function ReviewApp({
   const activeNode = hoverState.node ?? question.graph.nodes.find((node) => node.id === firstActiveEvidenceId);
   const canRegenerate = Boolean(question.regenerable);
   const canEditGraph = question.reviewType === 'flawed' || question.reviewType === 'too_easy';
+
+  useEffect(() => {
+    supportPaneRef.current?.scrollTo({ top: 0, left: 0 });
+  }, [question.id, mode]);
 
   function updateGraphNodeLabel(nodeId, label) {
     onSaveQuestion({
@@ -173,7 +178,7 @@ export function ReviewApp({
           onReset={() => onResetQuestion(question.id)}
         />
 
-        <section className="support-pane">
+        <section className="support-pane" ref={supportPaneRef}>
           {showText && !showGraph ? <ExplanationPanel question={question} /> : null}
 
           {showGraph ? (

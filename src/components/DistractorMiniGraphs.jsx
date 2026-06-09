@@ -10,7 +10,7 @@ const ROLE_CONFIG = {
   supports: { label: 'supports', fill: '#e7f6ef', stroke: '#1f7a55', text: '#145b3e' },
   weakens: { label: 'weakens', fill: '#fff0df', stroke: '#c46a1e', text: '#8a4612' },
   contradicts: { label: 'rules out', fill: '#f8e6e6', stroke: '#a23a3a', text: '#842929' },
-  missing: { label: 'missing', fill: '#f2f2f2', stroke: '#909090', text: '#5f5f5f', dash: '5 4' },
+  missing: { label: 'missing', fill: '#f7f7f7', stroke: '#777777', text: '#555555', dash: '5 4' },
 };
 
 const ROLE_ORDER = ['supports', 'weakens', 'contradicts', 'missing'];

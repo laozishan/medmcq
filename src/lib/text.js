@@ -3,7 +3,14 @@ export function highlightText(text, phrases, activeIds = []) {
   const matches = phrases
     .map((item) => {
       const index = text.toLowerCase().indexOf(item.phrase.toLowerCase());
-      return index >= 0 ? { ...item, index, end: index + item.phrase.length } : null;
+      return index >= 0
+        ? {
+            ...item,
+            index,
+            end: index + item.phrase.length,
+            persistent: item.persistent !== false,
+          }
+        : null;
     })
     .filter(Boolean)
     .sort((a, b) => a.index - b.index || b.end - a.end);
@@ -14,6 +21,8 @@ export function highlightText(text, phrases, activeIds = []) {
 
   for (const match of mergedMatches) {
     if (match.index < cursor) continue;
+    const isActive = match.ids.some((id) => active.has(id));
+    if (!match.persistent && !isActive) continue;
     if (match.index > cursor) {
       segments.push({ type: 'text', text: text.slice(cursor, match.index) });
     }
@@ -21,7 +30,7 @@ export function highlightText(text, phrases, activeIds = []) {
       type: 'highlight',
       id: match.ids.length === 1 ? match.ids[0] : match.ids,
       text: text.slice(match.index, match.end),
-      active: match.ids.some((id) => active.has(id)),
+      active: isActive,
     });
     cursor = match.end;
   }
@@ -39,6 +48,7 @@ function mergeEquivalentMatches(matches) {
     const previous = merged.at(-1);
     if (previous && previous.index === match.index && previous.end === match.end) {
       previous.ids.push(match.id);
+      previous.persistent = previous.persistent || match.persistent;
     } else {
       merged.push({ ...match, ids: [match.id] });
     }

@@ -976,6 +976,7 @@
         "contradicts": [
           {
             "label": "No drooling / drinks normally",
+            "phrase": "no drooling and drinks water normally",
             "tooltip": "Epiglottitis causes odynophagia and drooling because swallowing is painful; normal drinking argues strongly against it."
           }
         ],
@@ -1055,6 +1056,7 @@
         "contradicts": [
           {
             "label": "Drinks normally",
+            "phrase": "drinks water normally",
             "tooltip": "A retropharyngeal collection causes pain and stiffness on swallowing; normal drinking argues against it."
           }
         ],
@@ -1130,9 +1132,9 @@
         {
           "id": "history_rapid_onset",
           "type": "history",
-          "label": "Rapid onset / no choking",
+          "label": "Rapid onset",
           "phrase": "rapid onset",
-          "tooltip": "Rapid onset without a preceding choking event supports an infectious rather than mechanical cause of airway obstruction."
+          "tooltip": "A rapidly progressive airway illness with systemic toxicity suggests acute bacterial airway disease."
         },
         {
           "id": "sym_high_fever",
@@ -1276,7 +1278,7 @@
           },
           {
             "label": "Tripod/severe distress",
-            "nodeId": "sign_toxic_appearance",
+            "phrase": "sitting forward in significant respiratory distress",
             "tooltip": "Children with epiglottitis often sit forward in a tripod position to maximise airway patency."
           }
         ],
@@ -1306,7 +1308,7 @@
         "contradicts": [
           {
             "label": "No choking episode",
-            "nodeId": "history_rapid_onset",
+            "phrase": "no choking episode",
             "tooltip": "A witnessed choking or gagging event is the pivotal history in foreign body aspiration; its absence significantly reduces this probability."
           },
           {
@@ -2043,10 +2045,12 @@
         "supports": [
           {
             "label": "Aphasia",
+            "phrase": "difficulty naming objects and following complex commands",
             "tooltip": "Aphasia localises to the dominant (left) perisylvian cortex, which is MCA territory."
           },
           {
             "label": "Right field defect",
+            "phrase": "right homonymous visual field defect",
             "tooltip": "A right homonymous field defect localises to the left retrochiasmal pathway—MCA inferior division or PCA territory."
           }
         ],
@@ -2114,6 +2118,7 @@
         "contradicts": [
           {
             "label": "Right homonymous field defect",
+            "phrase": "right homonymous visual field defect",
             "tooltip": "A right occipital lesion produces a left homonymous field defect; a right-sided defect localises to the left hemisphere."
           },
           {
@@ -2392,6 +2397,7 @@
         "contradicts": [
           {
             "label": "Normal strength/language/fields",
+            "phrase": "Motor strength, language, and visual fields are intact",
             "tooltip": "Lacunar infarcts cause focal deficits (pure motor, pure sensory, ataxic hemiparesis); an entirely normal focal exam does not fit."
           }
         ],
@@ -2431,6 +2437,7 @@
         "contradicts": [
           {
             "label": "No fever",
+            "phrase": "no fever",
             "tooltip": "Absence of fever makes acute bacterial meningitis less likely, especially without meningismus."
           },
           {
