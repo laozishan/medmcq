@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { phrasesFromGraph } from '../lib/graph.js';
 import { highlightText } from '../lib/text.js';
+import { cloneQuestion } from '../lib/questions.js';
 
 export function QuestionPanel({
   question,
@@ -14,11 +15,9 @@ export function QuestionPanel({
 }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(question);
-  const phrases = phrasesFromGraph(question.graph);
-  const segments = highlightText(question.vignette, phrases, activeEvidenceId ? [activeEvidenceId] : []);
 
   function startEditing() {
-    setDraft(structuredClone(question));
+    setDraft(cloneQuestion(question));
     setEditing(true);
   }
 
@@ -27,47 +26,94 @@ export function QuestionPanel({
     setEditing(false);
   }
 
+  function updateDraftOption(optionId, text) {
+    setDraft((current) => ({
+      ...current,
+      options: current.options.map((option) => (option.id === optionId ? { ...option, text } : option)),
+    }));
+  }
+
+  const displayQuestion = editing ? draft : question;
+  const displayPhrases = phrasesFromGraph(displayQuestion.graph);
+  const activeEvidenceIds = Array.isArray(activeEvidenceId)
+    ? activeEvidenceId
+    : activeEvidenceId
+      ? [activeEvidenceId]
+      : [];
+  const displaySegments = highlightText(
+    displayQuestion.vignette,
+    displayPhrases,
+    activeEvidenceIds,
+  );
+
   return (
     <section className="question-panel">
       <div className="card">
         <div className="card-label">Clinical vignette</div>
-        <div className="source-chip">{question.source}</div>
-        <p className="vignette">
-          {segments.map((segment, index) =>
-            segment.type === 'highlight' ? (
-              <mark
-                key={`${segment.id}-${index}`}
-                className={segment.active ? 'active' : ''}
-                onMouseEnter={() => onEvidenceHover(segment.id)}
-                onMouseLeave={() => onEvidenceHover(null)}
-              >
-                {segment.text}
-              </mark>
-            ) : (
-              <span key={index}>{segment.text}</span>
-            ),
-          )}
-        </p>
+        {editing ? (
+          <textarea
+            className="inline-vignette-editor"
+            value={draft.vignette}
+            onChange={(event) => setDraft((current) => ({ ...current, vignette: event.target.value }))}
+            aria-label="Edit vignette"
+          />
+        ) : (
+          <p className="vignette">
+            {displaySegments.map((segment, index) =>
+              segment.type === 'highlight' ? (
+                <mark
+                  key={`${segment.id}-${index}`}
+                  className={segment.active ? 'active' : ''}
+                  onMouseEnter={(event) => onEvidenceHover(segment.id, event)}
+                  onMouseMove={(event) => onEvidenceHover(segment.id, event)}
+                  onMouseLeave={() => onEvidenceHover(null)}
+                >
+                  {segment.text}
+                </mark>
+              ) : (
+                <span key={index}>{segment.text}</span>
+              ),
+            )}
+          </p>
+        )}
       </div>
 
       <div className="card">
         <div className="card-head">
           <div>
             <div className="card-label">Question</div>
-            <h1>{question.stem}</h1>
+            {editing ? (
+              <textarea
+                className="inline-stem-editor"
+                value={draft.stem}
+                onChange={(event) => setDraft((current) => ({ ...current, stem: event.target.value }))}
+                aria-label="Edit question stem"
+              />
+            ) : (
+              <h1>{displayQuestion.stem}</h1>
+            )}
           </div>
-          <span className={`difficulty ${question.difficulty}`}>{question.difficulty}</span>
+          <span className={`difficulty ${displayQuestion.difficulty}`}>{displayQuestion.difficulty}</span>
         </div>
 
         <div className="options">
-          {question.options.map((option) => (
+          {displayQuestion.options.map((option) => (
             <div
               key={option.id}
-              className={option.id === question.correctOptionId ? 'option correct' : 'option'}
+              className={option.id === displayQuestion.correctOptionId ? 'option correct' : 'option'}
             >
               <span className="option-letter">{option.id}</span>
-              <span>{option.text}</span>
-              {option.id === question.correctOptionId ? <strong>Correct</strong> : null}
+              {editing ? (
+                <input
+                  className="inline-option-editor"
+                  value={option.text}
+                  onChange={(event) => updateDraftOption(option.id, event.target.value)}
+                  aria-label={`Edit option ${option.id}`}
+                />
+              ) : (
+                <span>{option.text}</span>
+              )}
+              {option.id === displayQuestion.correctOptionId ? <strong>Correct</strong> : null}
             </div>
           ))}
         </div>
@@ -75,63 +121,18 @@ export function QuestionPanel({
         <div className="action-row">
           <button className="accept" type="button" onClick={onAccept}>Accept</button>
           <button className="reject" type="button" onClick={onReject}>Reject</button>
-          <button type="button" onClick={startEditing}>Edit</button>
+          {editing ? (
+            <>
+              <button type="button" className="accept" onClick={saveDraft}>Save</button>
+              <button type="button" onClick={() => setEditing(false)}>Cancel</button>
+            </>
+          ) : (
+            <button type="button" onClick={startEditing}>Edit</button>
+          )}
           {onRegenerate ? <button type="button" onClick={onRegenerate}>Regenerate</button> : null}
           <button type="button" onClick={onReset}>Reset</button>
         </div>
       </div>
-
-      {editing ? (
-        <div className="card editor-card">
-          <div className="card-label">Edit JSON-backed question fields</div>
-          <label className="field">
-            <span>Stem</span>
-            <textarea
-              value={draft.stem}
-              onChange={(event) => setDraft({ ...draft, stem: event.target.value })}
-            />
-          </label>
-          <label className="field">
-            <span>Vignette</span>
-            <textarea
-              value={draft.vignette}
-              onChange={(event) => setDraft({ ...draft, vignette: event.target.value })}
-            />
-          </label>
-          <div className="option-editor-grid">
-            {draft.options.map((option, index) => (
-              <label className="field" key={option.id}>
-                <span>Option {option.id}</span>
-                <input
-                  value={option.text}
-                  onChange={(event) => {
-                    const options = [...draft.options];
-                    options[index] = { ...option, text: event.target.value };
-                    setDraft({ ...draft, options });
-                  }}
-                />
-              </label>
-            ))}
-          </div>
-          <label className="field">
-            <span>Correct option</span>
-            <select
-              value={draft.correctOptionId}
-              onChange={(event) => setDraft({ ...draft, correctOptionId: event.target.value })}
-            >
-              {draft.options.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.id}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="action-row">
-            <button className="accept" type="button" onClick={saveDraft}>Save revision</button>
-            <button type="button" onClick={() => setEditing(false)}>Cancel</button>
-          </div>
-        </div>
-      ) : null}
     </section>
   );
 }

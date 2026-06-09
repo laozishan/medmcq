@@ -2,6 +2,8 @@
 
 React/Vite version of the MedMCQ expert review workspace. The UI is implemented as fixed React components, while questions, explanations, and knowledge graphs live in JSON.
 
+See [docs/MODULARIZATION.md](docs/MODULARIZATION.md) for the intended source layout and expansion plan.
+
 ## Local development
 
 ```bash
@@ -42,4 +44,4 @@ Recommended settings for Vercel or Netlify:
 - Publish/output directory: `dist`
 
 GitHub Pages is also configured through `.github/workflows/deploy.yml`.
-Push this project to `https://github.com/laozishan/medmcq.git` on the `main` branch, then enable Pages with source set to **GitHub Actions** in the repository settings.
+Push this project to `https://github.com/laozishan/MCQ-Userstudy.git` on the `main` branch, then enable Pages with source set to **GitHub Actions** in the repository settings.

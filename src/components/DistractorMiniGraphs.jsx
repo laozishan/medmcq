@@ -1,26 +1,44 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-export function DistractorMiniGraphs({ question, onEvidenceHover }) {
-  const evidenceNodes = (question.graph.nodes ?? []).filter((node) => node.type === 'evidence');
-  const distractors = question.options.filter((option) => option.id !== question.correctOptionId);
+const MINI_NODE_WIDTH = 132;
+const MINI_NODE_HEIGHT = 44;
+const OPTION_WIDTH = 132;
+const OPTION_HEIGHT = 58;
+
+const ROLE_CONFIG = {
+  supports: { label: 'supports', fill: '#e7f6ef', stroke: '#1f7a55', text: '#145b3e' },
+  weakens: { label: 'weakens', fill: '#fff0df', stroke: '#c46a1e', text: '#8a4612' },
+  contradicts: { label: 'rules out', fill: '#f8e6e6', stroke: '#a23a3a', text: '#842929' },
+  missing: { label: 'missing', fill: '#f2f2f2', stroke: '#909090', text: '#5f5f5f', dash: '5 4' },
+};
+
+const ROLE_ORDER = ['supports', 'weakens', 'contradicts', 'missing'];
+
+export function DistractorMiniGraphs({
+  question,
+  editable = false,
+  onEvidenceHover,
+  onMiniGraphChange,
+  onMiniGraphReset,
+}) {
+  const miniGraphs = question.miniGraphs ?? buildFallbackMiniGraphs(question);
 
   return (
     <section className="side-panel mini-graphs-panel">
-      <div className="panel-head">
+      <div className="panel-head compact-head">
         <div>
           <span>Distractor mini graphs</span>
-          <h2>Why alternatives are excluded</h2>
         </div>
       </div>
       <div className="mini-graph-grid">
-        {distractors.map((option, index) => (
-          <DraggableMiniGraph
-            key={option.id}
-            option={option}
-            index={index}
-            question={question}
-            evidenceNodes={evidenceNodes}
+        {miniGraphs.map((miniGraph) => (
+          <MiniGraphCard
+            key={miniGraph.optionId}
+            miniGraph={miniGraph}
+            editable={editable}
             onEvidenceHover={onEvidenceHover}
+            onMiniGraphChange={onMiniGraphChange}
+            onMiniGraphReset={onMiniGraphReset}
           />
         ))}
       </div>
@@ -28,162 +46,382 @@ export function DistractorMiniGraphs({ question, onEvidenceHover }) {
   );
 }
 
-function DraggableMiniGraph({ option, index, question, evidenceNodes, onEvidenceHover }) {
-  const usableEvidence = evidenceNodes.length
-    ? evidenceNodes
-    : [{ id: `fallback-${option.id}`, label: 'Case clue' }];
-  const firstEvidence = usableEvidence[index % usableEvidence.length];
-  const secondEvidence = usableEvidence[(index + 1) % usableEvidence.length];
-  const initialNodes = useMemo(
-    () => ({
-      first: { x: 36, y: 26, width: 118, label: firstEvidence.label, type: 'evidence', evidenceId: firstEvidence.id },
-      second: { x: 36, y: 112, width: 118, label: secondEvidence.label, type: 'evidence', evidenceId: secondEvidence.id },
-      distractor: { x: 190, y: 69, width: 104, label: option.text, type: 'distractor' },
-    }),
-    [firstEvidence.id, firstEvidence.label, option.text, secondEvidence.id, secondEvidence.label],
-  );
-  const [nodes, setNodes] = useState(initialNodes);
-  const [dragState, setDragState] = useState(null);
+function MiniGraphCard({
+  miniGraph,
+  editable,
+  onEvidenceHover,
+  onMiniGraphChange,
+  onMiniGraphReset,
+}) {
+  const layout = useMiniLayerLayout(miniGraph);
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [dialogState, setDialogState] = useState(null);
 
   useEffect(() => {
-    setNodes(initialNodes);
-  }, [initialNodes]);
+    setDeleteMode(false);
+    setDialogState(null);
+  }, [miniGraph.optionId]);
 
-  function startDrag(event, nodeKey) {
-    const svg = event.currentTarget.ownerSVGElement;
-    const point = svgPoint(svg, event);
-    event.preventDefault();
-    event.stopPropagation();
-    svg.setPointerCapture?.(event.pointerId);
-    setDragState({
-      nodeKey,
-      pointerId: event.pointerId,
-      offsetX: point.x - nodes[nodeKey].x,
-      offsetY: point.y - nodes[nodeKey].y,
-    });
-  }
+  const changeMiniGraph = (nextMiniGraph) => {
+    onMiniGraphChange?.(miniGraph.optionId, nextMiniGraph);
+  };
 
-  function dragNode(event) {
-    if (!dragState) return;
-    const point = svgPoint(event.currentTarget, event);
-    setNodes((current) => ({
-      ...current,
-      [dragState.nodeKey]: {
-        ...current[dragState.nodeKey],
-        x: clamp(point.x - dragState.offsetX, 8, 300 - current[dragState.nodeKey].width),
-        y: clamp(point.y - dragState.offsetY, 8, 134),
-      },
-    }));
-  }
+  const addMiniItem = (payload) => {
+    const next = {
+      ...miniGraph,
+      [payload.role]: [
+        ...(miniGraph[payload.role] ?? []),
+        {
+          label: payload.label,
+          tooltip: payload.tooltip,
+        },
+      ],
+    };
+    changeMiniGraph(next);
+  };
 
-  function stopDrag(event) {
-    if (!dragState) return;
-    event.currentTarget.releasePointerCapture?.(dragState.pointerId);
-    setDragState(null);
-  }
+  const updateMiniItem = (item, payload) => {
+    const next = { ...miniGraph };
+    const sourceRole = item.role;
+    const sourceItems = [...(miniGraph[sourceRole] ?? [])];
+    const original = sourceItems[item.sourceIndex] ?? {};
+    sourceItems.splice(item.sourceIndex, 1);
+    next[sourceRole] = sourceItems;
+    if (!next[sourceRole].length) delete next[sourceRole];
 
-  const firstAnchor = rightAnchor(nodes.first);
-  const secondAnchor = rightAnchor(nodes.second);
-  const distractorAnchor = leftAnchor(nodes.distractor);
-  const firstMid = midPoint(firstAnchor, distractorAnchor);
-  const secondMid = midPoint(secondAnchor, distractorAnchor);
+    const targetItems = payload.role === sourceRole ? sourceItems : [...(miniGraph[payload.role] ?? [])];
+    const targetItem = {
+      ...original,
+      label: payload.label,
+      tooltip: payload.tooltip,
+    };
+    if (payload.role === sourceRole) {
+      targetItems.splice(item.sourceIndex, 0, targetItem);
+    } else {
+      targetItems.push(targetItem);
+    }
+    next[payload.role] = targetItems;
+    changeMiniGraph(next);
+  };
+
+  const deleteMiniItem = (item) => {
+    const nextItems = [...(miniGraph[item.role] ?? [])];
+    nextItems.splice(item.sourceIndex, 1);
+    const next = { ...miniGraph, [item.role]: nextItems };
+    if (!nextItems.length) delete next[item.role];
+    changeMiniGraph(next);
+  };
 
   return (
     <article className="mini-graph-card">
       <div className="mini-graph-head">
-        <strong>{option.id}. {option.text}</strong>
-        <span>Excluded</span>
+        <strong>{miniGraph.optionId}. {miniGraph.optionText}</strong>
       </div>
-      <svg
-        viewBox="0 0 320 190"
-        aria-label={`Mini graph for option ${option.id}`}
-        onPointerMove={dragNode}
-        onPointerUp={stopDrag}
-        onPointerCancel={stopDrag}
-      >
-        <MiniNode
-          nodeKey="first"
-          dragging={dragState?.nodeKey === 'first'}
-          node={nodes.first}
-          onPointerDown={startDrag}
-          onEvidenceHover={onEvidenceHover}
-        />
-        <MiniNode
-          nodeKey="second"
-          dragging={dragState?.nodeKey === 'second'}
-          node={nodes.second}
-          onPointerDown={startDrag}
-          onEvidenceHover={onEvidenceHover}
-        />
-        <MiniNode
-          nodeKey="distractor"
-          dragging={dragState?.nodeKey === 'distractor'}
-          node={nodes.distractor}
-          onPointerDown={startDrag}
-          onEvidenceHover={onEvidenceHover}
-        />
-        <path d={`M ${firstAnchor.x} ${firstAnchor.y} C ${firstMid.x} ${firstAnchor.y}, ${firstMid.x} ${distractorAnchor.y}, ${distractorAnchor.x} ${distractorAnchor.y}`} />
-        <path d={`M ${secondAnchor.x} ${secondAnchor.y} C ${secondMid.x} ${secondAnchor.y}, ${secondMid.x} ${distractorAnchor.y}, ${distractorAnchor.x} ${distractorAnchor.y}`} />
-        <text x={firstMid.x} y={firstMid.y - 8}>against</text>
-        <text x={secondMid.x} y={secondMid.y + 16}>against</text>
-      </svg>
-      <p>{question.explanation.distractors[option.id]}</p>
-      <div className="mini-evidence-row">
-        {evidenceNodes.slice(0, 3).map((node) => (
+
+      {editable ? (
+        <div className="mini-graph-tools" aria-label="Mini graph edit actions">
           <button
-            key={node.id}
             type="button"
-            onMouseEnter={() => onEvidenceHover(node.id)}
-            onMouseLeave={() => onEvidenceHover(null)}
+            onClick={() => {
+              setDeleteMode(false);
+              setDialogState({ mode: 'add' });
+            }}
           >
-            {node.label}
+            Add
           </button>
+          <button
+            type="button"
+            className={deleteMode ? 'active danger' : ''}
+            onClick={() => {
+              setDeleteMode((current) => !current);
+              setDialogState(null);
+            }}
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setDeleteMode(false);
+              setDialogState(null);
+              onMiniGraphReset?.(miniGraph.optionId);
+            }}
+          >
+            Reset
+          </button>
+        </div>
+      ) : null}
+
+      <svg
+        className="mini-graph-svg"
+        style={{ height: layout.height }}
+        viewBox={`0 0 ${layout.width} ${layout.height}`}
+        aria-label={`Mini graph for ${miniGraph.optionText}`}
+      >
+        <MiniOptionNode option={layout.option} />
+        {layout.nodes.map((item) => (
+          <MiniEvidenceEdge key={`edge-${item.key}`} item={item} option={layout.option} />
         ))}
+        {layout.nodes.map((item) => (
+          <MiniEvidenceNode
+            key={item.key}
+            item={item}
+            miniGraph={miniGraph}
+            editable={editable}
+            deleteMode={deleteMode}
+            onEdit={() => setDialogState({ mode: 'edit', item })}
+            onDelete={() => deleteMiniItem(item)}
+            onEvidenceHover={onEvidenceHover}
+          />
+        ))}
+      </svg>
+
+      <div className="mini-legend-row">
+        {ROLE_ORDER.map((role) => {
+          const config = ROLE_CONFIG[role];
+          const count = miniGraph[role]?.length ?? 0;
+          if (!count) return null;
+          return (
+            <span key={role} style={{ color: config.text }}>
+              <i style={{ background: config.fill, borderColor: config.stroke }} />
+              {config.label}
+            </span>
+          );
+        })}
       </div>
+      {miniGraph.summary ? <p>{miniGraph.summary}</p> : null}
+      {dialogState ? (
+        <MiniNodeDialog
+          mode={dialogState.mode}
+          item={dialogState.item}
+          onClose={() => setDialogState(null)}
+          onSubmit={(payload) => {
+            if (dialogState.mode === 'edit') updateMiniItem(dialogState.item, payload);
+            else addMiniItem(payload);
+            setDialogState(null);
+          }}
+        />
+      ) : null}
     </article>
   );
 }
 
-function MiniNode({ nodeKey, node, dragging, onPointerDown, onEvidenceHover }) {
-  const { x, y, width, label, type, evidenceId } = node;
-  const fill = type === 'distractor' ? '#f8eaea' : '#fff7d8';
-  const stroke = type === 'distractor' ? '#8a2d2d' : '#c48a1d';
-
+function MiniOptionNode({ option }) {
   return (
     <g
-      className={`mini-draggable-node ${dragging ? 'dragging' : ''}`}
-      transform={`translate(${x} ${y})`}
-      onPointerDown={(event) => onPointerDown(event, nodeKey)}
-      onMouseEnter={() => evidenceId && onEvidenceHover(evidenceId)}
-      onMouseLeave={() => evidenceId && onEvidenceHover(null)}
+      className="mini-option-node"
+      transform={`translate(${option.x} ${option.y})`}
     >
-      <rect width={width} height="48" rx="8" fill={fill} stroke={stroke} />
-      <foreignObject x="8" y="8" width={width - 16} height="32">
-        <div className="mini-node-label">{label}</div>
+      <rect width={OPTION_WIDTH} height={OPTION_HEIGHT} rx="10" fill="#f7f3ef" stroke="#8c8178" />
+      <foreignObject x="9" y="9" width={OPTION_WIDTH - 18} height={OPTION_HEIGHT - 18}>
+        <div className="mini-node-label">{option.label}</div>
       </foreignObject>
     </g>
   );
 }
 
-function svgPoint(svg, event) {
-  const point = svg.createSVGPoint();
-  point.x = event.clientX;
-  point.y = event.clientY;
-  return point.matrixTransform(svg.getScreenCTM().inverse());
+function MiniEvidenceEdge({ item, option }) {
+  const config = ROLE_CONFIG[item.role];
+  const fromX = item.x + MINI_NODE_WIDTH;
+  const fromY = item.y + MINI_NODE_HEIGHT / 2;
+  const toX = option.x;
+  const toY = option.y + OPTION_HEIGHT / 2;
+  const midX = fromX + (toX - fromX) * 0.55;
+  const midY = fromY + (toY - fromY) * 0.55;
+  const label = edgeLabelPoint(fromX, fromY, toX, toY, item.edgeOffset);
+
+  return (
+    <g className="mini-edge">
+      <path
+        d={`M ${fromX} ${fromY} C ${midX} ${fromY}, ${midX} ${toY}, ${toX} ${toY}`}
+        stroke={config.stroke}
+        strokeDasharray={config.dash}
+      />
+      <text x={label.x} y={label.y} fill={config.text}>{config.label}</text>
+    </g>
+  );
 }
 
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
+function MiniEvidenceNode({
+  item,
+  miniGraph,
+  editable,
+  deleteMode,
+  onEdit,
+  onDelete,
+  onEvidenceHover,
+}) {
+  const config = ROLE_CONFIG[item.role];
+  const hoverNode = {
+    id: item.key,
+    type: 'symptom',
+    label: item.label,
+    tooltip: buildMiniTooltip(item, miniGraph),
+    hoverLabel: config.label,
+    hoverColor: config.stroke,
+  };
+
+  return (
+    <g
+      className="mini-evidence-node"
+      transform={`translate(${item.x} ${item.y})`}
+      onClick={(event) => {
+        if (!editable || deleteMode) return;
+        event.preventDefault();
+        event.stopPropagation();
+        onEdit();
+      }}
+      onMouseEnter={(event) => onEvidenceHover(item.nodeIds ?? item.nodeId ?? item.key, event, hoverNode)}
+      onMouseMove={(event) => onEvidenceHover(item.nodeIds ?? item.nodeId ?? item.key, event, hoverNode)}
+      onMouseLeave={() => onEvidenceHover(null)}
+    >
+      <rect
+        width={MINI_NODE_WIDTH}
+        height={MINI_NODE_HEIGHT}
+        rx="9"
+        fill={config.fill}
+        stroke={config.stroke}
+        strokeDasharray={config.dash}
+      />
+      <foreignObject x="8" y="7" width={MINI_NODE_WIDTH - 16} height={MINI_NODE_HEIGHT - 14}>
+        <div className="mini-node-label">{item.label}</div>
+      </foreignObject>
+      {editable && deleteMode ? (
+        <g
+          className="graph-node-delete mini-node-delete"
+          transform={`translate(${MINI_NODE_WIDTH - 10} 8)`}
+          onPointerDown={(event) => event.stopPropagation()}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onDelete();
+          }}
+        >
+          <circle r="9" />
+          <text y="4">x</text>
+        </g>
+      ) : null}
+    </g>
+  );
 }
 
-function rightAnchor(node) {
-  return { x: node.x + node.width, y: node.y + 24 };
+function MiniNodeDialog({ mode, item, onClose, onSubmit }) {
+  const [role, setRole] = useState(item?.role ?? 'supports');
+  const [label, setLabel] = useState(item?.label ?? '');
+  const [tooltip, setTooltip] = useState(item?.tooltip ?? '');
+
+  function submit(event) {
+    event.preventDefault();
+    onSubmit({
+      role,
+      label: label.trim() || 'New clue',
+      tooltip: tooltip.trim(),
+    });
+  }
+
+  return (
+    <div className="graph-popover-backdrop mini-dialog-backdrop" onClick={onClose}>
+      <form className="graph-node-dialog" onSubmit={submit} onClick={(event) => event.stopPropagation()}>
+        <div className="modal-head">
+          <h2>{mode === 'edit' ? 'Edit mini node' : 'Add mini node'}</h2>
+          <button type="button" onClick={onClose}>Close</button>
+        </div>
+
+        <label className="field">
+          <span>Role</span>
+          <select value={role} onChange={(event) => setRole(event.target.value)}>
+            {ROLE_ORDER.map((roleName) => (
+              <option key={roleName} value={roleName}>{ROLE_CONFIG[roleName].label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label className="field">
+          <span>Node label</span>
+          <input value={label} onChange={(event) => setLabel(event.target.value)} autoFocus />
+        </label>
+
+        <label className="field">
+          <span>Description</span>
+          <textarea value={tooltip} onChange={(event) => setTooltip(event.target.value)} />
+        </label>
+
+        <button className="primary-action compact-action" type="submit">
+          {mode === 'edit' ? 'Save mini node' : 'Add mini node'}
+        </button>
+      </form>
+    </div>
+  );
 }
 
-function leftAnchor(node) {
-  return { x: node.x, y: node.y + 24 };
+function buildMiniTooltip(item, miniGraph) {
+  if (item.tooltip) return item.tooltip;
+  return `No description provided for ${item.label} in ${miniGraph.optionText}.`;
 }
 
-function midPoint(a, b) {
-  return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+function useMiniLayerLayout(miniGraph) {
+  return useMemo(() => {
+    const items = ROLE_ORDER.flatMap((role) =>
+      (miniGraph[role] ?? []).map((item, index) => ({
+        ...item,
+        role,
+        sourceIndex: index,
+        key: `${miniGraph.optionId}-${role}-${index}-${item.label}`,
+      })),
+    );
+    const rowStep = 56;
+    const top = 18;
+    const height = Math.max(220, top * 2 + Math.max(1, items.length) * rowStep);
+    const width = 540;
+    const option = {
+      x: width - OPTION_WIDTH - 28,
+      y: height / 2 - OPTION_HEIGHT / 2,
+      label: miniGraph.optionText,
+    };
+    const sorted = orderEvidenceItems(items);
+
+    const nodes = sorted.map((item, index) => {
+      return {
+        ...item,
+        x: 28,
+        y: top + index * rowStep,
+        edgeOffset: 0,
+      };
+    });
+
+    const layout = { width, height, nodes, option };
+    return layout;
+  }, [miniGraph]);
+}
+
+function orderEvidenceItems(items) {
+  const roleRank = Object.fromEntries(ROLE_ORDER.map((role, index) => [role, index]));
+  return [...items].sort((a, b) => {
+    const roleDiff = (roleRank[a.role] ?? 99) - (roleRank[b.role] ?? 99);
+    if (roleDiff !== 0) return roleDiff;
+    return String(a.label).localeCompare(String(b.label));
+  });
+}
+
+function edgeLabelPoint(fromX, fromY, toX, toY, offset) {
+  const x = fromX + (toX - fromX) * 0.56;
+  const y = fromY + (toY - fromY) * 0.56;
+  const dx = toX - fromX;
+  const dy = toY - fromY;
+  const length = Math.hypot(dx, dy) || 1;
+  return {
+    x: x + (-dy / length) * offset,
+    y: y + (dx / length) * offset - 5,
+  };
+}
+
+function buildFallbackMiniGraphs(question) {
+  return question.options
+    .filter((option) => option.id !== question.correctOptionId)
+    .map((option) => ({
+      optionId: option.id,
+      optionText: option.text,
+      contradicts: [{ label: 'See explanation' }],
+      summary: question.explanation?.distractors?.[option.id],
+    }));
 }

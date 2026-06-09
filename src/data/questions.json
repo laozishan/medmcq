@@ -1,384 +1,2713 @@
 [
   {
-    "id": "pcd-001",
+    "id": "ped-pcd-normal-text",
     "title": "Primary ciliary dyskinesia",
     "domain": "Pediatrics",
     "topic": "Respiratory System",
     "difficulty": "easy",
-    "source": "Generated from structured question and KG data",
-    "taskLabel": "Task 1",
-    "vignette": "A 7-year-old boy has had a chronic wet cough since infancy. He has recurrent ear infections requiring tympanostomy tubes and several episodes of sinusitis. His growth is normal, and he has no greasy stools. Chest radiograph shows bronchiectatic changes. Which underlying defect best explains his condition?",
-    "stem": "Which underlying defect best explains this child's presentation?",
+    "source": "Previous respiratory exam question; Nelson respiratory assessment",
+    "taskLabel": "Pediatrics 1",
+    "reviewType": "normal",
+    "defaultMode": "text",
+    "allowedModes": [
+      "text"
+    ],
+    "vignette": "A 9-year-old boy is evaluated for a chronic wet cough that has been present since early childhood. He was born at term but required oxygen for respiratory distress during the first day of life. He has had recurrent otitis media requiring tympanostomy tubes and several episodes of sinusitis. His growth is normal. He has no greasy stools. Chest examination reveals coarse crackles and mild hyperinflation.",
+    "stem": "What is the most likely diagnosis?",
     "options": [
       {
         "id": "A",
-        "text": "Defective CFTR chloride channel function"
+        "text": "Cystic fibrosis"
       },
       {
         "id": "B",
-        "text": "Defective dynein arms causing impaired ciliary motility"
+        "text": "Humoral immunodeficiency"
       },
       {
         "id": "C",
-        "text": "IgA deficiency with recurrent mucosal infection"
+        "text": "Primary ciliary dyskinesia"
       },
       {
         "id": "D",
-        "text": "Alpha-1 antitrypsin deficiency"
+        "text": "Gastroesophageal reflux disease"
       },
       {
         "id": "E",
-        "text": "Surfactant protein B deficiency"
+        "text": "Asthma"
       }
     ],
-    "correctOptionId": "B",
+    "correctOptionId": "C",
     "explanation": {
-      "whyCorrect": "Chronic sinopulmonary disease beginning in infancy, recurrent otitis media, sinusitis, bronchiectasis, and preserved pancreatic function point to primary ciliary dyskinesia. The core mechanism is impaired ciliary motility from dynein arm dysfunction.",
+      "whyCorrect": "Primary ciliary dyskinesia is most likely because the case combines lifelong wet cough, neonatal respiratory distress in a term infant, recurrent otitis/sinusitis, and normal growth without greasy stools. This pattern points to impaired motile cilia rather than pancreatic disease or episodic bronchospasm.",
       "evidence": [
-        "Chronic wet cough since infancy suggests lifelong mucociliary clearance failure.",
-        "Recurrent ear infections and sinusitis involve ciliated epithelium outside the lower airway.",
-        "Normal growth and absence of greasy stools make cystic fibrosis less likely."
+        "Chronic wet cough from early childhood suggests impaired airway clearance.",
+        "Term neonatal respiratory distress and recurrent otitis media are classic PCD clues.",
+        "Normal growth and no greasy stools make cystic fibrosis less likely."
       ],
       "distractors": {
-        "A": "CFTR dysfunction would often produce pancreatic insufficiency, poor growth, or greasy stools.",
-        "C": "IgA deficiency can cause recurrent infections but does not specifically explain bronchiectasis with classic ciliary-site disease.",
-        "D": "Alpha-1 antitrypsin deficiency causes early emphysema or liver disease, not recurrent otitis and sinusitis from infancy.",
-        "E": "Surfactant protein B deficiency usually presents as severe neonatal respiratory failure."
+        "A": "Cystic fibrosis can cause chronic cough, but the absence of greasy stools and preserved growth weaken CF.",
+        "B": "Humoral immunodeficiency can cause infections but does not explain term neonatal respiratory distress or lifelong wet cough.",
+        "D": "Gastroesophageal reflux can cause cough but not recurrent otitis media and sinusitis from impaired ciliary clearance.",
+        "E": "Asthma may cause cough and hyperinflation but not recurrent ear disease or neonatal respiratory distress."
       }
     },
     "graph": {
       "nodes": [
         {
-          "id": "ev_cough",
-          "type": "evidence",
-          "label": "Chronic wet cough since infancy",
-          "phrase": "chronic wet cough since infancy",
-          "tooltip": "A lifelong wet cough suggests impaired mucociliary clearance rather than episodic asthma."
+          "id": "sym_wet_cough",
+          "type": "symptom",
+          "label": "Chronic wet cough",
+          "phrase": "chronic wet cough",
+          "tooltip": "A persistent productive cough suggests impaired airway clearance and secretion retention."
         },
         {
-          "id": "ev_ears",
-          "type": "evidence",
-          "label": "Recurrent ear infections",
-          "phrase": "recurrent ear infections",
-          "tooltip": "The middle ear depends on ciliary clearance through the Eustachian tube."
+          "id": "history_neonatal_rd",
+          "type": "history",
+          "label": "Term neonatal respiratory distress",
+          "phrase": "respiratory distress during the first day of life",
+          "tooltip": "Respiratory distress in an otherwise healthy term neonate is an early hallmark of PCD; motile cilia are needed to clear fetal lung fluid."
         },
         {
-          "id": "ev_pancreas",
-          "type": "evidence",
-          "label": "No greasy stools",
-          "phrase": "no greasy stools",
-          "tooltip": "Preserved pancreatic function helps separate PCD from cystic fibrosis."
+          "id": "history_otitis",
+          "type": "history",
+          "label": "Recurrent otitis/sinusitis",
+          "phrase": "recurrent otitis media",
+          "tooltip": "Ciliated epithelium lines the middle ear and sinuses; impaired clearance leads to recurrent infections in both sites simultaneously."
         },
         {
-          "id": "finding_clearance",
-          "type": "finding",
-          "label": "Impaired mucociliary clearance"
+          "id": "exam_normal_growth",
+          "type": "exam",
+          "label": "Normal growth",
+          "phrase": "growth is normal",
+          "tooltip": "Preserved growth argues against pancreatic malabsorption."
         },
         {
-          "id": "mechanism_dynein",
+          "id": "mechanism_ciliary",
           "type": "mechanism",
-          "label": "Dynein arm dysfunction"
+          "label": "Impaired motile cilia",
+          "tooltip": "PCD is caused by impaired ciliary motility, often from dynein arm dysfunction."
         },
         {
           "id": "dx_pcd",
           "type": "diagnosis",
-          "label": "Primary ciliary dyskinesia"
+          "label": "Primary ciliary dyskinesia",
+          "tooltip": "A disorder of motile cilia causing chronic sinopulmonary disease."
         }
       ],
       "edges": [
         {
-          "from": "ev_cough",
-          "to": "finding_clearance",
-          "label": "supports",
-          "tooltip": "Persistent wet cough is a clinical sign of impaired airway clearance."
+          "from": "sym_wet_cough",
+          "to": "mechanism_ciliary",
+          "label": "symptom_of"
         },
         {
-          "from": "ev_ears",
-          "to": "finding_clearance",
-          "label": "same ciliated epithelium pattern",
-          "tooltip": "Upper and lower airway involvement creates a multi-site ciliary pattern."
+          "from": "history_neonatal_rd",
+          "to": "mechanism_ciliary",
+          "label": "expected_in"
         },
         {
-          "from": "ev_pancreas",
+          "from": "history_otitis",
+          "to": "mechanism_ciliary",
+          "label": "manifestation_of"
+        },
+        {
+          "from": "exam_normal_growth",
           "to": "dx_pcd",
-          "label": "helps exclude CF",
-          "tooltip": "PCD affects motile cilia, not pancreatic duct chloride transport."
+          "label": "compatible_with"
         },
         {
-          "from": "mechanism_dynein",
-          "to": "finding_clearance",
-          "label": "causes"
-        },
-        {
-          "from": "finding_clearance",
+          "from": "mechanism_ciliary",
           "to": "dx_pcd",
-          "label": "explains"
-        },
-        {
-          "from": "mechanism_dynein",
-          "to": "dx_pcd",
-          "label": "underlying defect"
+          "label": "mechanism_of"
         }
       ]
-    }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "A",
+        "optionText": "Cystic fibrosis",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Wet cough",
+            "nodeId": "sym_wet_cough",
+            "tooltip": "Productive cough from retained secretions is common to both PCD and CF."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "No greasy stools",
+            "tooltip": "CF typically impairs fat absorption through exocrine pancreatic insufficiency; normal stools argue against this."
+          },
+          {
+            "label": "Normal growth",
+            "nodeId": "exam_normal_growth",
+            "tooltip": "CF-related malabsorption usually causes faltering growth; normal weight gain is inconsistent with CF."
+          }
+        ],
+        "summary": "CF is plausible for chronic cough, but the lack of pancreatic insufficiency clues makes it less coherent than PCD."
+      },
+      {
+        "optionId": "B",
+        "optionText": "Humoral immunodeficiency",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Recurrent infections",
+            "nodeId": "history_otitis",
+            "tooltip": "Recurrent sinopulmonary infections are the hallmark of antibody deficiency."
+          }
+        ],
+        "weakens": [
+          {
+            "label": "Neonatal respiratory distress",
+            "nodeId": "history_neonatal_rd",
+            "tooltip": "Immune deficiency does not cause symptoms at birth, since maternal antibodies are protective in early infancy."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Low immunoglobulins",
+            "tooltip": "Antibody deficiency is defined by low serum immunoglobulins; without this, the diagnosis has no foundation."
+          },
+          {
+            "label": "Poor vaccine response",
+            "tooltip": "Failure to mount responses to vaccines is the functional hallmark of humoral deficiency."
+          }
+        ],
+        "summary": "Immune deficiency explains infections but not the ciliary pattern from birth."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Gastroesophageal reflux disease",
+        "verdict": "Weak",
+        "supports": [
+          {
+            "label": "Chronic cough",
+            "nodeId": "sym_wet_cough",
+            "tooltip": "Acid microaspiration can trigger cough, especially in infants."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Recurrent otitis/sinusitis",
+            "nodeId": "history_otitis",
+            "tooltip": "GERD does not affect mucociliary clearance and cannot explain simultaneous ear and sinus disease."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Cough with feeds",
+            "tooltip": "Aspiration-related cough typically worsens during or immediately after feeding."
+          },
+          {
+            "label": "Regurgitation",
+            "tooltip": "GERD usually manifests with visible regurgitation or heartburn symptoms."
+          }
+        ],
+        "summary": "Reflux can cause cough, but it does not explain the upper-airway ciliary pattern."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Asthma",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Hyperinflation",
+            "tooltip": "Air trapping and hyperinflation can occur in obstructive airway disease including asthma."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Wet cough since childhood",
+            "nodeId": "sym_wet_cough",
+            "tooltip": "Asthma produces a dry, episodic cough rather than a persistent productive one."
+          },
+          {
+            "label": "Ear disease",
+            "nodeId": "history_otitis",
+            "tooltip": "Asthma does not affect the upper respiratory mucosa or middle ear ciliary function."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Episodic wheeze",
+            "tooltip": "Wheezing triggered by allergens, exercise, or cold air is the classic asthma symptom."
+          },
+          {
+            "label": "Trigger history",
+            "tooltip": "Identifiable triggers (allergens, cold, exercise) are central to the asthma diagnosis."
+          }
+        ],
+        "summary": "Asthma is weakened by the lifelong wet cough and recurrent ear/sinus disease."
+      }
+    ]
   },
   {
-    "id": "cf-001",
+    "id": "ped-pneumonia-normal-kg",
+    "title": "Community-acquired pneumonia",
+    "domain": "Pediatrics",
+    "topic": "Respiratory System",
+    "difficulty": "medium",
+    "source": "Previous respiratory exam question; Nelson respiratory system",
+    "taskLabel": "Pediatrics 2",
+    "reviewType": "normal",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 13-year-old girl returns to clinic three days after being diagnosed with a viral upper respiratory infection. Her cough and shortness of breath have worsened. She has fever to 39.0 C, right basal crackles on auscultation, tachycardia, and oxygen saturation of 94% in room air.",
+    "stem": "What is the most appropriate working diagnosis?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Lingering viral upper respiratory infection"
+      },
+      {
+        "id": "B",
+        "text": "Pulmonary embolism"
+      },
+      {
+        "id": "C",
+        "text": "Myocarditis"
+      },
+      {
+        "id": "D",
+        "text": "Pneumonia"
+      },
+      {
+        "id": "E",
+        "text": "Sepsis"
+      }
+    ],
+    "correctOptionId": "D",
+    "explanation": {
+      "whyCorrect": "Pneumonia is the best working diagnosis because respiratory symptoms worsened after an initial viral illness and are now accompanied by fever, focal basal crackles, tachycardia, and borderline oxygen saturation.",
+      "evidence": [
+        "Worsening cough and dyspnea suggest lower respiratory progression.",
+        "Fever and focal crackles support parenchymal infection.",
+        "Oxygen saturation of 94% supports clinically relevant lower respiratory disease."
+      ],
+      "distractors": {
+        "A": "A lingering viral URI does not explain focal crackles and worsening dyspnea as well.",
+        "B": "Pulmonary embolism is uncommon without risk factors and does not fit focal crackles after URI.",
+        "C": "Myocarditis could cause dyspnea and tachycardia, but focal crackles and fever point more to pneumonia.",
+        "E": "Sepsis is too broad; the available data localize the working diagnosis to pneumonia."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "sym_worse_cough",
+          "type": "symptom",
+          "label": "Worsening cough/dyspnea",
+          "phrase": "cough and shortness of breath have worsened",
+          "tooltip": "Deterioration after an initial viral illness suggests secondary bacterial spread to the lower airways."
+        },
+        {
+          "id": "sign_fever",
+          "type": "sign",
+          "label": "Fever",
+          "phrase": "fever to 39.0 C",
+          "tooltip": "Fever indicates an active inflammatory or infectious process."
+        },
+        {
+          "id": "exam_crackles",
+          "type": "exam",
+          "label": "Focal basal crackles",
+          "phrase": "right basal crackles",
+          "tooltip": "Focal crackles over one lung zone indicate consolidation or fluid in that region of the parenchyma."
+        },
+        {
+          "id": "exam_o2",
+          "type": "exam",
+          "label": "O2 saturation 94%",
+          "phrase": "oxygen saturation of 94%",
+          "tooltip": "An SpO2 of 94% in room air signals meaningful impairment of gas exchange."
+        },
+        {
+          "id": "mechanism_lrt",
+          "type": "mechanism",
+          "label": "Lower respiratory infection",
+          "tooltip": "Infection involving lung parenchyma or lower airways."
+        },
+        {
+          "id": "dx_pneumonia",
+          "type": "diagnosis",
+          "label": "Pneumonia",
+          "tooltip": "A lower respiratory tract infection with focal lung findings."
+        }
+      ],
+      "edges": [
+        {
+          "from": "sym_worse_cough",
+          "to": "mechanism_lrt",
+          "label": "symptom_of"
+        },
+        {
+          "from": "sign_fever",
+          "to": "mechanism_lrt",
+          "label": "sign_of"
+        },
+        {
+          "from": "exam_crackles",
+          "to": "mechanism_lrt",
+          "label": "exam_finding_of"
+        },
+        {
+          "from": "exam_o2",
+          "to": "mechanism_lrt",
+          "label": "severity_clue_for"
+        },
+        {
+          "from": "mechanism_lrt",
+          "to": "dx_pneumonia",
+          "label": "diagnostic_pattern_for"
+        }
+      ]
+    },
+    "miniGraphs": [
+      {
+        "optionId": "A",
+        "optionText": "Lingering viral upper respiratory infection",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Recent URI",
+            "tooltip": "A preceding viral illness is the typical context for both lingering URI and post-viral pneumonia."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Focal crackles",
+            "nodeId": "exam_crackles",
+            "tooltip": "Upper respiratory infections do not produce focal basal crackles; their presence means the lower airways are now involved."
+          },
+          {
+            "label": "Worsening dyspnea",
+            "nodeId": "sym_worse_cough",
+            "tooltip": "Dyspnea worsening over days rather than improving suggests lower respiratory progression, not simple URI."
+          }
+        ],
+        "summary": "The focal lower respiratory findings make a simple lingering URI less coherent."
+      },
+      {
+        "optionId": "B",
+        "optionText": "Pulmonary embolism",
+        "verdict": "Unlikely",
+        "weakens": [
+          {
+            "label": "Dyspnea/tachycardia",
+            "tooltip": "Both dyspnea and tachycardia are nonspecific responses to many conditions; they do not point to a vascular cause here."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Thrombotic risk factor",
+            "tooltip": "PE in a 13-year-old is rare without an identifiable prothrombotic risk (immobility, OCP, inherited thrombophilia)."
+          },
+          {
+            "label": "Pleuritic pain",
+            "tooltip": "Pleuritic chest pain is a more specific PE symptom that is absent here."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Fever and crackles",
+            "nodeId": "exam_crackles",
+            "tooltip": "Fever with focal crackles points to parenchymal infection rather than a vascular obstruction."
+          }
+        ],
+        "summary": "PE lacks risk context and does not explain the infectious focal lung pattern."
+      },
+      {
+        "optionId": "C",
+        "optionText": "Myocarditis",
+        "verdict": "Weak",
+        "supports": [
+          {
+            "label": "Tachycardia",
+            "tooltip": "Tachycardia is a nonspecific finding; in myocarditis it reflects reduced cardiac output."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Focal basal crackles",
+            "nodeId": "exam_crackles",
+            "tooltip": "Focal unilateral crackles are a pulmonary finding; myocarditis causes bilateral basal crackles from pulmonary oedema if at all."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Chest pain",
+            "tooltip": "Chest pain is common in myocarditis, arising from myocardial or pericardial inflammation; its absence weakens this diagnosis."
+          },
+          {
+            "label": "Heart failure signs",
+            "tooltip": "Myocarditis impairs cardiac function, usually producing signs such as gallop rhythm, hepatomegaly, or peripheral oedema."
+          }
+        ],
+        "summary": "Myocarditis is possible in viral contexts, but focal lung findings favor pneumonia."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Sepsis",
+        "verdict": "Too broad",
+        "supports": [
+          {
+            "label": "Fever",
+            "nodeId": "sign_fever",
+            "tooltip": "Fever is one component of the systemic inflammatory response seen in sepsis."
+          },
+          {
+            "label": "Tachycardia",
+            "tooltip": "Tachycardia is a compensatory response to systemic inflammatory stress."
+          }
+        ],
+        "weakens": [
+          {
+            "label": "Localized lung findings",
+            "nodeId": "exam_crackles",
+            "tooltip": "Focal lung findings point to a specific organ source, making pneumonia the more precise working diagnosis than non-specific sepsis."
+          }
+        ],
+        "summary": "Sepsis is not the best working diagnosis when the presentation localizes to pneumonia."
+      }
+    ]
+  },
+  {
+    "id": "ped-cf-flawed-both",
     "title": "Cystic fibrosis",
     "domain": "Pediatrics",
     "topic": "Respiratory System",
     "difficulty": "medium",
-    "source": "Generated from structured question and KG data",
-    "taskLabel": "Task 2",
-    "vignette": "A 5-year-old girl has recurrent pneumonia, chronic productive cough, failure to thrive, and foul-smelling greasy stools. Sweat chloride testing is elevated. Which mechanism best explains the combination of pulmonary and gastrointestinal disease?",
-    "stem": "Which mechanism best explains this patient's disease?",
+    "source": "Previous respiratory exam question; Nelson respiratory system; expert review notes",
+    "taskLabel": "Pediatrics 3",
+    "reviewType": "flawed",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 14-month-old boy living in Belgium is brought to clinic for poor weight gain despite a good appetite. He has had three episodes of pneumonia since infancy and has a chronic wet cough. His parents describe bulky, pale, greasy stools. On examination he is thin, and mild digital clubbing is noted.",
+    "stem": "What is the most likely diagnosis?",
     "options": [
       {
         "id": "A",
-        "text": "Abnormal CFTR-mediated chloride transport"
+        "text": "Primary ciliary dyskinesia"
       },
       {
         "id": "B",
-        "text": "Defective dynein arms in respiratory cilia"
+        "text": "Cystic fibrosis"
       },
       {
         "id": "C",
-        "text": "Immune complex deposition in small vessels"
+        "text": "Humoral immunodeficiency"
       },
       {
         "id": "D",
-        "text": "T-cell mediated destruction of alveoli"
+        "text": "Gastroesophageal reflux with aspiration"
       },
       {
         "id": "E",
-        "text": "Reduced surfactant production by type II pneumocytes"
+        "text": "Asthma"
       }
     ],
-    "correctOptionId": "A",
+    "correctOptionId": "B",
     "explanation": {
-      "whyCorrect": "Cystic fibrosis is caused by CFTR dysfunction. Dehydrated airway secretions cause chronic infection and bronchiectasis, while pancreatic duct obstruction causes malabsorption, greasy stools, and poor growth.",
+      "whyCorrect": "Cystic fibrosis best unifies recurrent pneumonia, chronic wet cough, poor weight gain despite eating well, and bulky greasy stools through CFTR dysfunction causing thick airway secretions and exocrine pancreatic insufficiency. However, the vignette contains reviewable plausibility issues: Belgium newborn screening context is underspecified, and digital clubbing is questionable in a 14-month-old.",
       "evidence": [
-        "Elevated sweat chloride is a diagnostic clue for CFTR dysfunction.",
-        "Greasy stools and failure to thrive suggest pancreatic exocrine insufficiency.",
-        "Recurrent pneumonia reflects thick mucus and chronic bacterial infection."
+        "Greasy stools and poor weight gain suggest fat malabsorption from pancreatic insufficiency.",
+        "Recurrent pneumonia and wet cough fit thick airway secretions and impaired clearance.",
+        "The Belgium setting and mild clubbing are intended review targets."
       ],
       "distractors": {
-        "B": "Primary ciliary dyskinesia causes impaired ciliary motility but usually spares pancreatic exocrine function.",
-        "C": "Immune complex vasculitis does not explain elevated sweat chloride or pancreatic insufficiency.",
-        "D": "T-cell mediated alveolar destruction is not the mechanism of cystic fibrosis.",
-        "E": "Surfactant problems present in neonates rather than causing sweat chloride elevation and greasy stools."
+        "A": "PCD can explain chronic wet cough and recurrent pneumonia but not greasy stools from pancreatic insufficiency.",
+        "C": "Humoral immunodeficiency can explain infections but not steatorrhea and malabsorption.",
+        "D": "GERD with aspiration can cause cough and pneumonia but not greasy stools.",
+        "E": "Asthma does not explain recurrent pneumonia, malabsorption, or clubbing."
       }
     },
     "graph": {
       "nodes": [
         {
-          "id": "ev_sweat",
-          "type": "evidence",
-          "label": "Elevated sweat chloride",
-          "phrase": "Sweat chloride testing is elevated",
-          "tooltip": "High sweat chloride is the classic diagnostic marker of CFTR dysfunction."
+          "id": "sym_poor_growth",
+          "type": "symptom",
+          "label": "Poor weight gain",
+          "phrase": "poor weight gain",
+          "tooltip": "Failure to thrive despite a good appetite strongly suggests malabsorption rather than inadequate intake."
         },
         {
-          "id": "ev_stools",
-          "type": "evidence",
-          "label": "Greasy stools",
-          "phrase": "foul-smelling greasy stools",
-          "tooltip": "Fat malabsorption implies pancreatic exocrine insufficiency."
+          "id": "sym_steatorrhea",
+          "type": "symptom",
+          "label": "Steatorrhea",
+          "phrase": "bulky, pale, greasy stools",
+          "tooltip": "Bulky pale greasy stools are the classic sign of fat malabsorption from exocrine pancreatic insufficiency."
         },
         {
-          "id": "ev_pneumonia",
-          "type": "evidence",
+          "id": "sym_wet_cough_cf",
+          "type": "symptom",
+          "label": "Chronic wet cough",
+          "phrase": "chronic wet cough",
+          "tooltip": "Wet cough reflects retained airway secretions and impaired mucociliary clearance."
+        },
+        {
+          "id": "history_pneumonia",
+          "type": "history",
           "label": "Recurrent pneumonia",
-          "phrase": "recurrent pneumonia",
-          "tooltip": "Thick mucus predisposes to recurrent bacterial infection."
+          "phrase": "three episodes of pneumonia",
+          "tooltip": "Recurrent pneumonia in an infant suggests an underlying structural or mucociliary defect."
         },
         {
-          "id": "mechanism_cftr",
+          "id": "sign_clubbing",
+          "type": "sign",
+          "label": "Digital clubbing",
+          "phrase": "mild digital clubbing",
+          "tooltip": "Digital clubbing reflects chronic suppurative lung disease; its presence in a 14-month-old is early and is a reviewable plausibility issue."
+        },
+        {
+          "id": "mechanism_pancreas",
           "type": "mechanism",
-          "label": "CFTR chloride transport defect"
+          "label": "Exocrine pancreatic insufficiency",
+          "tooltip": "CFTR dysfunction can obstruct pancreatic ducts, causing malabsorption."
         },
         {
-          "id": "finding_mucus",
-          "type": "finding",
-          "label": "Dehydrated thick mucus"
-        },
-        {
-          "id": "finding_pancreas",
-          "type": "finding",
-          "label": "Pancreatic duct obstruction"
+          "id": "mechanism_mucus",
+          "type": "mechanism",
+          "label": "Thick airway secretions",
+          "tooltip": "CF airway surface dehydration produces retained secretions and infection."
         },
         {
           "id": "dx_cf",
           "type": "diagnosis",
-          "label": "Cystic fibrosis"
+          "label": "Cystic fibrosis",
+          "tooltip": "A multisystem disorder caused by CFTR dysfunction."
         }
       ],
       "edges": [
         {
-          "from": "ev_sweat",
-          "to": "mechanism_cftr",
-          "label": "diagnostic clue"
+          "from": "sym_steatorrhea",
+          "to": "mechanism_pancreas",
+          "label": "symptom_of"
         },
         {
-          "from": "mechanism_cftr",
-          "to": "finding_mucus",
-          "label": "dehydrates airway surface"
+          "from": "sym_poor_growth",
+          "to": "mechanism_pancreas",
+          "label": "symptom_of"
         },
         {
-          "from": "mechanism_cftr",
-          "to": "finding_pancreas",
-          "label": "obstructs ducts"
+          "from": "sym_wet_cough_cf",
+          "to": "mechanism_mucus",
+          "label": "symptom_of"
         },
         {
-          "from": "finding_mucus",
-          "to": "ev_pneumonia",
-          "label": "causes"
+          "from": "history_pneumonia",
+          "to": "mechanism_mucus",
+          "label": "complication_of"
         },
         {
-          "from": "finding_pancreas",
-          "to": "ev_stools",
-          "label": "causes"
-        },
-        {
-          "from": "mechanism_cftr",
+          "from": "mechanism_pancreas",
           "to": "dx_cf",
-          "label": "defines"
+          "label": "mechanism_of"
+        },
+        {
+          "from": "mechanism_mucus",
+          "to": "dx_cf",
+          "label": "mechanism_of"
+        },
+        {
+          "from": "sign_clubbing",
+          "to": "dx_cf",
+          "label": "sign_of"
         }
-      ]
-    }
+      ],
+      "layout": {
+        "width": 900,
+        "height": 570,
+        "nodes": {
+          "sym_poor_growth": {
+            "x": 96,
+            "y": 84
+          },
+          "sym_steatorrhea": {
+            "x": 96,
+            "y": 183
+          },
+          "sym_wet_cough_cf": {
+            "x": 99,
+            "y": 397
+          },
+          "history_pneumonia": {
+            "x": 97,
+            "y": 494
+          },
+          "sign_clubbing": {
+            "x": 100,
+            "y": 297
+          },
+          "mechanism_pancreas": {
+            "x": 448,
+            "y": 205
+          },
+          "mechanism_mucus": {
+            "x": 458,
+            "y": 426
+          },
+          "dx_cf": {
+            "x": 804,
+            "y": 328
+          }
+        }
+      }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "A",
+        "optionText": "Primary ciliary dyskinesia",
+        "verdict": "Plausible distractor",
+        "supports": [
+          {
+            "label": "Wet cough",
+            "nodeId": "sym_wet_cough_cf",
+            "tooltip": "Impaired ciliary clearance produces persistent productive cough in both PCD and CF."
+          },
+          {
+            "label": "Recurrent pneumonia",
+            "nodeId": "history_pneumonia",
+            "tooltip": "Retained secretions from any mucociliary disorder predispose to recurrent lower respiratory infections."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Steatorrhea",
+            "nodeId": "sym_steatorrhea",
+            "tooltip": "PCD is a ciliary disorder and does not affect the pancreas; fat malabsorption points elsewhere."
+          },
+          {
+            "label": "Poor weight gain",
+            "nodeId": "sym_poor_growth",
+            "tooltip": "Growth faltering in a child with respiratory disease suggests an additional malabsorptive process."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Neonatal respiratory distress",
+            "tooltip": "Term neonates rely on motile cilia to clear airway fluid after birth; ciliary dysfunction in PCD impairs this, causing respiratory distress in an otherwise healthy newborn."
+          },
+          {
+            "label": "Recurrent otitis media",
+            "tooltip": "Simultaneous ear and sinus disease is the upper-airway signature of ciliary dysfunction."
+          }
+        ],
+        "summary": "PCD is a good respiratory distractor, but the GI malabsorption pattern points to CF."
+      },
+      {
+        "optionId": "C",
+        "optionText": "Humoral immunodeficiency",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Recurrent pneumonia",
+            "nodeId": "history_pneumonia",
+            "tooltip": "Antibody deficiency impairs opsonisation of encapsulated bacteria, leading to recurrent pulmonary infections."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Greasy stools",
+            "nodeId": "sym_steatorrhea",
+            "tooltip": "Humoral immune deficiency does not affect the exocrine pancreas; steatorrhea is unexplained by this diagnosis."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Low immunoglobulins",
+            "tooltip": "The diagnosis requires documented reduction in one or more immunoglobulin classes."
+          },
+          {
+            "label": "Poor vaccine response",
+            "tooltip": "Failure to develop protective antibody titres after vaccination is the defining functional criterion."
+          }
+        ],
+        "summary": "Infections fit, but malabsorption does not."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Gastroesophageal reflux with aspiration",
+        "verdict": "Weak",
+        "supports": [
+          {
+            "label": "Pneumonia",
+            "nodeId": "history_pneumonia",
+            "tooltip": "Recurrent aspiration of gastric contents can cause chemical pneumonitis and secondary infection."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Steatorrhea",
+            "nodeId": "sym_steatorrhea",
+            "tooltip": "Gastric reflux does not impair fat digestion; greasy stools require a pancreatic or small-bowel explanation."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Cough with feeds",
+            "tooltip": "Aspiration pneumonia in infants is typically worse during or shortly after feeding."
+          },
+          {
+            "label": "Choking/regurgitation",
+            "tooltip": "Visible regurgitation or choking episodes during feeds are expected with significant aspiration."
+          }
+        ],
+        "summary": "Aspiration can explain respiratory disease but not pancreatic malabsorption."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Asthma",
+        "verdict": "Unlikely",
+        "weakens": [
+          {
+            "label": "Chronic cough",
+            "nodeId": "sym_wet_cough_cf",
+            "tooltip": "Asthma can cause chronic cough, but it is typically dry, episodic, and triggered rather than persistently productive."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Recurrent pneumonia",
+            "nodeId": "history_pneumonia",
+            "tooltip": "Asthma does not predispose to recurrent bacterial pneumonia; recurrent infections suggest a structural or immunological defect."
+          },
+          {
+            "label": "Greasy stools",
+            "nodeId": "sym_steatorrhea",
+            "tooltip": "Asthma has no gastrointestinal effects; steatorrhea is incompatible with a respiratory-only diagnosis."
+          }
+        ],
+        "quality": [
+          {
+            "label": "Clubbing too early?",
+            "nodeId": "sign_clubbing",
+            "tooltip": "Clubbing typically takes years of chronic suppurative lung disease to develop; its presence at 14 months is biologically implausible and flags a vignette design issue."
+          }
+        ],
+        "summary": "Asthma does not explain pancreatic malabsorption, recurrent pneumonia, or digital clubbing in this age group."
+      }
+    ]
   },
   {
-    "id": "obvious-asthma-001",
-    "title": "Regeneration example",
+    "id": "ped-croup-flawed-both",
+    "title": "Croup",
     "domain": "Pediatrics",
     "topic": "Respiratory System",
-    "difficulty": "hard",
-    "source": "Generated from structured question and KG data",
-    "taskLabel": "Task 3",
-    "vignette": "A 10-year-old boy with known asthma develops wheezing every time he plays soccer. He uses an albuterol inhaler and improves within minutes. He has no fever and a normal chest radiograph. Which diagnosis is most likely?",
-    "stem": "Which diagnosis is most likely?",
+    "difficulty": "medium",
+    "source": "Nelson acute upper airway obstruction; expert review notes",
+    "taskLabel": "Pediatrics 4",
+    "reviewType": "flawed",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 2-year-old boy presents with two days of runny nose, low-grade fever, hoarse voice, inspiratory stridor, and a harsh cough. He is alert and sitting comfortably. He has no drooling and drinks water normally. His vaccinations are not up to date.",
+    "stem": "What is the most likely diagnosis?",
     "options": [
       {
         "id": "A",
-        "text": "Exercise-induced bronchoconstriction"
+        "text": "Epiglottitis"
       },
       {
         "id": "B",
-        "text": "Bacterial pneumonia"
+        "text": "Bacterial tracheitis"
       },
       {
         "id": "C",
-        "text": "Foreign body aspiration"
+        "text": "Croup"
       },
       {
         "id": "D",
-        "text": "Cystic fibrosis"
+        "text": "Foreign body aspiration"
       },
       {
         "id": "E",
-        "text": "Primary ciliary dyskinesia"
+        "text": "Retropharyngeal abscess"
       }
     ],
-    "correctOptionId": "A",
-    "regenerable": true,
-    "clueCandidates": [
-      {
-        "id": "ev_known_asthma",
-        "label": "known asthma"
-      },
-      {
-        "id": "ev_albuterol",
-        "label": "albuterol response"
-      }
-    ],
+    "correctOptionId": "C",
     "explanation": {
-      "whyCorrect": "Symptoms triggered by exercise and relieved by albuterol support exercise-induced bronchoconstriction.",
+      "whyCorrect": "Croup is most likely because toddler age, viral prodrome, hoarseness, stridor, and harsh cough fit viral laryngotracheobronchitis. The review issue is pedagogical: no drooling, normal drinking, comfortable appearance, and vaccination status may over-exclude epiglottitis and make the item too easy.",
       "evidence": [
-        "Wheezing during soccer is a trigger-linked pattern.",
-        "Rapid improvement with albuterol supports reversible bronchoconstriction.",
-        "No fever and normal chest radiograph argue against pneumonia."
+        "Toddler age and viral prodrome fit croup.",
+        "Hoarseness and inspiratory stridor localize to upper airway/subglottic narrowing.",
+        "Several negative clues may over-exclude epiglottitis and retropharyngeal abscess."
       ],
       "distractors": {
-        "B": "Pneumonia would more likely include fever, focal findings, or radiographic infiltrate.",
-        "C": "Foreign body aspiration usually causes sudden onset symptoms and localized findings.",
-        "D": "Cystic fibrosis would be chronic with recurrent infections or malabsorption.",
-        "E": "Primary ciliary dyskinesia would cause chronic wet cough, sinusitis, and otitis media."
+        "A": "Epiglottitis remains a serious stridor distractor, but no drooling, normal swallowing, and vaccination status weaken it strongly.",
+        "B": "Bacterial tracheitis usually causes a more toxic appearance and high fever.",
+        "D": "Foreign body aspiration usually has abrupt onset or choking without viral prodrome.",
+        "E": "Retropharyngeal abscess is weakened by normal drinking and lack of drooling."
       }
     },
     "graph": {
       "nodes": [
         {
-          "id": "ev_known_asthma",
-          "type": "evidence",
-          "label": "Known asthma",
-          "phrase": "known asthma",
-          "tooltip": "This makes the original item too obvious for a reasoning task."
+          "id": "history_toddler",
+          "type": "history",
+          "label": "Toddler age",
+          "phrase": "2-year-old boy",
+          "tooltip": "Croup is common in children aged roughly 6 months to 3 years."
         },
         {
-          "id": "ev_exercise",
-          "type": "evidence",
-          "label": "Exercise trigger",
-          "phrase": "plays soccer",
-          "tooltip": "Exercise is a classic trigger for bronchoconstriction."
+          "id": "sym_uri",
+          "type": "symptom",
+          "label": "Viral URI prodrome",
+          "phrase": "runny nose, low-grade fever",
+          "tooltip": "Rhinorrhoea and low-grade fever over 1–2 days are the typical viral prodrome preceding subglottic inflammation in croup."
         },
         {
-          "id": "ev_albuterol",
-          "type": "evidence",
-          "label": "Rapid albuterol response",
-          "phrase": "improves within minutes",
-          "tooltip": "Rapid bronchodilator response supports reversible airway narrowing."
+          "id": "sym_cough",
+          "type": "symptom",
+          "label": "Harsh cough",
+          "phrase": "harsh cough",
+          "tooltip": "A harsh seal-bark cough is produced by turbulent airflow through the narrowed subglottis."
         },
         {
-          "id": "mechanism_bronchospasm",
+          "id": "sign_stridor",
+          "type": "sign",
+          "label": "Inspiratory stridor",
+          "phrase": "inspiratory stridor",
+          "tooltip": "Inspiratory stridor arises when extrathoracic airway narrowing limits inflow; it localises above the thoracic inlet."
+        },
+        {
+          "id": "mechanism_subglottic",
           "type": "mechanism",
-          "label": "Reversible bronchospasm"
+          "label": "Subglottic edema",
+          "tooltip": "Viral inflammation below the vocal cords produces stridor and cough."
         },
         {
-          "id": "dx_eib",
+          "id": "dx_croup",
           "type": "diagnosis",
-          "label": "Exercise-induced bronchoconstriction"
+          "label": "Croup",
+          "tooltip": "Viral laryngotracheobronchitis."
         }
       ],
       "edges": [
         {
-          "from": "ev_known_asthma",
-          "to": "dx_eib",
-          "label": "overly direct clue"
+          "from": "history_toddler",
+          "to": "dx_croup",
+          "label": "expected_in"
         },
         {
-          "from": "ev_exercise",
-          "to": "mechanism_bronchospasm",
-          "label": "triggers"
+          "from": "sym_uri",
+          "to": "mechanism_subglottic",
+          "label": "trigger_for"
         },
         {
-          "from": "ev_albuterol",
-          "to": "mechanism_bronchospasm",
-          "label": "reverses"
+          "from": "sym_cough",
+          "to": "mechanism_subglottic",
+          "label": "symptom_of"
         },
         {
-          "from": "mechanism_bronchospasm",
-          "to": "dx_eib",
-          "label": "explains"
+          "from": "mechanism_subglottic",
+          "to": "dx_croup",
+          "label": "mechanism_of"
+        },
+        {
+          "from": "sign_stridor",
+          "to": "mechanism_subglottic",
+          "label": "sign_of"
+        }
+      ],
+      "layout": {
+        "width": 900,
+        "height": 608,
+        "nodes": {
+          "history_toddler": {
+            "x": 96,
+            "y": 63
+          },
+          "sym_uri": {
+            "x": 96,
+            "y": 159
+          },
+          "sym_cough": {
+            "x": 96,
+            "y": 255
+          },
+          "sign_stridor": {
+            "x": 96,
+            "y": 351
+          },
+          "mechanism_subglottic": {
+            "x": 351,
+            "y": 279
+          },
+          "dx_croup": {
+            "x": 804,
+            "y": 310
+          }
+        }
+      }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "A",
+        "optionText": "Epiglottitis",
+        "verdict": "Plausible distractor",
+        "supports": [
+          {
+            "label": "Incomplete vaccination history",
+            "tooltip": "Hib vaccine dramatically reduced epiglottitis; incomplete vaccination restores some risk."
+          },
+          {
+            "label": "Inspiratory stridor",
+            "nodeId": "sign_stridor",
+            "tooltip": "Stridor is common to all causes of upper airway obstruction."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "No drooling / drinks normally",
+            "tooltip": "Epiglottitis causes odynophagia and drooling because swallowing is painful; normal drinking argues strongly against it."
+          }
+        ],
+        "quality": [
+          {
+            "label": "Distractor may be too weak",
+            "tooltip": "Providing no drooling, normal swallowing, AND a viral prodrome together may over-exclude epiglottitis, making this distractor too easy to dismiss."
+          }
+        ],
+        "summary": "Epiglottitis cannot be confidently excluded in an unvaccinated child. The absence of drooling and the viral prodrome favour croup, but the clinical picture warrants careful consideration."
+      },
+      {
+        "optionId": "B",
+        "optionText": "Bacterial tracheitis",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Stridor",
+            "nodeId": "sign_stridor",
+            "tooltip": "Stridor indicates significant upper airway narrowing, consistent with tracheitis or croup."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Low-grade fever",
+            "nodeId": "sym_uri",
+            "tooltip": "Bacterial tracheitis typically causes high fever (≥39°C) and toxic appearance; low-grade fever is more consistent with a viral illness."
+          },
+          {
+            "label": "Comfortable appearance",
+            "tooltip": "Children with bacterial tracheitis are typically in severe respiratory distress and look toxic."
+          }
+        ],
+        "summary": "Stridor keeps bacterial tracheitis in the differential, but low-grade fever and comfortable appearance make severe bacterial airway infection unlikely."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Foreign body aspiration",
+        "verdict": "Plausible but weak",
+        "supports": [
+          {
+            "label": "Inspiratory stridor",
+            "nodeId": "sign_stridor",
+            "tooltip": "Any cause of partial airway obstruction—including a foreign body—can produce stridor or noisy breathing."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Viral prodrome",
+            "nodeId": "sym_uri",
+            "tooltip": "A 2-day viral illness preceding the stridor is inconsistent with foreign body aspiration, which is typically abrupt."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Choking episode",
+            "tooltip": "A witnessed choking or gagging event is the key historical clue for foreign body aspiration."
+          },
+          {
+            "label": "Abrupt onset",
+            "tooltip": "Foreign body aspiration causes sudden-onset symptoms without a preceding illness."
+          }
+        ],
+        "summary": "Foreign body is a useful distractor but lacks abrupt onset."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Retropharyngeal abscess",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Viral URI prodrome",
+            "nodeId": "sym_uri",
+            "tooltip": "Fever and upper airway distress can accompany deep-space neck infection."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Drinks normally",
+            "tooltip": "A retropharyngeal collection causes pain and stiffness on swallowing; normal drinking argues against it."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Neck stiffness",
+            "tooltip": "Neck extension is painful with a retropharyngeal abscess; children often adopt a hyperextended or neutral neck posture."
+          },
+          {
+            "label": "Muffled voice",
+            "tooltip": "A muffled or \"hot-potato\" voice is produced by supraglottic or pharyngeal swelling."
+          }
+        ],
+        "summary": "Normal swallowing and no deep-neck signs weaken this option."
+      }
+    ]
+  },
+  {
+    "id": "ped-tracheitis-too-easy-both",
+    "title": "Bacterial tracheitis in a toddler",
+    "domain": "Pediatrics",
+    "topic": "Acute upper airway obstruction",
+    "difficulty": "easy",
+    "source": "Nelson acute upper airway obstruction; expert review notes",
+    "taskLabel": "Pediatrics 5",
+    "reviewType": "too_easy",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 3-year-old boy presents with rapid onset of high fever to 39.8 C, harsh cough, worsening inspiratory stridor at rest, and a toxic appearance. His parents report no choking episode and no preceding several-day viral prodrome. He is sitting forward in significant respiratory distress. A lateral neck X-ray shows an irregular tracheal wall with intraluminal membranes.",
+    "stem": "What is the most likely diagnosis?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Croup"
+      },
+      {
+        "id": "B",
+        "text": "Bacterial tracheitis"
+      },
+      {
+        "id": "C",
+        "text": "Epiglottitis"
+      },
+      {
+        "id": "D",
+        "text": "Foreign body aspiration"
+      },
+      {
+        "id": "E",
+        "text": "Retropharyngeal abscess"
+      }
+    ],
+    "correctOptionId": "B",
+    "explanation": {
+      "whyCorrect": "Bacterial tracheitis is most likely because the child has rapid onset of high fever, toxic appearance, stridor at rest, and radiographic intraluminal tracheal membranes. The too-easy flaw is that the vignette gives away several distinguishing features simultaneously: toxicity, high fever, absence of a choking episode, and intraluminal membranes.",
+      "evidence": [
+        "High fever and toxic appearance distinguish bacterial tracheitis from viral croup.",
+        "Intraluminal tracheal membranes on X-ray are pathognomonic for bacterial tracheitis.",
+        "No choking episode weakens foreign body aspiration.",
+        "Rapid deterioration without a typical several-day viral croup prodrome helps separate bacterial tracheitis from uncomplicated croup."
+      ],
+      "distractors": {
+        "A": "Viral croup can cause harsh cough and stridor, but it does not explain toxicity, high fever, or intraluminal membranes.",
+        "C": "Epiglottitis can cause toxicity and tripod posture, but the intraluminal tracheal membrane finding points below the supraglottis.",
+        "D": "Foreign body aspiration is weakened by fever, toxic appearance, and no choking episode.",
+        "E": "Retropharyngeal abscess causes muffled voice and neck stiffness, not tracheal membranes."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "history_rapid_onset",
+          "type": "history",
+          "label": "Rapid onset / no choking",
+          "phrase": "rapid onset",
+          "tooltip": "Rapid onset without a preceding choking event supports an infectious rather than mechanical cause of airway obstruction."
+        },
+        {
+          "id": "sym_high_fever",
+          "type": "symptom",
+          "label": "High fever",
+          "phrase": "high fever to 39.8 C",
+          "tooltip": "A temperature near 40 C is more consistent with invasive bacterial airway infection than uncomplicated viral croup."
+        },
+        {
+          "id": "sign_toxic_appearance",
+          "type": "sign",
+          "label": "Toxic appearance",
+          "phrase": "toxic appearance",
+          "tooltip": "A toxic-appearing child suggests severe bacterial infection or impending airway compromise."
+        },
+        {
+          "id": "sign_stridor_rest",
+          "type": "sign",
+          "label": "Stridor at rest",
+          "phrase": "worsening inspiratory stridor at rest",
+          "tooltip": "Stridor persisting at rest indicates near-critical airway narrowing, beyond the mild obstruction of typical croup."
+        },
+        {
+          "id": "invest_membranes",
+          "type": "investigation",
+          "label": "Intraluminal tracheal membranes",
+          "phrase": "intraluminal membranes",
+          "tooltip": "Irregular tracheal wall with intraluminal filling defects on lateral neck X-ray is pathognomonic for bacterial tracheitis."
+        },
+        {
+          "id": "dx_tracheitis",
+          "type": "diagnosis",
+          "label": "Bacterial tracheitis",
+          "tooltip": "Life-threatening bacterial infection of the trachea, often caused by S. aureus."
+        }
+      ],
+      "edges": [
+        {
+          "from": "sym_high_fever",
+          "to": "dx_tracheitis",
+          "label": "symptom_of"
+        },
+        {
+          "from": "sign_toxic_appearance",
+          "to": "dx_tracheitis",
+          "label": "sign_of"
+        },
+        {
+          "from": "invest_membranes",
+          "to": "dx_tracheitis",
+          "label": "investigation_supports"
+        },
+        {
+          "from": "history_rapid_onset",
+          "to": "dx_tracheitis",
+          "label": "context_for"
+        },
+        {
+          "from": "sign_stridor_rest",
+          "to": "dx_tracheitis",
+          "label": "sign_of"
+        }
+      ],
+      "layout": {
+        "width": 900,
+        "height": 460,
+        "nodes": {
+          "history_rapid_onset": {
+            "x": 96,
+            "y": 95
+          },
+          "sym_high_fever": {
+            "x": 96,
+            "y": 170
+          },
+          "sign_toxic_appearance": {
+            "x": 96,
+            "y": 245
+          },
+          "sign_stridor_rest": {
+            "x": 96,
+            "y": 320
+          },
+          "invest_membranes": {
+            "x": 96,
+            "y": 395
+          },
+          "dx_tracheitis": {
+            "x": 804,
+            "y": 230
+          }
+        }
+      }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "A",
+        "optionText": "Croup",
+        "verdict": "Ruled out",
+        "supports": [
+          {
+            "label": "Harsh cough / stridor",
+            "nodeId": "sign_stridor_rest",
+            "tooltip": "Harsh barky cough and stridor are the hallmark features of viral croup."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "High fever",
+            "nodeId": "sym_high_fever",
+            "tooltip": "Uncomplicated viral croup usually causes low-grade fever, not fever near 40 C."
+          },
+          {
+            "label": "Toxic appearance",
+            "nodeId": "sign_toxic_appearance",
+            "tooltip": "A toxic appearance points away from uncomplicated viral croup."
+          },
+          {
+            "label": "No typical viral prodrome",
+            "nodeId": "history_rapid_onset",
+            "tooltip": "Croup is preceded by 1–2 days of rhinorrhoea and mild fever; abrupt onset without this prodrome is atypical."
+          },
+          {
+            "label": "Intraluminal membranes",
+            "nodeId": "invest_membranes",
+            "tooltip": "Pseudomembranes visible on X-ray are a specific feature of bacterial tracheitis, not viral croup."
+          }
+        ],
+        "missing": [],
+        "summary": "Viral croup can cause harsh cough and stridor, but toxicity, high fever, and tracheal membranes point away from uncomplicated croup."
+      },
+      {
+        "optionId": "C",
+        "optionText": "Epiglottitis",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Toxic appearance",
+            "nodeId": "sign_toxic_appearance",
+            "tooltip": "Epiglottitis classically presents with high fever and a toxic, distressed child."
+          },
+          {
+            "label": "Tripod/severe distress",
+            "nodeId": "sign_toxic_appearance",
+            "tooltip": "Children with epiglottitis often sit forward in a tripod position to maximise airway patency."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Intraluminal tracheal membranes",
+            "nodeId": "invest_membranes",
+            "tooltip": "Epiglottitis causes supraglottic swelling (thumb sign), not intraluminal tracheal membranes."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Thumb sign / supraglottic swelling",
+            "tooltip": "The \"thumb sign\" of an enlarged epiglottis on lateral X-ray is the hallmark radiographic finding of epiglottitis."
+          },
+          {
+            "label": "Unable to swallow",
+            "tooltip": "Epiglottitis is typically accompanied by drooling and refusal to swallow because of severe odynophagia."
+          }
+        ],
+        "summary": "Epiglottitis remains serious in a toxic child, but the membrane finding localizes the process to the trachea."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Foreign body aspiration",
+        "verdict": "Ruled out",
+        "contradicts": [
+          {
+            "label": "No choking episode",
+            "nodeId": "history_rapid_onset",
+            "tooltip": "A witnessed choking or gagging event is the pivotal history in foreign body aspiration; its absence significantly reduces this probability."
+          },
+          {
+            "label": "High fever",
+            "nodeId": "sym_high_fever",
+            "tooltip": "Foreign body aspiration does not cause acute high fever unless complicated by secondary infection."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Asymmetric hyperinflation",
+            "tooltip": "A foreign body causing partial bronchial obstruction can trap air, producing unilateral hyperinflation on expiratory film."
+          }
+        ],
+        "summary": "Foreign body aspiration usually has a choking event or abrupt onset without fever."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Retropharyngeal abscess",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "High fever",
+            "nodeId": "sym_high_fever",
+            "tooltip": "Deep neck infections cause fever and can compromise the airway."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Tracheal membranes",
+            "nodeId": "invest_membranes",
+            "tooltip": "Retropharyngeal abscess causes posterior pharyngeal swelling, not intraluminal tracheal membranes."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Neck stiffness",
+            "tooltip": "Neck stiffness or pain on extension is a key sign of retropharyngeal collection."
+          },
+          {
+            "label": "Muffled voice",
+            "tooltip": "A muffled or \"hot-potato\" quality voice results from supraglottic or retropharyngeal swelling."
+          }
+        ],
+        "summary": "Retropharyngeal abscess causes deep-neck signs rather than intraluminal tracheal membranes."
+      }
+    ]
+  },
+  {
+    "id": "neuro-wernicke-normal-text",
+    "title": "Wernicke aphasia and left MCA inferior division",
+    "domain": "Neurology",
+    "topic": "Cerebral Hemispheres and Vascular Supply",
+    "difficulty": "easy",
+    "source": "Blumenfeld cerebral hemispheres and vascular supply; neurology exam questions",
+    "taskLabel": "Neurology 1",
+    "reviewType": "normal",
+    "defaultMode": "text",
+    "allowedModes": [
+      "text"
+    ],
+    "vignette": "A 66-year-old right-handed man suddenly begins speaking fluently but nonsensically. He substitutes incorrect words and does not follow spoken commands. He seems unaware of the problem. Strength is full, but confrontation testing suggests a right visual field deficit. He has atrial fibrillation and recently stopped anticoagulation.",
+    "stem": "Which vascular territory is most likely involved?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Left MCA inferior division"
+      },
+      {
+        "id": "B",
+        "text": "Left MCA deep territory"
+      },
+      {
+        "id": "C",
+        "text": "Right MCA superior division"
+      },
+      {
+        "id": "D",
+        "text": "Left ACA territory"
+      },
+      {
+        "id": "E",
+        "text": "Right PCA territory"
+      }
+    ],
+    "correctOptionId": "A",
+    "explanation": {
+      "whyCorrect": "Fluent nonsensical speech with impaired comprehension is Wernicke aphasia, which localizes to the dominant posterior temporal region. In a right-handed patient, language dominance is usually left-sided. The right visual field deficit supports a left posterior cortical lesion, and atrial fibrillation supports embolic MCA infarction.",
+      "evidence": [
+        "Right-handedness supports left-hemisphere language dominance.",
+        "Fluent nonsensical speech and impaired command following indicate receptive aphasia.",
+        "Right visual field deficit supports a left posterior cortical lesion."
+      ],
+      "distractors": {
+        "B": "Deep MCA territory causes motor deficits more than isolated fluent aphasia.",
+        "C": "Right MCA superior division would not cause dominant-language Wernicke aphasia.",
+        "D": "Left ACA territory causes leg-predominant weakness or abulia, not Wernicke aphasia.",
+        "E": "Right PCA would cause left visual field symptoms and not aphasia."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "history_right_handed",
+          "type": "history",
+          "label": "Right-handed",
+          "phrase": "right-handed",
+          "tooltip": "Right-handedness is associated with left hemisphere language dominance in ~95% of individuals."
+        },
+        {
+          "id": "sym_fluent_aphasia",
+          "type": "symptom",
+          "label": "Fluent nonsensical speech",
+          "phrase": "speaking fluently but nonsensically",
+          "tooltip": "Fluent output with paraphasias and impaired comprehension is the defining pattern of Wernicke (receptive) aphasia."
+        },
+        {
+          "id": "exam_commands",
+          "type": "exam",
+          "label": "Impaired comprehension",
+          "phrase": "does not follow spoken commands",
+          "tooltip": "Inability to follow verbal commands is a direct test of language comprehension, confirming receptive deficit."
+        },
+        {
+          "id": "exam_visual_field",
+          "type": "exam",
+          "label": "Right visual field deficit",
+          "phrase": "right visual field deficit",
+          "tooltip": "A right homonymous field defect localises to the left retrochiasmal visual pathway—temporal or occipital."
+        },
+        {
+          "id": "history_af",
+          "type": "history",
+          "label": "Atrial fibrillation",
+          "phrase": "atrial fibrillation",
+          "tooltip": "Atrial fibrillation is a major source of cardioembolic stroke."
+        },
+        {
+          "id": "anatomy_wernicke",
+          "type": "anatomy",
+          "label": "Dominant posterior temporal cortex",
+          "tooltip": "Wernicke area occupies the dominant posterior superior temporal gyrus (Brodmann area 22)."
+        },
+        {
+          "id": "anatomy_left_mca_inf",
+          "type": "anatomy",
+          "label": "Left MCA inferior division",
+          "tooltip": "The inferior division of the left MCA supplies the lateral temporal and inferior parietal cortex, including Wernicke area."
+        },
+        {
+          "id": "dx_left_mca_inf",
+          "type": "diagnosis",
+          "label": "Left MCA inferior division infarct",
+          "tooltip": "Infarction of the left MCA inferior division produces Wernicke aphasia with or without a superior quadrantanopia."
+        }
+      ],
+      "edges": [
+        {
+          "from": "history_right_handed",
+          "to": "anatomy_wernicke",
+          "label": "language_dominance"
+        },
+        {
+          "from": "sym_fluent_aphasia",
+          "to": "anatomy_wernicke",
+          "label": "symptom_of"
+        },
+        {
+          "from": "exam_commands",
+          "to": "anatomy_wernicke",
+          "label": "exam_finding_of"
+        },
+        {
+          "from": "exam_visual_field",
+          "to": "anatomy_left_mca_inf",
+          "label": "localizes_to"
+        },
+        {
+          "from": "history_af",
+          "to": "dx_left_mca_inf",
+          "label": "risk_factor_for"
+        },
+        {
+          "from": "anatomy_wernicke",
+          "to": "anatomy_left_mca_inf",
+          "label": "supplied_by"
+        },
+        {
+          "from": "anatomy_left_mca_inf",
+          "to": "dx_left_mca_inf",
+          "label": "territory_of"
         }
       ]
     },
-    "regenerateTemplate": {
-      "vignette": "A 10-year-old boy develops cough, chest tightness, and wheezing near the end of soccer practice. Symptoms recur with intense running and improve after rest or a short-acting bronchodilator. He is afebrile, has normal oxygen saturation, and has no focal lung findings between episodes.",
-      "stem": "Which diagnosis best accounts for these recurrent exertional symptoms?",
-      "explanation": {
-        "whyCorrect": "The revised vignette removes the named diagnosis and makes the learner reason from exertional, reversible airway symptoms. Exercise-induced bronchoconstriction remains most likely because symptoms are reproducible with intense exercise and resolve with rest or bronchodilator therapy.",
-        "evidence": [
-          "Symptoms are reproducible with intense running.",
-          "Improvement after rest or a short-acting bronchodilator supports reversibility.",
-          "Afebrile status and normal oxygen saturation make infection less likely."
+    "miniGraphs": [
+      {
+        "optionId": "B",
+        "optionText": "Left MCA deep territory",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Left hemisphere syndrome",
+            "tooltip": "Deep MCA territory (internal capsule, basal ganglia) is still within the left hemisphere."
+          }
         ],
-        "distractors": {
-          "B": "Pneumonia is less likely without fever, persistent symptoms, or focal findings.",
-          "C": "Foreign body aspiration would not recur predictably with exercise.",
-          "D": "Cystic fibrosis would involve chronic respiratory and gastrointestinal features.",
-          "E": "Primary ciliary dyskinesia would produce chronic wet cough and recurrent upper airway infections."
+        "contradicts": [
+          {
+            "label": "Full strength",
+            "tooltip": "Internal capsule or lenticulostriate infarcts typically cause contralateral hemiplegia; full strength argues against deep territory."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Pure motor deficit",
+            "tooltip": "A deep MCA lacune classically produces pure contralateral motor weakness without aphasia."
+          }
+        ],
+        "summary": "Deep MCA lesions usually produce motor deficits rather than isolated receptive aphasia."
+      },
+      {
+        "optionId": "C",
+        "optionText": "Right MCA superior division",
+        "verdict": "Wrong side/function",
+        "contradicts": [
+          {
+            "label": "Dominant-language aphasia",
+            "nodeId": "sym_fluent_aphasia",
+            "tooltip": "Aphasia requires disruption of the dominant (left) language network; a right MCA lesion cannot cause it."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Left neglect",
+            "tooltip": "Right hemisphere MCA injury typically causes left hemispatial neglect rather than aphasia."
+          },
+          {
+            "label": "Left face/arm weakness",
+            "tooltip": "Right MCA superior division infarcts produce left face and arm weakness with dysarthria, not aphasia."
+          }
+        ],
+        "summary": "Right MCA superior division does not explain dominant receptive aphasia."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Left ACA territory",
+        "verdict": "Less likely",
+        "contradicts": [
+          {
+            "label": "Wernicke aphasia",
+            "nodeId": "sym_fluent_aphasia",
+            "tooltip": "The ACA supplies medial frontal and parietal cortex; Wernicke area is lateral temporal and falls outside this territory."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Leg-predominant weakness",
+            "tooltip": "ACA infarction characteristically causes contralateral leg weakness greater than arm weakness, reflecting the medial motor homunculus."
+          },
+          {
+            "label": "Abulia",
+            "tooltip": "Bilateral or medial frontal ACA infarcts can cause abulia—a state of diminished motivation and spontaneous movement."
+          }
+        ],
+        "summary": "ACA territory does not match the lateral temporal language syndrome."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Right PCA territory",
+        "verdict": "Wrong side",
+        "supports": [
+          {
+            "label": "Visual field deficit",
+            "nodeId": "exam_visual_field",
+            "tooltip": "Visual field loss can result from any retrochiasmal lesion; determining side and pattern is key."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Right visual field deficit",
+            "nodeId": "exam_visual_field",
+            "tooltip": "A right PCA lesion would produce a left homonymous field defect, not a right-sided one."
+          },
+          {
+            "label": "Aphasia",
+            "nodeId": "sym_fluent_aphasia",
+            "tooltip": "The right PCA does not supply the dominant language areas; PCA infarcts do not cause Wernicke aphasia."
+          }
+        ],
+        "summary": "A right PCA lesion would not explain aphasia and would produce the opposite visual field pattern."
+      }
+    ]
+  },
+  {
+    "id": "neuro-carotid-normal-kg",
+    "title": "Amaurosis fugax and left internal carotid stenosis",
+    "domain": "Neurology",
+    "topic": "Cerebral Hemispheres and Vascular Supply",
+    "difficulty": "medium",
+    "source": "Blumenfeld carotid stenosis and amaurosis fugax",
+    "taskLabel": "Neurology 2",
+    "reviewType": "normal",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 70-year-old man has three brief episodes in which vision in his left eye goes dark like a curtain coming down, each resolving within minutes. He also has a transient episode of right hand weakness. He has long-standing smoking and hypercholesterolemia. A bruit continuing into diastole is heard just below the angle of the left jaw.",
+    "stem": "Which lesion best explains these symptoms?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Left internal carotid artery stenosis"
+      },
+      {
+        "id": "B",
+        "text": "Right internal carotid artery stenosis"
+      },
+      {
+        "id": "C",
+        "text": "Left posterior cerebral artery stenosis"
+      },
+      {
+        "id": "D",
+        "text": "Superior sagittal sinus thrombosis"
+      },
+      {
+        "id": "E",
+        "text": "Right thalamoperforator artery occlusion"
+      }
+    ],
+    "correctOptionId": "A",
+    "explanation": {
+      "whyCorrect": "Left monocular curtain-like vision loss is amaurosis fugax from ipsilateral retinal ischemia. Right hand weakness localizes to the left hemisphere. Smoking, hypercholesterolemia, and a left carotid bruit support symptomatic left internal carotid stenosis.",
+      "evidence": [
+        "Left monocular transient visual loss points to ipsilateral ophthalmic/carotid circulation.",
+        "Right hand weakness localizes to the left hemisphere.",
+        "The left carotid bruit and vascular risk factors support left ICA atherosclerotic stenosis."
+      ],
+      "distractors": {
+        "B": "Right ICA stenosis is the wrong side for left eye symptoms and right hand weakness.",
+        "C": "PCA stenosis causes homonymous visual field loss, not monocular retinal ischemia.",
+        "D": "Venous sinus thrombosis would more likely cause headache, papilledema, or seizure.",
+        "E": "A right thalamoperforator lesion cannot explain retinal ischemia or a left carotid bruit."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "sym_left_monocular",
+          "type": "symptom",
+          "label": "Left monocular vision loss",
+          "phrase": "vision in his left eye goes dark",
+          "tooltip": "Transient monocular visual loss with a curtain-like onset is amaurosis fugax from retinal ischemia via the ophthalmic artery."
+        },
+        {
+          "id": "sym_right_hand",
+          "type": "symptom",
+          "label": "Right hand weakness",
+          "phrase": "right hand weakness",
+          "tooltip": "Transient right hand weakness localises to the left hemisphere motor cortex or its descending pathways."
+        },
+        {
+          "id": "history_smoking_hld",
+          "type": "history",
+          "label": "Smoking + hypercholesterolemia",
+          "phrase": "smoking and hypercholesterolemia",
+          "tooltip": "Smoking and hypercholesterolaemia are the principal modifiable risk factors for carotid atherosclerosis."
+        },
+        {
+          "id": "sign_carotid_bruit",
+          "type": "sign",
+          "label": "Left carotid bruit",
+          "phrase": "bruit continuing into diastole",
+          "tooltip": "A bruit below the angle of the jaw, especially extending into diastole, indicates high-grade carotid stenosis."
+        },
+        {
+          "id": "mechanism_retinal_ischemia",
+          "type": "mechanism",
+          "label": "Ipsilateral retinal ischemia",
+          "tooltip": "The ophthalmic artery is the first branch of the ICA; emboli or hypoperfusion cause transient ipsilateral monocular loss."
+        },
+        {
+          "id": "anatomy_left_ica",
+          "type": "anatomy",
+          "label": "Left internal carotid artery",
+          "tooltip": "The left ICA gives rise to the ophthalmic artery (retinal supply) and the left anterior cerebral circulation."
+        },
+        {
+          "id": "dx_left_ica",
+          "type": "diagnosis",
+          "label": "Left ICA stenosis",
+          "tooltip": "Atherosclerotic narrowing of the internal carotid artery causing ipsilateral retinal and contralateral motor territory ischemia."
+        },
+        {
+          "id": "mechanism_motor_cortex",
+          "type": "mechanism",
+          "label": "Left cortical motor territory",
+          "tooltip": "The left MCA supplies the primary motor cortex controlling the contralateral right hand."
+        }
+      ],
+      "edges": [
+        {
+          "from": "mechanism_retinal_ischemia",
+          "to": "anatomy_left_ica",
+          "label": "supplied_by"
+        },
+        {
+          "from": "sign_carotid_bruit",
+          "to": "anatomy_left_ica",
+          "label": "sign_of"
+        },
+        {
+          "from": "mechanism_motor_cortex",
+          "to": "anatomy_left_ica",
+          "label": "supplied_by"
+        },
+        {
+          "from": "history_smoking_hld",
+          "to": "dx_left_ica",
+          "label": "risk_factor_for"
+        },
+        {
+          "from": "sym_left_monocular",
+          "to": "mechanism_retinal_ischemia",
+          "label": "symptom_of"
+        },
+        {
+          "from": "sym_right_hand",
+          "to": "mechanism_motor_cortex",
+          "label": "localizes_to"
+        },
+        {
+          "from": "anatomy_left_ica",
+          "to": "dx_left_ica",
+          "label": "site_of"
+        }
+      ],
+      "layout": {
+        "width": 900,
+        "height": 484,
+        "nodes": {
+          "sym_left_monocular": {
+            "x": 96,
+            "y": 71
+          },
+          "sym_right_hand": {
+            "x": 98,
+            "y": 321
+          },
+          "history_smoking_hld": {
+            "x": 98,
+            "y": 422
+          },
+          "sign_carotid_bruit": {
+            "x": 98,
+            "y": 191
+          },
+          "mechanism_retinal_ischemia": {
+            "x": 324,
+            "y": 90
+          },
+          "anatomy_left_ica": {
+            "x": 592,
+            "y": 158
+          },
+          "dx_left_ica": {
+            "x": 804,
+            "y": 226
+          },
+          "mechanism_motor_cortex": {
+            "x": 339,
+            "y": 273
+          }
         }
       }
-    }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "B",
+        "optionText": "Right internal carotid artery stenosis",
+        "verdict": "Wrong side",
+        "supports": [
+          {
+            "label": "Left monocular vision loss + right hand weakness",
+            "nodeIds": [
+              "sym_left_monocular",
+              "sym_right_hand"
+            ],
+            "tooltip": "The symptom pattern—monocular visual loss plus contralateral hand weakness—is classically carotid."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Left monocular vision loss",
+            "nodeId": "sym_left_monocular",
+            "tooltip": "Left monocular visual loss implicates the left ophthalmic artery, which arises from the left ICA; the right ICA cannot be responsible."
+          },
+          {
+            "label": "Right hand weakness",
+            "nodeId": "sym_right_hand",
+            "tooltip": "Right hand weakness localises to the left hemisphere; right ICA occlusion would cause left-sided weakness."
+          }
+        ],
+        "summary": "The laterality points to the left ICA, not the right."
+      },
+      {
+        "optionId": "C",
+        "optionText": "Left posterior cerebral artery stenosis",
+        "verdict": "Wrong system",
+        "supports": [
+          {
+            "label": "Left monocular vision loss",
+            "nodeId": "sym_left_monocular",
+            "tooltip": "Visual loss can arise from PCA territory affecting the occipital cortex."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Left monocular vision loss",
+            "nodeId": "sym_left_monocular",
+            "tooltip": "PCA infarcts cause homonymous (both eyes, same field) loss; monocular loss is retinal and implicates the ophthalmic artery."
+          },
+          {
+            "label": "Left carotid bruit",
+            "nodeId": "sign_carotid_bruit",
+            "tooltip": "A carotid bruit localises the stenosis to the anterior circulation, not the posterior."
+          }
+        ],
+        "summary": "PCA disease causes homonymous field loss, not monocular retinal ischemia."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Superior sagittal sinus thrombosis",
+        "verdict": "Unlikely",
+        "contradicts": [
+          {
+            "label": "Left carotid bruit",
+            "nodeId": "sign_carotid_bruit",
+            "tooltip": "A carotid bruit points to focal arterial stenosis; venous sinus thrombosis does not produce an arterial bruit."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Headache",
+            "tooltip": "SSST typically presents with progressive headache from raised intracranial pressure."
+          },
+          {
+            "label": "Papilledema",
+            "tooltip": "Impaired venous outflow raises ICP and can cause papilledema; absent here."
+          },
+          {
+            "label": "Seizure",
+            "tooltip": "Cortical venous congestion from SSST frequently triggers seizures; absent here."
+          }
+        ],
+        "summary": "The presentation is arterial and carotid-localized."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Right thalamoperforator artery occlusion",
+        "verdict": "Unlikely",
+        "contradicts": [
+          {
+            "label": "Left monocular vision loss",
+            "nodeId": "sym_left_monocular",
+            "tooltip": "The thalamoperforator arteries do not supply the retina or optic nerve; they cannot cause monocular visual loss."
+          },
+          {
+            "label": "Left carotid bruit",
+            "nodeId": "sign_carotid_bruit",
+            "tooltip": "A right-sided deep perforator occlusion is unrelated to the left carotid circulation and would not produce a left carotid bruit."
+          }
+        ],
+        "summary": "A right deep perforator cannot explain retinal TIAs or left carotid findings."
+      }
+    ]
+  },
+  {
+    "id": "neuro-lacunar-flawed-both",
+    "title": "Internal capsule lacunar stroke",
+    "domain": "Neurology",
+    "topic": "Cerebral Hemispheres and Vascular Supply",
+    "difficulty": "medium",
+    "source": "Blumenfeld internal capsule and cortical localization; expert review design",
+    "taskLabel": "Neurology 3",
+    "reviewType": "flawed",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 67-year-old man with long-standing hypertension suddenly develops right face, arm, and leg weakness of similar severity. Sensation is intact. He also has difficulty naming objects and following complex commands, and confrontation testing suggests a right homonymous visual field defect.",
+    "stem": "What is the most likely lesion location?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Left posterior limb of the internal capsule"
+      },
+      {
+        "id": "B",
+        "text": "Left MCA cortical territory"
+      },
+      {
+        "id": "C",
+        "text": "Right posterior limb of the internal capsule"
+      },
+      {
+        "id": "D",
+        "text": "Left cerebellar hemisphere"
+      },
+      {
+        "id": "E",
+        "text": "Right occipital cortex"
+      }
+    ],
+    "correctOptionId": "A",
+    "explanation": {
+      "whyCorrect": "The intended answer is a left posterior limb internal capsule lacunar infarct because the vignette begins with a classic pure motor pattern: sudden right face, arm, and leg weakness of similar severity in a patient with hypertension. However, the item contains a reviewable flaw: aphasia and a right homonymous visual field defect are cortical/posterior retrochiasmal signs, not expected from an isolated internal capsule lacune.",
+      "evidence": [
+        "Equal face, arm, and leg weakness suggests a compact descending motor pathway lesion such as the internal capsule.",
+        "Hypertension is a classic small-vessel lacunar stroke risk factor.",
+        "Aphasia and homonymous visual field loss conflict with a pure internal capsule localization."
+      ],
+      "distractors": {
+        "B": "Left MCA cortical territory better explains aphasia and right visual field loss, so it becomes too plausible if those clues remain.",
+        "C": "A right internal capsule lesion would cause left-sided weakness, not right-sided weakness.",
+        "D": "A cerebellar lesion causes ataxia and coordination findings rather than pure UMN weakness with aphasia.",
+        "E": "A right occipital lesion would cause a left homonymous visual field defect and would not explain right hemiparesis."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "history_htn_lacune",
+          "type": "history",
+          "label": "Long-standing hypertension",
+          "phrase": "long-standing hypertension",
+          "tooltip": "Long-standing hypertension causes lipohyalinosis of small penetrating arteries, predisposing to lacunar infarction."
+        },
+        {
+          "id": "exam_equal_weakness",
+          "type": "exam",
+          "label": "Equal face-arm-leg weakness",
+          "phrase": "right face, arm, and leg weakness of similar severity",
+          "tooltip": "Equal face, arm, and leg weakness of similar severity suggests a lesion in the compact corticospinal tract, classically the posterior limb of the internal capsule."
+        },
+        {
+          "id": "exam_sensation_intact",
+          "type": "exam",
+          "label": "Sensation intact",
+          "phrase": "Sensation is intact",
+          "tooltip": "Preserved sensation is consistent with a pure motor lacunar syndrome; sensory fibres in the internal capsule run close but are separable."
+        },
+        {
+          "id": "mechanism_corticospinal",
+          "type": "mechanism",
+          "label": "Corticospinal tract disruption",
+          "tooltip": "Corticospinal fibres are densely packed in the posterior limb of the internal capsule, making a small infarct sufficient to paralyse face, arm, and leg."
+        },
+        {
+          "id": "anatomy_left_plic",
+          "type": "anatomy",
+          "label": "Left posterior limb internal capsule",
+          "tooltip": "The left posterior limb of the internal capsule contains corticospinal and corticobulbar fibres controlling the right side of the body."
+        },
+        {
+          "id": "dx_lacunar_capsule",
+          "type": "diagnosis",
+          "label": "Internal capsule lacunar infarct",
+          "tooltip": "A small-vessel infarct causing a pure motor syndrome."
+        }
+      ],
+      "edges": [
+        {
+          "from": "history_htn_lacune",
+          "to": "dx_lacunar_capsule",
+          "label": "risk_factor_for"
+        },
+        {
+          "from": "exam_equal_weakness",
+          "to": "mechanism_corticospinal",
+          "label": "exam_finding_of"
+        },
+        {
+          "from": "exam_sensation_intact",
+          "to": "dx_lacunar_capsule",
+          "label": "compatible_with"
+        },
+        {
+          "from": "mechanism_corticospinal",
+          "to": "anatomy_left_plic",
+          "label": "located_in"
+        },
+        {
+          "from": "anatomy_left_plic",
+          "to": "dx_lacunar_capsule",
+          "label": "site_of"
+        }
+      ],
+      "layout": {
+        "width": 900,
+        "height": 460,
+        "nodes": {
+          "history_htn_lacune": {
+            "x": 96,
+            "y": 72
+          },
+          "exam_equal_weakness": {
+            "x": 98,
+            "y": 353
+          },
+          "exam_sensation_intact": {
+            "x": 101,
+            "y": 216
+          },
+          "mechanism_corticospinal": {
+            "x": 351,
+            "y": 352
+          },
+          "anatomy_left_plic": {
+            "x": 588,
+            "y": 316
+          },
+          "dx_lacunar_capsule": {
+            "x": 794,
+            "y": 160
+          }
+        }
+      }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "B",
+        "optionText": "Left MCA cortical territory",
+        "verdict": "Too plausible",
+        "supports": [
+          {
+            "label": "Aphasia",
+            "tooltip": "Aphasia localises to the dominant (left) perisylvian cortex, which is MCA territory."
+          },
+          {
+            "label": "Right field defect",
+            "tooltip": "A right homonymous field defect localises to the left retrochiasmal pathway—MCA inferior division or PCA territory."
+          }
+        ],
+        "weakens": [
+          {
+            "label": "Equal face-arm-leg weakness",
+            "nodeId": "exam_equal_weakness",
+            "tooltip": "Equal face-arm-leg weakness is the signature of a compact motor tract lesion; cortical MCA infarcts usually spare some body regions due to the spread-out homunculus."
+          }
+        ],
+        "quality": [
+          {
+            "label": "Cortical clues undermine intended lacunar answer",
+            "tooltip": "Including aphasia and visual field loss makes left MCA cortical territory at least as plausible as internal capsule lacune, undermining the intended answer."
+          }
+        ],
+        "summary": "Cortical signs make MCA territory a very strong alternative, exposing the item flaw."
+      },
+      {
+        "optionId": "C",
+        "optionText": "Right posterior limb of the internal capsule",
+        "verdict": "Wrong side",
+        "contradicts": [
+          {
+            "label": "Right-sided weakness",
+            "nodeId": "exam_equal_weakness",
+            "tooltip": "The right internal capsule controls the left side of the body; right-sided weakness must originate from the left hemisphere."
+          }
+        ],
+        "summary": "Right internal capsule lesions produce left-sided weakness."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Left cerebellar hemisphere",
+        "verdict": "Less likely",
+        "contradicts": [
+          {
+            "label": "Pure motor weakness",
+            "nodeId": "exam_equal_weakness",
+            "tooltip": "The cerebellum does not contain the corticospinal tract; a cerebellar lesion would not cause the pure motor pattern seen here."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Ataxia",
+            "tooltip": "Ipsilateral limb ataxia and dysmetria are the expected signs of a cerebellar hemisphere lesion."
+          },
+          {
+            "label": "Dysmetria",
+            "tooltip": "Finger-nose and heel-shin dysmetria are the classic bedside findings of cerebellar hemisphere dysfunction."
+          }
+        ],
+        "summary": "Cerebellar disease should cause coordination findings rather than a pure pyramidal motor pattern."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Right occipital cortex",
+        "verdict": "Wrong pattern",
+        "supports": [
+          {
+            "label": "Visual field complaint",
+            "tooltip": "Visual field loss can arise from occipital cortex lesions affecting the primary visual area."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Right homonymous field defect",
+            "tooltip": "A right occipital lesion produces a left homonymous field defect; a right-sided defect localises to the left hemisphere."
+          },
+          {
+            "label": "Right hemiparesis",
+            "nodeId": "exam_equal_weakness",
+            "tooltip": "The occipital cortex is not part of the motor pathway; it cannot cause hemiparesis."
+          }
+        ],
+        "summary": "A right occipital lesion would give the opposite visual field pattern and no hemiparesis."
+      }
+    ]
+  },
+  {
+    "id": "neuro-cvst-flawed-both",
+    "title": "Cerebral venous sinus thrombosis",
+    "domain": "Neurology",
+    "topic": "Cerebral Hemispheres and Vascular Supply",
+    "difficulty": "medium",
+    "source": "Cerebral past exam question; Blumenfeld venous drainage; expert review design",
+    "taskLabel": "Neurology 4",
+    "reviewType": "flawed",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 29-year-old woman is brought to the emergency department two days after delivery with a progressively worsening headache and one episode of vomiting. She has no fever. This morning she had a brief generalized seizure. On examination she is alert but distressed. Fundoscopy reveals bilateral papilledema. Motor strength, language, and visual fields are intact.",
+    "stem": "What is the most likely diagnosis?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Cerebral venous sinus thrombosis"
+      },
+      {
+        "id": "B",
+        "text": "Migraine with aura"
+      },
+      {
+        "id": "C",
+        "text": "Reversible cerebral vasoconstriction syndrome"
+      },
+      {
+        "id": "D",
+        "text": "Lacunar infarction of the internal capsule"
+      },
+      {
+        "id": "E",
+        "text": "Acute bacterial meningitis"
+      }
+    ],
+    "correctOptionId": "A",
+    "explanation": {
+      "whyCorrect": "CVST best explains postpartum progressive headache, seizure, and raised ICP. The postpartum hypercoagulable state predisposes to dural sinus thrombosis, which impairs venous outflow and CSF absorption, raising intracranial pressure. The reviewable issue is the timeline: bilateral papilledema typically requires days to weeks of sustained ICP elevation to develop, making its presence only two days after symptom onset a subtle clinical implausibility.",
+      "evidence": [
+        "Postpartum state is a risk factor for venous thrombosis.",
+        "Progressive headache, vomiting, and papilledema indicate raised intracranial pressure.",
+        "Seizure can occur with cortical irritation from venous congestion."
+      ],
+      "distractors": {
+        "B": "Migraine does not explain papilledema and new generalized seizure in this postpartum context.",
+        "C": "RCVS is postpartum-associated but usually has recurrent thunderclap headaches.",
+        "D": "Lacunar infarction would cause focal motor or sensory deficits, not papilledema and progressive headache.",
+        "E": "Bacterial meningitis could explain headache, vomiting, and seizure, but the absence of fever and the postpartum context shift probability strongly toward a thrombotic aetiology."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "history_postpartum",
+          "type": "history",
+          "label": "Postpartum state",
+          "phrase": "two days after delivery",
+          "tooltip": "Delivery causes a transient prothrombotic state (elevated clotting factors, reduced protein S) that peaks in the first postpartum weeks."
+        },
+        {
+          "id": "sym_headache",
+          "type": "symptom",
+          "label": "Progressive headache",
+          "phrase": "progressively worsening headache",
+          "tooltip": "Progressive headache that worsens over hours to days is the most common presentation of raised intracranial pressure from venous outflow obstruction."
+        },
+        {
+          "id": "sym_vomiting",
+          "type": "symptom",
+          "label": "Vomiting",
+          "phrase": "one episode of vomiting",
+          "tooltip": "Vomiting can occur with raised intracranial pressure when pressure affects the medullary vomiting centre."
+        },
+        {
+          "id": "sign_papilledema",
+          "type": "sign",
+          "label": "Bilateral papilledema",
+          "phrase": "bilateral papilledema",
+          "tooltip": "Papilledema is an objective sign of chronically elevated ICP; its appearance within 2 days of symptom onset is biologically early and represents a reviewable plausibility issue in this vignette."
+        },
+        {
+          "id": "sym_seizure",
+          "type": "symptom",
+          "label": "Generalized seizure",
+          "phrase": "brief generalized seizure",
+          "tooltip": "Seizures in CVST occur because venous congestion causes cortical oedema and irritation; they can be focal or generalised."
+        },
+        {
+          "id": "mechanism_hypercoag",
+          "type": "mechanism",
+          "label": "Hypercoagulable state",
+          "tooltip": "The postpartum period is associated with elevated fibrinogen, factor VIII, and von Willebrand factor alongside reduced protein S."
+        },
+        {
+          "id": "mechanism_raised_icp",
+          "type": "mechanism",
+          "label": "Raised intracranial pressure",
+          "tooltip": "Dural sinus thrombosis impairs venous drainage and CSF reabsorption, raising ICP and causing the headache-papilledema-vomiting triad."
+        },
+        {
+          "id": "mechanism_venous_outflow",
+          "type": "mechanism",
+          "label": "Venous outflow obstruction",
+          "tooltip": "Thrombosis of a major dural sinus obstructs the main outflow channel; cortical veins may also thrombose, causing focal oedema or haemorrhage."
+        },
+        {
+          "id": "dx_cvst",
+          "type": "diagnosis",
+          "label": "Cerebral venous sinus thrombosis",
+          "tooltip": "Postpartum venous thrombosis causing raised ICP and seizure."
+        }
+      ],
+      "edges": [
+        {
+          "from": "history_postpartum",
+          "to": "mechanism_hypercoag",
+          "label": "risk_factor_for"
+        },
+        {
+          "from": "mechanism_hypercoag",
+          "to": "mechanism_venous_outflow",
+          "label": "predisposes_to"
+        },
+        {
+          "from": "mechanism_venous_outflow",
+          "to": "dx_cvst",
+          "label": "mechanism_of"
+        },
+        {
+          "from": "sym_headache",
+          "to": "mechanism_raised_icp",
+          "label": "symptom_of"
+        },
+        {
+          "from": "sym_vomiting",
+          "to": "mechanism_raised_icp",
+          "label": "symptom_of"
+        },
+        {
+          "from": "sign_papilledema",
+          "to": "mechanism_raised_icp",
+          "label": "sign_of"
+        },
+        {
+          "from": "mechanism_raised_icp",
+          "to": "dx_cvst",
+          "label": "manifestation_of"
+        },
+        {
+          "from": "sym_seizure",
+          "to": "dx_cvst",
+          "label": "associated_with"
+        }
+      ],
+      "layout": {
+        "width": 900,
+        "height": 570,
+        "nodes": {
+          "history_postpartum": {
+            "x": 80,
+            "y": 62
+          },
+          "sym_headache": {
+            "x": 80,
+            "y": 178
+          },
+          "sym_vomiting": {
+            "x": 81,
+            "y": 253
+          },
+          "sign_papilledema": {
+            "x": 80,
+            "y": 325
+          },
+          "sym_seizure": {
+            "x": 80,
+            "y": 437
+          },
+          "mechanism_hypercoag": {
+            "x": 351,
+            "y": 81
+          },
+          "mechanism_raised_icp": {
+            "x": 390,
+            "y": 244
+          },
+          "mechanism_venous_outflow": {
+            "x": 581,
+            "y": 147
+          },
+          "dx_cvst": {
+            "x": 820,
+            "y": 306
+          }
+        }
+      }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "B",
+        "optionText": "Migraine with aura",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Headache",
+            "nodeId": "sym_headache",
+            "tooltip": "Headache is the cardinal symptom of migraine."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Papilledema",
+            "nodeId": "sign_papilledema",
+            "tooltip": "Papilledema does not occur in migraine; its presence indicates structural raised ICP."
+          },
+          {
+            "label": "Seizure",
+            "nodeId": "sym_seizure",
+            "tooltip": "New generalised seizures are not a feature of ordinary migraine and suggest a structural or thrombotic cause."
+          }
+        ],
+        "summary": "Migraine does not explain raised ICP signs in this context."
+      },
+      {
+        "optionId": "C",
+        "optionText": "Reversible cerebral vasoconstriction syndrome",
+        "verdict": "Plausible distractor",
+        "supports": [
+          {
+            "label": "Postpartum",
+            "nodeId": "history_postpartum",
+            "tooltip": "RCVS is a recognised postpartum condition, sharing the prothrombotic and vasoreactive changes of the puerperium."
+          },
+          {
+            "label": "Headache",
+            "nodeId": "sym_headache",
+            "tooltip": "Severe headache—often thunderclap in character—is the defining symptom of RCVS."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Thunderclap onset",
+            "tooltip": "RCVS headaches typically begin with a sudden, explosive \"thunderclap\" maximal within seconds."
+          },
+          {
+            "label": "Recurrent thunderclap headaches",
+            "tooltip": "Multiple recurrent thunderclap headaches over days to weeks is the hallmark pattern of RCVS."
+          }
+        ],
+        "quality": [
+          {
+            "label": "Could add headache tempo ambiguity",
+            "tooltip": "Leaving the speed of headache onset ambiguous would make RCVS a more challenging and realistic distractor."
+          }
+        ],
+        "summary": "RCVS occurs postpartum and causes severe headache, but papilledema and progressive course are more consistent with venous outflow obstruction."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Lacunar infarction of the internal capsule",
+        "verdict": "Unlikely",
+        "contradicts": [
+          {
+            "label": "Normal strength/language/fields",
+            "tooltip": "Lacunar infarcts cause focal deficits (pure motor, pure sensory, ataxic hemiparesis); an entirely normal focal exam does not fit."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Pure motor deficit",
+            "tooltip": "A posterior limb internal capsule lacune produces pure contralateral face-arm-leg weakness."
+          },
+          {
+            "label": "Sensorimotor syndrome",
+            "tooltip": "Thalamocapsular lacunes can cause combined sensory and motor deficits."
+          }
+        ],
+        "summary": "A lacunar stroke would not explain progressive headache and papilledema."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Acute bacterial meningitis",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Headache",
+            "nodeId": "sym_headache",
+            "tooltip": "Severe headache is one of the classic triad features of bacterial meningitis."
+          },
+          {
+            "label": "Vomiting",
+            "nodeId": "sym_vomiting",
+            "tooltip": "Nausea and vomiting accompany the raised ICP and meningeal irritation of bacterial meningitis."
+          },
+          {
+            "label": "Seizure",
+            "nodeId": "sym_seizure",
+            "tooltip": "Bacterial meningitis can cause seizures through cortical irritation and cerebral oedema."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "No fever",
+            "tooltip": "Absence of fever makes acute bacterial meningitis less likely, especially without meningismus."
+          },
+          {
+            "label": "Postpartum context",
+            "nodeId": "history_postpartum",
+            "tooltip": "The postpartum hypercoagulable state specifically predisposes to venous thrombosis, not bacterial meningitis."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Meningismus",
+            "tooltip": "Neck stiffness (Kernig and Brudzinski signs) is the hallmark of meningeal irritation and is absent here."
+          },
+          {
+            "label": "Infectious prodrome",
+            "tooltip": "Bacterial meningitis is typically preceded by an upper respiratory infection or pharyngitis."
+          }
+        ],
+        "quality": [
+          {
+            "label": "No fever may over-exclude",
+            "tooltip": "Making fever explicitly absent may make meningitis too easy to dismiss."
+          }
+        ],
+        "summary": "Meningitis can cause headache, vomiting, and seizure, but the afebrile postpartum presentation points away from primary bacterial infection."
+      }
+    ]
+  },
+  {
+    "id": "neuro-thalamic-lacune-too-easy-both",
+    "title": "Pure sensory lacunar stroke",
+    "domain": "Neurology",
+    "topic": "Cerebral Hemispheres and Vascular Supply",
+    "difficulty": "easy",
+    "source": "Cerebral past exam question; Blumenfeld thalamoperforator arteries and lacunar syndromes",
+    "taskLabel": "Neurology 5",
+    "reviewType": "too_easy",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 65-year-old woman with long-standing hypertension suddenly develops tingling and reduced pinprick sensation over the left side of her face, arm, and leg. The symptoms begin simultaneously. Strength, speech, visual fields, coordination, and the rest of the cranial nerve examination are normal.",
+    "stem": "What is the most likely diagnosis?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Migrainous aura"
+      },
+      {
+        "id": "B",
+        "text": "Lacunar infarction in the right thalamus"
+      },
+      {
+        "id": "C",
+        "text": "Focal sensory seizure"
+      },
+      {
+        "id": "D",
+        "text": "Lacunar infarction in the right internal capsule"
+      },
+      {
+        "id": "E",
+        "text": "Intracranial hemorrhage in the right occipital lobe"
+      }
+    ],
+    "correctOptionId": "B",
+    "explanation": {
+      "whyCorrect": "A right thalamic lacunar infarct best explains sudden pure sensory symptoms affecting the left face, arm, and leg simultaneously in a patient with hypertension. The thalamus relays contralateral somatosensory information, and small penetrating artery disease causes lacunar syndromes. The too-easy flaw is that the vignette removes nearly every competing localization by stating that motor, language, visual field, coordination, and cranial nerve findings are all normal.",
+      "evidence": [
+        "Sudden onset favors a vascular event rather than a slowly evolving mimic.",
+        "Pure left face-arm-leg sensory involvement localizes to a compact right somatosensory relay such as the thalamus.",
+        "Hypertension supports small-vessel lacunar disease.",
+        "Normal strength, speech, visual fields, and coordination over-exclude many distractors."
+      ],
+      "distractors": {
+        "A": "Migraine aura usually evolves gradually and is often associated with headache or spreading positive symptoms.",
+        "C": "A focal sensory seizure is typically brief, stereotyped, and often has positive spreading sensory symptoms rather than a fixed hemisensory deficit.",
+        "D": "The posterior limb of the internal capsule would more classically cause pure motor weakness rather than isolated sensory loss.",
+        "E": "A right occipital hemorrhage would cause a left homonymous visual field deficit, not isolated hemisensory loss."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "history_hypertension",
+          "type": "history",
+          "label": "Long-standing hypertension",
+          "phrase": "long-standing hypertension",
+          "tooltip": "Hypertension is the principal risk factor for lipohyalinosis of thalamoperforator arteries, predisposing to lacunar infarction."
+        },
+        {
+          "id": "sym_left_hemisensory",
+          "type": "symptom",
+          "label": "Left face-arm-leg sensory loss",
+          "phrase": "left side of her face, arm, and leg",
+          "tooltip": "Simultaneous tingling and reduced pinprick over the left face, arm, and leg points to a compact contralateral somatosensory relay—the thalamus or posterior limb of the internal capsule."
+        },
+        {
+          "id": "exam_no_cortical_motor",
+          "type": "exam",
+          "label": "No motor / cortical findings",
+          "phrase": "Strength, speech, visual fields, coordination, and the rest of the cranial nerve examination are normal",
+          "tooltip": "Intact motor function, speech, visual fields, and coordination narrow the localisation away from motor, language, visual, and cerebellar pathways."
+        },
+        {
+          "id": "mechanism_small_vessel",
+          "type": "mechanism",
+          "label": "Small-vessel lacunar infarct",
+          "tooltip": "Chronic hypertension causes lipohyalinosis of small penetrating thalamoperforator arteries, which can occlude and produce a thalamic lacunar infarct."
+        },
+        {
+          "id": "anatomy_right_thalamus",
+          "type": "anatomy",
+          "label": "Right thalamus",
+          "tooltip": "The right thalamus relays sensory information from the left body."
+        },
+        {
+          "id": "dx_right_thalamic_lacune",
+          "type": "diagnosis",
+          "label": "Right thalamic lacunar infarct",
+          "tooltip": "A lacunar infarct in the right thalamus causes contralateral pure sensory symptoms."
+        }
+      ],
+      "edges": [
+        {
+          "from": "history_hypertension",
+          "to": "mechanism_small_vessel",
+          "label": "risk_factor_for"
+        },
+        {
+          "from": "mechanism_small_vessel",
+          "to": "dx_right_thalamic_lacune",
+          "label": "mechanism_of"
+        },
+        {
+          "from": "sym_left_hemisensory",
+          "to": "anatomy_right_thalamus",
+          "label": "localizes_to"
+        },
+        {
+          "from": "anatomy_right_thalamus",
+          "to": "dx_right_thalamic_lacune",
+          "label": "site_of"
+        },
+        {
+          "from": "exam_no_cortical_motor",
+          "to": "dx_right_thalamic_lacune",
+          "label": "compatible_with"
+        }
+      ],
+      "layout": {
+        "width": 900,
+        "height": 460,
+        "nodes": {
+          "history_hypertension": {
+            "x": 131,
+            "y": 105
+          },
+          "sym_left_hemisensory": {
+            "x": 132,
+            "y": 221
+          },
+          "exam_no_cortical_motor": {
+            "x": 137,
+            "y": 377
+          },
+          "mechanism_small_vessel": {
+            "x": 417,
+            "y": 105
+          },
+          "anatomy_right_thalamus": {
+            "x": 401,
+            "y": 221
+          },
+          "dx_right_thalamic_lacune": {
+            "x": 804,
+            "y": 230
+          }
+        }
+      }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "A",
+        "optionText": "Migrainous aura",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Sensory symptoms",
+            "nodeId": "sym_left_hemisensory",
+            "tooltip": "Migrainous sensory aura can produce unilateral paraesthesiae that spread over minutes."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Sudden fixed deficit",
+            "nodeId": "sym_left_hemisensory",
+            "tooltip": "Migraine aura is characteristically gradual in onset and fully reversible within an hour; sudden fixed hemisensory loss is atypical."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Gradual spread",
+            "tooltip": "Classic sensory aura spreads (marches) slowly from the hand up the arm over 20–30 minutes."
+          },
+          {
+            "label": "Headache",
+            "tooltip": "Migraine aura is typically followed by headache; its absence weakens this diagnosis."
+          }
+        ],
+        "summary": "Migraine aura can produce sensory symptoms, but the abrupt fixed hemisensory pattern in a hypertensive patient favors lacunar stroke."
+      },
+      {
+        "optionId": "C",
+        "optionText": "Focal sensory seizure",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Positive sensory symptom",
+            "nodeId": "sym_left_hemisensory",
+            "tooltip": "Tingling is a positive sensory symptom that can arise from cortical irritation in a sensory seizure."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Fixed hemisensory loss",
+            "nodeId": "sym_left_hemisensory",
+            "tooltip": "Seizures typically produce brief, stereotyped, positive symptoms (tingling, pain); a persistent fixed deficit is more consistent with ischaemia."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Brief stereotyped spells",
+            "tooltip": "Focal sensory seizures are usually short (seconds to minutes), identical each time, and may occur repeatedly."
+          },
+          {
+            "label": "Altered awareness or spread",
+            "tooltip": "Focal seizures may evolve to altered awareness or spread to a focal-to-bilateral tonic-clonic event."
+          }
+        ],
+        "summary": "A focal sensory seizure is usually transient and stereotyped rather than a persistent pure sensory stroke syndrome."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Lacunar infarction in the right internal capsule",
+        "verdict": "Less likely",
+        "supports": [
+          {
+            "label": "Hypertension / lacune",
+            "nodeId": "history_hypertension",
+            "tooltip": "Hypertension predisposes to lacunar infarction in any of the deep perforating artery territories."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "No motor weakness",
+            "nodeId": "exam_no_cortical_motor",
+            "tooltip": "The posterior limb of the internal capsule carries corticospinal fibres; a lacune there would typically cause motor weakness, which is absent."
+          }
+        ],
+        "summary": "Internal capsule lacunes commonly affect descending motor fibers, so absent weakness makes this less likely."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Intracranial hemorrhage in the right occipital lobe",
+        "verdict": "Ruled out",
+        "supports": [
+          {
+            "label": "Sudden onset",
+            "tooltip": "Intracranial haemorrhage typically begins suddenly, which is consistent with this presentation."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "No visual field deficit",
+            "nodeId": "exam_no_cortical_motor",
+            "tooltip": "An occipital lesion compressing or destroying the primary visual cortex would be expected to produce a contralateral homonymous field defect."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Headache / decreased consciousness",
+            "tooltip": "Intracerebral haemorrhage typically presents with sudden severe headache and can cause rapid reduction in consciousness."
+          }
+        ],
+        "summary": "An occipital lesion would primarily produce a contralateral homonymous visual field deficit, not isolated hemisensory loss."
+      }
+    ]
   }
 ]

@@ -46,6 +46,20 @@ for (const question of questions) {
       throw new Error(`${context} graph edge references a missing node: ${edge.from} -> ${edge.to}`);
     }
   }
+
+  for (const miniGraph of question.miniGraphs ?? []) {
+    if (!miniGraph.optionId || !miniGraph.optionText) {
+      throw new Error(`${context} has an incomplete mini graph.`);
+    }
+    for (const role of ['supports', 'weakens', 'contradicts', 'missing', 'quality']) {
+      for (const item of miniGraph[role] ?? []) {
+        if (!item.label) throw new Error(`${context} mini graph item is missing a label.`);
+        if (item.nodeId && !nodeIds.has(item.nodeId)) {
+          throw new Error(`${context} mini graph references a missing node: ${item.nodeId}`);
+        }
+      }
+    }
+  }
 }
 
 console.log(`Smoke test passed: ${questions.length} JSON-driven questions and graphs are valid.`);

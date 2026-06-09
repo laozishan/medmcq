@@ -1,17 +1,22 @@
 export const NODE_TYPES = {
-  evidence: { label: 'Evidence', color: '#fff7d8', stroke: '#c48a1d' },
-  finding: { label: 'Finding', color: '#eaf1f8', stroke: '#2d5f8a' },
-  mechanism: { label: 'Mechanism', color: '#f3edff', stroke: '#7b4da0' },
-  diagnosis: { label: 'Diagnosis', color: '#edf7f2', stroke: '#1a6b3c' },
+  symptom: { label: 'Symptom', color: '#e3f2fd', stroke: '#1976b9', column: 0 },
+  sign: { label: 'Sign', color: '#dff6ea', stroke: '#11845b', column: 0 },
+  history: { label: 'History/Risk', color: '#fff0cf', stroke: '#c56a00', column: 0 },
+  exam: { label: 'Exam', color: '#e7eaff', stroke: '#4f5bd5', column: 0 },
+  investigation: { label: 'Investigation', color: '#ffe3f1', stroke: '#b4347b', column: 0 },
+  mechanism: { label: 'Mechanism', color: '#efe4ff', stroke: '#7c3fb4', column: 1 },
+  anatomy: { label: 'Anatomy/Localization', color: '#edf1f5', stroke: '#60717f', column: 2 },
+  diagnosis: { label: 'Diagnosis', color: '#e2f4dc', stroke: '#2e7d32', column: 3 },
 };
 
 export function layoutGraph(graph) {
   const nodes = graph.nodes ?? [];
-  const byType = ['evidence', 'finding', 'mechanism', 'diagnosis'];
-  const columns = byType.map((type) => nodes.filter((node) => node.type === type));
+  const columns = [0, 1, 2, 3].map((column) =>
+    nodes.filter((node) => (NODE_TYPES[node.type]?.column ?? 0) === column),
+  );
   const width = 920;
-  const height = 520;
-  const columnX = [120, 365, 600, 800];
+  const height = Math.max(520, Math.max(...columns.map((column) => column.length), 1) * 86 + 80);
+  const columnX = [125, 360, 595, 805];
 
   const positioned = columns.flatMap((column, columnIndex) => {
     const gap = height / (column.length + 1);

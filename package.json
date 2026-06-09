@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
-    "build:github": "vite build --base /medmcq/",
+    "build:github": "vite build --base /MCQ-Userstudy/",
     "preview": "vite preview --host 127.0.0.1",
     "smoke": "node tools/smoke-test.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.0",
+    "d3": "^7.9.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "typescript": "^5.8.0",
