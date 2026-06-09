@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { QuestionPanel } from './QuestionPanel.jsx';
 import { ExplanationPanel } from './ExplanationPanel.jsx';
 import { KnowledgeGraph } from './KnowledgeGraph.jsx';
@@ -30,6 +30,8 @@ export function ReviewApp({
   const [bankOpen, setBankOpen] = useState(false);
   const [rejectOpen, setRejectOpen] = useState(false);
   const [regenerateOpen, setRegenerateOpen] = useState(false);
+  const [toast, setToast] = useState('');
+  const toastTimerRef = useRef(null);
   const { showText, showGraph } = modeVisibility(mode);
   const activeEvidenceId = hoverState.id;
   const firstActiveEvidenceId = Array.isArray(activeEvidenceId) ? activeEvidenceId[0] : activeEvidenceId;
@@ -122,7 +124,7 @@ export function ReviewApp({
 
   function handleEvidenceHover(id, event, nodeOverride = null) {
     if (!id) {
-      setHoverState((current) => ({ ...current, id: null, node: null }));
+      setHoverState((current) => ({ ...current, id: null, node: null, highlightRole: null }));
       return;
     }
     setHoverState({
@@ -130,7 +132,19 @@ export function ReviewApp({
       x: event?.clientX ?? hoverState.x,
       y: event?.clientY ?? hoverState.y,
       node: nodeOverride,
+      highlightRole: nodeOverride?.highlightRole ?? null,
     });
+  }
+
+  function showToast(message) {
+    setToast(message);
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+    toastTimerRef.current = window.setTimeout(() => setToast(''), 1800);
+  }
+
+  function acceptQuestion() {
+    onAccept(question);
+    showToast('Question added to question bank.');
   }
 
   return (
@@ -150,9 +164,10 @@ export function ReviewApp({
         <QuestionPanel
           question={question}
           activeEvidenceId={activeEvidenceId}
+          activeEvidenceRole={hoverState.highlightRole}
           onEvidenceHover={handleEvidenceHover}
           onSave={onSaveQuestion}
-          onAccept={() => onAccept(question)}
+          onAccept={acceptQuestion}
           onReject={() => setRejectOpen(true)}
           onRegenerate={canRegenerate ? () => setRegenerateOpen(true) : null}
           onReset={() => onResetQuestion(question.id)}
@@ -188,6 +203,7 @@ export function ReviewApp({
       </div>
 
       {showGraph ? <HoverExplanation node={activeNode} hoverState={hoverState} /> : null}
+      {toast ? <div className="toast-status" role="status">{toast}</div> : null}
 
       <QuestionBankModal
         open={bankOpen}

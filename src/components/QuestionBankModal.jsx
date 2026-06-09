@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export function QuestionBankModal({ open, bank, onClose, onDelete, onSelect }) {
+  const [activeStatus, setActiveStatus] = useState('accepted');
   if (!open) return null;
 
   const accepted = bank.filter((item) => normalizeStatus(item) === 'accepted');
   const rejected = bank.filter((item) => normalizeStatus(item) === 'rejected');
+  const activeItems = activeStatus === 'accepted' ? accepted : rejected;
+  const activeEmptyText =
+    activeStatus === 'accepted' ? 'No accepted questions yet.' : 'No rejected questions yet.';
+  const activeTitle =
+    activeStatus === 'accepted' ? 'Accepted questions' : 'Rejected questions';
 
   return (
     <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Question bank">
@@ -15,17 +21,26 @@ export function QuestionBankModal({ open, bank, onClose, onDelete, onSelect }) {
         </div>
         {bank.length ? (
           <div className="bank-sections">
+            <div className="bank-status-toggle" role="group" aria-label="Question bank status">
+              <button
+                className={activeStatus === 'accepted' ? 'active' : ''}
+                type="button"
+                onClick={() => setActiveStatus('accepted')}
+              >
+                Accepted <span>{accepted.length}</span>
+              </button>
+              <button
+                className={activeStatus === 'rejected' ? 'active' : ''}
+                type="button"
+                onClick={() => setActiveStatus('rejected')}
+              >
+                Rejected <span>{rejected.length}</span>
+              </button>
+            </div>
             <BankSection
-              title="Accepted questions"
-              items={accepted}
-              emptyText="No accepted questions yet."
-              onDelete={onDelete}
-              onSelect={onSelect}
-            />
-            <BankSection
-              title="Rejected questions"
-              items={rejected}
-              emptyText="No rejected questions yet."
+              title={activeTitle}
+              items={activeItems}
+              emptyText={activeEmptyText}
               onDelete={onDelete}
               onSelect={onSelect}
             />

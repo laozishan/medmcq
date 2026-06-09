@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { miniEvidenceKey } from '../lib/graph.js';
 
 const MINI_NODE_WIDTH = 132;
 const MINI_NODE_HEIGHT = 44;
@@ -74,6 +75,7 @@ function MiniGraphCard({
         {
           label: payload.label,
           tooltip: payload.tooltip,
+          ...(payload.phrase ? { phrase: payload.phrase } : {}),
         },
       ],
     };
@@ -95,6 +97,11 @@ function MiniGraphCard({
       label: payload.label,
       tooltip: payload.tooltip,
     };
+    if (payload.phrase) targetItem.phrase = payload.phrase;
+    else {
+      delete targetItem.phrase;
+      delete targetItem.evidencePhrase;
+    }
     if (payload.role === sourceRole) {
       targetItems.splice(item.sourceIndex, 0, targetItem);
     } else {
@@ -252,6 +259,7 @@ function MiniEvidenceNode({
   onEvidenceHover,
 }) {
   const config = ROLE_CONFIG[item.role];
+  const evidenceTarget = evidenceTargetIds(item);
   const hoverNode = {
     id: item.key,
     type: 'symptom',
@@ -259,6 +267,7 @@ function MiniEvidenceNode({
     tooltip: buildMiniTooltip(item, miniGraph),
     hoverLabel: config.label,
     hoverColor: config.stroke,
+    highlightRole: item.role,
   };
 
   return (
@@ -271,8 +280,8 @@ function MiniEvidenceNode({
         event.stopPropagation();
         onEdit();
       }}
-      onMouseEnter={(event) => onEvidenceHover(item.nodeIds ?? item.nodeId ?? item.key, event, hoverNode)}
-      onMouseMove={(event) => onEvidenceHover(item.nodeIds ?? item.nodeId ?? item.key, event, hoverNode)}
+      onMouseEnter={(event) => onEvidenceHover(evidenceTarget, event, hoverNode)}
+      onMouseMove={(event) => onEvidenceHover(evidenceTarget, event, hoverNode)}
       onMouseLeave={() => onEvidenceHover(null)}
     >
       <rect
@@ -305,10 +314,21 @@ function MiniEvidenceNode({
   );
 }
 
+function evidenceTargetIds(item) {
+  const ids = [
+    ...(Array.isArray(item.nodeIds) ? item.nodeIds : []),
+    ...(item.nodeId ? [item.nodeId] : []),
+    ...((item.phrase || item.evidencePhrase) ? [item.key] : []),
+  ];
+  if (!ids.length) return item.key;
+  return ids.length === 1 ? ids[0] : ids;
+}
+
 function MiniNodeDialog({ mode, item, onClose, onSubmit }) {
   const [role, setRole] = useState(item?.role ?? 'supports');
   const [label, setLabel] = useState(item?.label ?? '');
   const [tooltip, setTooltip] = useState(item?.tooltip ?? '');
+  const [phrase, setPhrase] = useState(item?.phrase ?? item?.evidencePhrase ?? '');
 
   function submit(event) {
     event.preventDefault();
@@ -316,6 +336,7 @@ function MiniNodeDialog({ mode, item, onClose, onSubmit }) {
       role,
       label: label.trim() || 'New clue',
       tooltip: tooltip.trim(),
+      phrase: phrase.trim(),
     });
   }
 
@@ -346,6 +367,15 @@ function MiniNodeDialog({ mode, item, onClose, onSubmit }) {
           <textarea value={tooltip} onChange={(event) => setTooltip(event.target.value)} />
         </label>
 
+        <label className="field">
+          <span>Vignette phrase <small>optional</small></span>
+          <input
+            value={phrase}
+            onChange={(event) => setPhrase(event.target.value)}
+            placeholder="Exact wording to highlight in the vignette"
+          />
+        </label>
+
         <button className="primary-action compact-action" type="submit">
           {mode === 'edit' ? 'Save mini node' : 'Add mini node'}
         </button>
@@ -366,7 +396,7 @@ function useMiniLayerLayout(miniGraph) {
         ...item,
         role,
         sourceIndex: index,
-        key: `${miniGraph.optionId}-${role}-${index}-${item.label}`,
+        key: miniEvidenceKey(miniGraph.optionId, role, index, item.label),
       })),
     );
     const rowStep = 56;

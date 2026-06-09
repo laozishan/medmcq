@@ -39,3 +39,22 @@ export function phrasesFromGraph(graph) {
     .filter((node) => node.phrase)
     .map((node) => ({ id: node.id, phrase: node.phrase }));
 }
+
+export function phrasesFromMiniGraphs(miniGraphs = []) {
+  return miniGraphs.flatMap((miniGraph) =>
+    MINI_ROLE_ORDER.flatMap((role) =>
+      (miniGraph[role] ?? [])
+        .map((item, index) => ({
+          id: miniEvidenceKey(miniGraph.optionId, role, index, item.label),
+          phrase: item.phrase ?? item.evidencePhrase,
+        }))
+        .filter((item) => item.phrase),
+    ),
+  );
+}
+
+export function miniEvidenceKey(optionId, role, index, label) {
+  return `${optionId}-${role}-${index}-${label}`;
+}
+
+const MINI_ROLE_ORDER = ['supports', 'weakens', 'contradicts', 'missing'];

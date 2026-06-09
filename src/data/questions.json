@@ -374,6 +374,7 @@
         "supports": [
           {
             "label": "Recent URI",
+            "phrase": "viral upper respiratory infection",
             "tooltip": "A preceding viral illness is the typical context for both lingering URI and post-viral pneumonia."
           }
         ],
@@ -398,6 +399,10 @@
         "weakens": [
           {
             "label": "Dyspnea/tachycardia",
+            "nodeIds": [
+              "sym_worse_cough"
+            ],
+            "phrase": "tachycardia",
             "tooltip": "Both dyspnea and tachycardia are nonspecific responses to many conditions; they do not point to a vascular cause here."
           }
         ],
@@ -414,7 +419,10 @@
         "contradicts": [
           {
             "label": "Fever and crackles",
-            "nodeId": "exam_crackles",
+            "nodeIds": [
+              "sign_fever",
+              "exam_crackles"
+            ],
             "tooltip": "Fever with focal crackles points to parenchymal infection rather than a vascular obstruction."
           }
         ],
@@ -427,6 +435,7 @@
         "supports": [
           {
             "label": "Tachycardia",
+            "phrase": "tachycardia",
             "tooltip": "Tachycardia is a nonspecific finding; in myocarditis it reflects reduced cardiac output."
           }
         ],
@@ -461,6 +470,7 @@
           },
           {
             "label": "Tachycardia",
+            "phrase": "tachycardia",
             "tooltip": "Tachycardia is a compensatory response to systemic inflammatory stress."
           }
         ],

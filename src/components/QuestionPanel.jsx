@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { phrasesFromGraph } from '../lib/graph.js';
+import { phrasesFromGraph, phrasesFromMiniGraphs } from '../lib/graph.js';
 import { highlightText } from '../lib/text.js';
 import { cloneQuestion } from '../lib/questions.js';
 
 export function QuestionPanel({
   question,
   activeEvidenceId,
+  activeEvidenceRole,
   onEvidenceHover,
   onSave,
   onAccept,
@@ -34,7 +35,10 @@ export function QuestionPanel({
   }
 
   const displayQuestion = editing ? draft : question;
-  const displayPhrases = phrasesFromGraph(displayQuestion.graph);
+  const displayPhrases = [
+    ...phrasesFromGraph(displayQuestion.graph),
+    ...phrasesFromMiniGraphs(displayQuestion.miniGraphs),
+  ];
   const activeEvidenceIds = Array.isArray(activeEvidenceId)
     ? activeEvidenceId
     : activeEvidenceId
@@ -63,7 +67,10 @@ export function QuestionPanel({
               segment.type === 'highlight' ? (
                 <mark
                   key={`${segment.id}-${index}`}
-                  className={segment.active ? 'active' : ''}
+                  className={[
+                    segment.active ? 'active' : '',
+                    segment.active && activeEvidenceRole ? `active-${activeEvidenceRole}` : '',
+                  ].filter(Boolean).join(' ')}
                   onMouseEnter={(event) => onEvidenceHover(segment.id, event)}
                   onMouseMove={(event) => onEvidenceHover(segment.id, event)}
                   onMouseLeave={() => onEvidenceHover(null)}

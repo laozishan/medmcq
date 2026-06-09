@@ -31,13 +31,18 @@ export function ReviewTopbar({
         ))}
       </nav>
       <div className="topbar-actions">
-        <select value={normalizeReviewMode(mode)} onChange={(event) => onModeChange(event.target.value)} aria-label="Review mode">
+        <div className="mode-toggle" role="group" aria-label="Review mode">
           {getAvailableModes(question).map((item) => (
-            <option key={item.value} value={item.value}>
+            <button
+              key={item.value}
+              className={normalizeReviewMode(mode) === item.value ? 'active' : ''}
+              type="button"
+              onClick={() => onModeChange(item.value)}
+            >
               {item.label}
-            </option>
+            </button>
           ))}
-        </select>
+        </div>
         <button type="button" onClick={onOpenBank}>
           Question bank <span>{bankCount}</span>
         </button>
