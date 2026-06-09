@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { miniEvidenceKey } from '../lib/graph.js';
 
-const MINI_NODE_WIDTH = 132;
-const MINI_NODE_HEIGHT = 44;
-const OPTION_WIDTH = 132;
-const OPTION_HEIGHT = 58;
+const MINI_NODE_WIDTH = 150;
+const MINI_NODE_HEIGHT = 62;
+const OPTION_WIDTH = 150;
+const OPTION_HEIGHT = 70;
 
 const ROLE_CONFIG = {
   supports: { label: 'supports', fill: '#e7f6ef', stroke: '#1f7a55', text: '#145b3e' },
@@ -399,7 +399,7 @@ function useMiniLayerLayout(miniGraph) {
         key: miniEvidenceKey(miniGraph.optionId, role, index, item.label),
       })),
     );
-    const rowStep = 56;
+    const rowStep = 76;
     const top = 18;
     const height = Math.max(220, top * 2 + Math.max(1, items.length) * rowStep);
     const width = 540;

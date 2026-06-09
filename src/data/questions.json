@@ -1200,31 +1200,31 @@
       ],
       "layout": {
         "width": 900,
-        "height": 460,
+        "height": 540,
         "nodes": {
           "history_rapid_onset": {
             "x": 96,
-            "y": 95
+            "y": 70
           },
           "sym_high_fever": {
             "x": 96,
-            "y": 170
+            "y": 160
           },
           "sign_toxic_appearance": {
             "x": 96,
-            "y": 245
+            "y": 250
           },
           "sign_stridor_rest": {
             "x": 96,
-            "y": 320
+            "y": 340
           },
           "invest_membranes": {
             "x": 96,
-            "y": 395
+            "y": 430
           },
           "dx_tracheitis": {
             "x": 804,
-            "y": 230
+            "y": 270
           }
         }
       }

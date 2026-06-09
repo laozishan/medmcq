@@ -549,15 +549,16 @@ mark.active-missing { background: #e0e0e0; border-color: #777; box-shadow: 0 0 0
 .mini-legend-row span { display: inline-flex; align-items: center; gap: 4px; }
 .mini-legend-row i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid; }
 .mini-node-label {
-  height: 32px;
+  height: 100%;
   display: grid;
   place-items: center;
   text-align: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.14;
   color: var(--text);
   overflow: hidden;
+  overflow-wrap: anywhere;
 }
 .mini-node-delete circle { r: 9; }
 .mini-graph-card p { margin: 0; padding: 0 10px 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
