@@ -4,6 +4,8 @@ import { graphNodeMap, NODE_TYPES } from '../lib/graph.js';
 
 const NODE_WIDTH = 156;
 const NODE_HEIGHT = 58;
+const GRAPH_WIDTH = 900;
+const GRAPH_HEIGHT = 520;
 
 export function KnowledgeGraph({
   graph,
@@ -11,8 +13,10 @@ export function KnowledgeGraph({
   editable = false,
   onEvidenceHover,
   onNodeLabelChange,
+  onNodeTypeChange,
   onNodeDelete,
   onNodeAdd,
+  onEdgeAdd,
   onEdgeLabelChange,
   onGraphReset,
   onLayoutChange,
@@ -20,12 +24,12 @@ export function KnowledgeGraph({
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [selectedEdgeIndex, setSelectedEdgeIndex] = useState(null);
   const [dragState, setDragState] = useState(null);
-  const [addDialogOpen, setAddDialogOpen] = useState(false);
-  const [deleteMode, setDeleteMode] = useState(false);
+  const [connectSourceId, setConnectSourceId] = useState(null);
+  const [typeMenu, setTypeMenu] = useState(null);
+  const [editMode, setEditMode] = useState(false);
   const [, setDragVersion] = useState(0);
   const layout = useForceLayout(graph);
   const nodeMap = useMemo(() => graphNodeMap(layout.nodes), [layout.nodes]);
-  const selectedEdge = selectedEdgeIndex !== null ? layout.edges[selectedEdgeIndex] : null;
 
   useEffect(() => {
     if (selectedNodeId && !nodeMap[selectedNodeId]) setSelectedNodeId(null);
@@ -36,6 +40,9 @@ export function KnowledgeGraph({
   }, [layout.edges, selectedEdgeIndex]);
 
   function startNodeDrag(event, node) {
+    if (!editable) return;
+    if (event.button !== 0) return;
+    if (connectSourceId && connectSourceId !== node.id) return;
     if (event.target.closest?.('.node-inline-input')) return;
     const svg = event.currentTarget.ownerSVGElement;
     const point = svgPoint(svg, event);
@@ -43,6 +50,12 @@ export function KnowledgeGraph({
     event.stopPropagation();
     event.currentTarget.setPointerCapture?.(event.pointerId);
     setSelectedEdgeIndex(null);
+    if (!editMode) {
+      setConnectSourceId(null);
+      setTypeMenu(null);
+    } else {
+      setTypeMenu(null);
+    }
     setSelectedNodeId(node.id);
     setDragState({
       id: node.id,
@@ -78,6 +91,59 @@ export function KnowledgeGraph({
     event.stopPropagation();
     onNodeDelete?.(nodeId);
     setSelectedNodeId(null);
+    setConnectSourceId(null);
+    setTypeMenu(null);
+  }
+
+  function addNodeAt(event) {
+    if (!editable || !editMode) return;
+    if (event.target !== event.currentTarget) return;
+    event.preventDefault();
+    const point = svgPoint(event.currentTarget, event);
+    const id = `node_${Date.now()}`;
+    onNodeAdd?.({
+      id,
+      type: 'symptom',
+      label: 'New node',
+      x: clamp(point.x, 80, layout.width - 80),
+      y: clamp(point.y, 40, layout.height - 40),
+    });
+    setSelectedEdgeIndex(null);
+    setConnectSourceId(null);
+    setTypeMenu(null);
+    setSelectedNodeId(id);
+  }
+
+  function connectToNode(nodeId) {
+    if (!connectSourceId || connectSourceId === nodeId) return false;
+    const sourceNode = layout.nodes.find((node) => node.id === connectSourceId);
+    const targetNode = layout.nodes.find((node) => node.id === nodeId);
+    if (!sourceNode || !targetNode) return false;
+
+    const fromNode = sourceNode.x <= targetNode.x ? sourceNode : targetNode;
+    const toNode = sourceNode.x <= targetNode.x ? targetNode : sourceNode;
+    onEdgeAdd?.({ from: fromNode.id, to: toNode.id, label: 'associated_with' });
+    setConnectSourceId(null);
+    setSelectedEdgeIndex(null);
+    setTypeMenu(null);
+    setSelectedNodeId(nodeId);
+    return true;
+  }
+
+  function openTypeMenu(event, nodeId) {
+    if (!editable || !editMode) return;
+    event.preventDefault();
+    event.stopPropagation();
+    const canvas = event.currentTarget.ownerSVGElement?.parentElement;
+    const rect = canvas?.getBoundingClientRect();
+    setSelectedNodeId(nodeId);
+    setSelectedEdgeIndex(null);
+    setConnectSourceId(null);
+    setTypeMenu({
+      nodeId,
+      x: rect ? event.clientX - rect.left : 0,
+      y: rect ? event.clientY - rect.top : 0,
+    });
   }
 
   return (
@@ -89,33 +155,55 @@ export function KnowledgeGraph({
         </div>
       </div>
 
-      <div className="graph-canvas">
+      <div className={`graph-canvas ${editMode ? 'is-editing' : ''}`}>
         {editable ? (
           <div className="graph-float-actions" aria-label="Graph edit actions">
             <button
               type="button"
+              className={editMode ? 'active' : ''}
               onClick={() => {
-                setDeleteMode(false);
-                setAddDialogOpen(true);
+                setEditMode((current) => !current);
+                setConnectSourceId(null);
+                setTypeMenu(null);
+                setSelectedNodeId(null);
+                setSelectedEdgeIndex(null);
               }}
-              aria-label="Add graph node"
+              aria-label="Edit graph"
             >
-              Add
+              Edit
             </button>
+            {editMode && selectedNodeId ? (
+              <button
+                type="button"
+                className={connectSourceId === selectedNodeId ? 'active' : ''}
+                onClick={() => {
+                  setSelectedEdgeIndex(null);
+                  setConnectSourceId((current) => (current === selectedNodeId ? null : selectedNodeId));
+                }}
+                aria-label="Connect selected node"
+              >
+                Connect
+              </button>
+            ) : null}
             <button
               type="button"
-              className={deleteMode ? 'active danger' : ''}
               onClick={() => {
-                setDeleteMode((current) => !current);
-                setAddDialogOpen(false);
+                setEditMode(false);
+                setConnectSourceId(null);
+                setTypeMenu(null);
+                setSelectedNodeId(null);
+                setSelectedEdgeIndex(null);
+                onGraphReset?.();
               }}
-              aria-label="Delete graph node"
+              aria-label="Reset graph"
             >
-              Delete
-            </button>
-            <button type="button" onClick={onGraphReset} aria-label="Reset graph">
               Reset
             </button>
+          </div>
+        ) : null}
+        {editable && editMode ? (
+          <div className="graph-edit-hint">
+            {connectSourceId ? 'Click another node to connect.' : 'Double-click blank space to add a node. Right-click a node to change type.'}
           </div>
         ) : null}
         <svg
@@ -128,7 +216,10 @@ export function KnowledgeGraph({
           onClick={() => {
             setSelectedNodeId(null);
             setSelectedEdgeIndex(null);
+            setConnectSourceId(null);
+            setTypeMenu(null);
           }}
+          onDoubleClick={addNodeAt}
         >
           <defs>
             <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
@@ -150,14 +241,41 @@ export function KnowledgeGraph({
                 className={`graph-edge ${active ? 'active' : ''}`}
                 onClick={(event) => {
                   event.stopPropagation();
-                  if (editable) {
+                  if (editable && editMode) {
                     setSelectedEdgeIndex(index);
                     setSelectedNodeId(null);
+                    setConnectSourceId(null);
+                    setTypeMenu(null);
+                  }
+                }}
+                onDoubleClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  if (editable && editMode) {
+                    setSelectedEdgeIndex(index);
+                    setSelectedNodeId(null);
+                    setConnectSourceId(null);
+                    setTypeMenu(null);
                   }
                 }}
               >
                 <path d={`M ${anchors.from.x} ${anchors.from.y} C ${midX} ${anchors.from.y}, ${midX} ${anchors.to.y}, ${anchors.to.x} ${anchors.to.y}`} />
-                <text x={labelPoint.x} y={labelPoint.y}>{edge.label}</text>
+                {editable && editMode && active ? (
+                  <foreignObject x={labelPoint.x - 76} y={labelPoint.y - 14} width="152" height="28">
+                    <input
+                      className="edge-inline-input"
+                      value={edge.label}
+                      onPointerDown={(event) => event.stopPropagation()}
+                      onClick={(event) => event.stopPropagation()}
+                      onDoubleClick={(event) => event.stopPropagation()}
+                      onChange={(event) => onEdgeLabelChange?.(index, event.target.value)}
+                      aria-label="Edge relation"
+                      autoFocus
+                    />
+                  </foreignObject>
+                ) : (
+                  <text x={labelPoint.x} y={labelPoint.y}>{edge.label}</text>
+                )}
               </g>
             );
           })}
@@ -169,30 +287,41 @@ export function KnowledgeGraph({
                 ? [activeEvidenceId]
                 : [];
             const active = activeEvidenceIds.includes(node.id) || node.id === selectedNodeId;
+            const isConnectSource = connectSourceId === node.id;
+            const isConnectTarget = connectSourceId && connectSourceId !== node.id;
             return (
               <g
                 key={node.id}
-                className={`graph-node ${active ? 'active' : ''} ${dragState?.id === node.id ? 'dragging' : ''}`}
+                className={`graph-node ${active ? 'active' : ''} ${isConnectSource ? 'connect-source' : ''} ${isConnectTarget ? 'connect-target' : ''} ${dragState?.id === node.id ? 'dragging' : ''}`}
                 transform={`translate(${node.x - NODE_WIDTH / 2} ${node.y - NODE_HEIGHT / 2})`}
                 onPointerDown={(event) => startNodeDrag(event, node)}
                 onClick={(event) => {
                   event.stopPropagation();
-                  setSelectedNodeId(node.id);
-                  setSelectedEdgeIndex(null);
+                  if (editable && editMode) {
+                    if (connectToNode(node.id)) return;
+                    setSelectedNodeId(node.id);
+                    setSelectedEdgeIndex(null);
+                    setTypeMenu(null);
+                  }
+                }}
+                onContextMenu={(event) => openTypeMenu(event, node.id)}
+                onDoubleClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
                 }}
                 onMouseEnter={(event) => {
-                  if (!deleteMode) onEvidenceHover?.(node.id, event);
+                  if (!editMode) onEvidenceHover?.(node.id, event);
                 }}
                 onMouseMove={(event) => {
-                  if (!deleteMode) onEvidenceHover?.(node.id, event);
+                  if (!editMode) onEvidenceHover?.(node.id, event);
                 }}
                 onMouseLeave={() => {
-                  if (!deleteMode) onEvidenceHover?.(null);
+                  if (!editMode) onEvidenceHover?.(null);
                 }}
               >
                 <rect width={NODE_WIDTH} height={NODE_HEIGHT} rx="8" fill={config.color} stroke={config.stroke} />
                 <foreignObject x="10" y="8" width={NODE_WIDTH - 20} height={NODE_HEIGHT - 16}>
-                  {editable && selectedNodeId === node.id && !deleteMode ? (
+                  {editable && editMode && selectedNodeId === node.id ? (
                     <input
                       className="node-inline-input"
                       value={node.label}
@@ -200,12 +329,13 @@ export function KnowledgeGraph({
                       onClick={(event) => event.stopPropagation()}
                       onChange={(event) => onNodeLabelChange?.(node.id, event.target.value)}
                       aria-label="Node label"
+                      autoFocus
                     />
                   ) : (
                     <div className="node-label">{node.label}</div>
                   )}
                 </foreignObject>
-                {deleteMode ? (
+                {editable && editMode ? (
                   <g
                     className="graph-node-delete"
                     transform={`translate(${NODE_WIDTH - 14} 10)`}
@@ -221,16 +351,28 @@ export function KnowledgeGraph({
           })}
         </svg>
 
-        {addDialogOpen ? (
-          <AddNodeDialog
-            nodes={layout.nodes}
-            defaultTargetId={selectedNodeId || layout.nodes[0]?.id || ''}
-            onClose={() => setAddDialogOpen(false)}
-            onAdd={(payload) => {
-              onNodeAdd?.(payload);
-              setAddDialogOpen(false);
-            }}
-          />
+        {editable && editMode && typeMenu ? (
+          <div
+            className="node-type-menu"
+            style={{ left: typeMenu.x, top: typeMenu.y }}
+            onClick={(event) => event.stopPropagation()}
+            onContextMenu={(event) => event.preventDefault()}
+          >
+            <span>Node type</span>
+            {Object.entries(NODE_TYPES).map(([nodeType, nodeConfig]) => (
+              <button
+                key={nodeType}
+                type="button"
+                onClick={() => {
+                  onNodeTypeChange?.(typeMenu.nodeId, nodeType);
+                  setTypeMenu(null);
+                }}
+              >
+                <i style={{ background: nodeConfig.color, borderColor: nodeConfig.stroke }} />
+                {nodeConfig.label}
+              </button>
+            ))}
+          </div>
         ) : null}
       </div>
 
@@ -243,95 +385,7 @@ export function KnowledgeGraph({
         ))}
       </div>
 
-      {editable && selectedEdge ? (
-        <div className="edge-edit-strip">
-          <span>Relation</span>
-          <input
-            value={selectedEdge.label}
-            onChange={(event) => onEdgeLabelChange?.(selectedEdgeIndex, event.target.value)}
-            aria-label="Selected edge relation"
-          />
-        </div>
-      ) : null}
     </section>
-  );
-}
-
-function AddNodeDialog({ nodes, defaultTargetId, onClose, onAdd }) {
-  const [label, setLabel] = useState('');
-  const [type, setType] = useState('symptom');
-  const [targetId, setTargetId] = useState(defaultTargetId);
-  const [relation, setRelation] = useState('associated_with');
-  const [direction, setDirection] = useState('existing-to-new');
-
-  useEffect(() => {
-    setTargetId(defaultTargetId);
-  }, [defaultTargetId]);
-
-  function submit(event) {
-    event.preventDefault();
-    onAdd({
-      label: label.trim() || 'New node',
-      type,
-      connectNodeId: targetId,
-      relation: targetId ? relation.trim() || 'associated_with' : '',
-      direction,
-    });
-  }
-
-  return (
-    <div className="graph-popover-backdrop" onClick={onClose}>
-      <form className="graph-node-dialog" onSubmit={submit} onClick={(event) => event.stopPropagation()}>
-        <div className="modal-head">
-          <h2>Add node</h2>
-          <button type="button" onClick={onClose}>Close</button>
-        </div>
-
-        <label className="field">
-          <span>Node label</span>
-          <input value={label} onChange={(event) => setLabel(event.target.value)} autoFocus />
-        </label>
-
-        <label className="field">
-          <span>Node type</span>
-          <select value={type} onChange={(event) => setType(event.target.value)}>
-            {Object.entries(NODE_TYPES).map(([nodeType, config]) => (
-              <option key={nodeType} value={nodeType}>{config.label}</option>
-            ))}
-          </select>
-        </label>
-
-        <label className="field">
-          <span>Connect to</span>
-          <select value={targetId} onChange={(event) => setTargetId(event.target.value)}>
-            <option value="">No connection yet</option>
-            {nodes.map((node) => (
-              <option key={node.id} value={node.id}>{node.label}</option>
-            ))}
-          </select>
-        </label>
-
-        <div className="graph-dialog-row">
-          <label className="field">
-            <span>Direction</span>
-            <select value={direction} onChange={(event) => setDirection(event.target.value)} disabled={!targetId}>
-              <option value="existing-to-new">existing to new</option>
-              <option value="new-to-existing">new to existing</option>
-            </select>
-          </label>
-          <label className="field">
-            <span>Relation</span>
-            <input
-              value={relation}
-              onChange={(event) => setRelation(event.target.value)}
-              disabled={!targetId}
-            />
-          </label>
-        </div>
-
-        <button className="primary-action compact-action" type="submit">Add to graph</button>
-      </form>
-    </div>
   );
 }
 
@@ -341,10 +395,10 @@ function useForceLayout(graph) {
     const edges = graph.edges ?? [];
 
     if (!nodes.length) {
-      return { width: 860, height: 460, nodes, edges };
+      return { width: GRAPH_WIDTH, height: GRAPH_HEIGHT, nodes, edges };
     }
 
-    const width = 900;
+    const width = GRAPH_WIDTH;
     const maxLayerCount = 4;
     const rowGap = 28;
     const rowStep = NODE_HEIGHT + rowGap;
@@ -358,6 +412,7 @@ function useForceLayout(graph) {
       mechanism: 1,
       anatomy: 2,
       diagnosis: 3,
+      management: 3,
     };
 
     for (const node of nodes) {
@@ -386,8 +441,7 @@ function useForceLayout(graph) {
     const columnSpacing = layerCount > 1 ? (width - columnPadding * 2) / (layerCount - 1) : 0;
     const columnX = Array.from({ length: layerCount }, (_, index) => columnPadding + index * columnSpacing);
     const layerNodes = makeLayerNodes(nodes, layerCount);
-    const maxLayerSize = Math.max(1, ...layerNodes.map((items) => items.length));
-    const height = clamp(maxLayerSize * rowStep + 140, 460, 700);
+    const height = GRAPH_HEIGHT;
 
     placeLayers(layerNodes, columnX, height, rowStep, rowGap);
 
@@ -416,7 +470,7 @@ function useForceLayout(graph) {
 
     for (let i = 0; i < 300; i += 1) simulation.tick();
 
-    applyStoredNodeLayout(nodes, graph.layout);
+    applyStoredNodeLayout(nodes, graph.layout, width, height);
 
     for (const node of nodes) {
       node.x = columnX[node.layer];
@@ -425,7 +479,7 @@ function useForceLayout(graph) {
     }
 
     resolveLayerCollisions(layerNodes, height, rowStep);
-    applyStoredNodeLayout(nodes, graph.layout);
+    applyStoredNodeLayout(nodes, graph.layout, width, height);
 
     return { width, height, nodes, edges };
   }, [graph]);
@@ -444,16 +498,20 @@ function exportGraphLayout(layout) {
   };
 }
 
-function applyStoredNodeLayout(nodes, storedLayout) {
+function applyStoredNodeLayout(nodes, storedLayout, targetWidth, targetHeight) {
   const storedNodes = storedLayout?.nodes;
   if (!storedNodes) return;
+  const sourceWidth = typeof storedLayout.width === 'number' ? storedLayout.width : targetWidth;
+  const sourceHeight = typeof storedLayout.height === 'number' ? storedLayout.height : targetHeight;
+  const scaleX = targetWidth / sourceWidth;
+  const scaleY = targetHeight / sourceHeight;
 
   for (const node of nodes) {
     const position = storedNodes[node.id];
     if (typeof position?.x === 'number' && typeof position?.y === 'number') {
-      node.x = position.x;
-      node.y = position.y;
-      node.targetY = position.y;
+      node.x = clamp(position.x * scaleX, 80, targetWidth - 80);
+      node.y = clamp(position.y * scaleY, 50, targetHeight - 50);
+      node.targetY = node.y;
     }
   }
 }

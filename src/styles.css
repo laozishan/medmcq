@@ -317,6 +317,10 @@ mark.active-missing { background: #e0e0e0; border-color: #777; box-shadow: 0 0 0
   background: var(--accent);
   color: #fff;
 }
+.graph-float-actions button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
 .graph-float-actions button.danger {
   border-color: var(--bad);
   background: var(--bad);
@@ -332,10 +336,30 @@ mark.active-missing { background: #e0e0e0; border-color: #777; box-shadow: 0 0 0
 }
 .graph-edge.active path { stroke: var(--accent); stroke-width: 3; }
 .graph-edge text { font-size: 10px; fill: var(--muted); text-anchor: middle; paint-order: stroke; stroke: #fff; stroke-width: 6px; }
+.edge-inline-input {
+  width: 100%;
+  height: 24px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: rgba(255,255,255,.96);
+  color: var(--text);
+  padding: 2px 6px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  box-shadow: 0 5px 12px rgba(45,101,151,.14);
+}
 .graph-node { cursor: grab; touch-action: none; }
 .graph-node.dragging { cursor: grabbing; }
 .graph-node rect { transition: .16s; }
 .graph-node.active rect { stroke-width: 3; filter: drop-shadow(0 5px 10px rgba(0,0,0,.16)); }
+.graph-node.connect-source rect {
+  stroke-width: 3;
+  filter: drop-shadow(0 6px 12px rgba(45,101,151,.22));
+}
+.graph-node.connect-target rect {
+  stroke-dasharray: 6 4;
+}
 .node-label {
   min-height: 42px;
   display: grid;
@@ -359,6 +383,64 @@ mark.active-missing { background: #e0e0e0; border-color: #777; box-shadow: 0 0 0
 .graph-node-delete circle { fill: #fff; stroke: var(--bad); stroke-width: 1.5; filter: drop-shadow(0 2px 5px rgba(0,0,0,.16)); }
 .graph-node-delete text { fill: var(--bad); font-size: 11px; font-weight: 900; text-anchor: middle; pointer-events: none; }
 .graph-legend { margin-top: 8px; padding: 0 2px; }
+.node-type-menu {
+  position: absolute;
+  z-index: 6;
+  width: 190px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 14px 30px rgba(0,0,0,.16);
+  transform: translate(8px, 8px);
+}
+.node-type-menu span {
+  display: block;
+  padding: 2px 6px 7px;
+  color: var(--faint);
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.node-type-menu button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  padding: 7px 6px;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: left;
+}
+.node-type-menu button:hover {
+  background: var(--soft);
+}
+.node-type-menu i {
+  width: 10px;
+  height: 10px;
+  border: 2px solid;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+.graph-edit-hint {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  z-index: 2;
+  max-width: calc(100% - 28px);
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255,255,255,.94);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  pointer-events: none;
+}
 .edge-edit-strip {
   margin-top: 10px;
   display: grid;

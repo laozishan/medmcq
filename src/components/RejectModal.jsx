@@ -2,34 +2,24 @@ import React, { useState } from 'react';
 
 const ISSUES = [
   {
-    id: 'clinically-implausible',
-    label: 'Clinically implausible',
-    description: 'The vignette contains medically unrealistic or incorrect clinical information.',
+    id: 'clinically-inaccurate',
+    label: 'Clinically inaccurate',
+    description: 'Incorrect, unrealistic, or contradictory vignette information.',
   },
   {
-    id: 'unclear-correct-answer',
-    label: 'Correct answer unclear',
-    description: 'The intended answer is ambiguous or not sufficiently supported.',
-  },
-  {
-    id: 'missing-key-information',
+    id: 'key-information-missing',
     label: 'Key information missing',
-    description: 'Essential diagnostic information is missing from the vignette.',
+    description: 'Essential diagnostic details are absent.',
   },
   {
-    id: 'answer-too-obvious',
-    label: 'Answer too obvious',
-    description: 'The answer is given away too directly by the vignette.',
+    id: 'answer-ambiguous',
+    label: 'Answer ambiguous',
+    description: 'The correct answer is unclear or one or more distractors could reasonably be correct.',
   },
   {
     id: 'distractors-too-easy',
     label: 'Distractors too easy',
-    description: 'The incorrect options are too easy to rule out.',
-  },
-  {
-    id: 'distractors-debatable',
-    label: 'Distractors clinically debatable',
-    description: 'One or more distractors could also be reasonable.',
+    description: 'Incorrect options are implausible or trivial to eliminate.',
   },
 ];
 
@@ -85,7 +75,7 @@ export function RejectModal({ open, onClose, onSubmit }) {
           ))}
         </div>
         <label className="optional-feedback">
-          <span>Others <small>optional</small></span>
+          <span>Other <small>optional</small></span>
           <textarea
             value={otherFeedback}
             onChange={(event) => setOtherFeedback(event.target.value)}

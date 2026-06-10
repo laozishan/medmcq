@@ -245,12 +245,323 @@
   },
   {
     "id": "ped-pneumonia-normal-kg",
-    "title": "Community-acquired pneumonia",
+    "title": "Community-acquired pneumonia management",
+    "domain": "Pediatrics",
+    "topic": "Respiratory System",
+    "difficulty": "medium",
+    "source": "Respiratory clinical decision task",
+    "taskLabel": "Pediatrics 2",
+    "reviewType": "normal",
+    "defaultMode": "kg",
+    "allowedModes": [
+      "kg"
+    ],
+    "vignette": "A 13-year-old girl was seen 4 days ago for influenza-like symptoms with nasal congestion, sore throat, and mild cough, and was diagnosed with a viral upper respiratory infection. She returns today because her cough is much worse, with fever and shortness of breath on exertion. Temperature is 38.9 C, heart rate 108/min, respiratory rate 22/min, and oxygen saturation is 95% in room air. Breath sounds are symmetric bilaterally without obvious crackles or wheeze. The throat is mildly erythematous and there is no cervical lymphadenopathy. Blood tests show WBC 11.2 x 10^9/L with 58% neutrophils and 35% lymphocytes, and CRP 18 mg/L. Chest radiograph shows increased bronchovascular markings bilaterally and a vague patchy opacity in the right lower lung.",
+    "stem": "What is the most appropriate next step in management?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Continue observation with fluids and rest, with review in 1 week"
+      },
+      {
+        "id": "B",
+        "text": "Obtain cardiac enzymes and an electrocardiogram immediately"
+      },
+      {
+        "id": "C",
+        "text": "Start oral amoxicillin-clavulanate and arrange follow-up in 3 days"
+      },
+      {
+        "id": "D",
+        "text": "Admit for intravenous broad-spectrum antibiotics"
+      },
+      {
+        "id": "E",
+        "text": "Give nebulized salbutamol and reassess for bronchospasm"
+      }
+    ],
+    "correctOptionId": "C",
+    "explanation": {
+      "whyCorrect": "Oral amoxicillin-clavulanate with close follow-up is appropriate because the child has mild community-acquired pneumonia: worsening cough and fever after a viral prodrome, mildly elevated inflammatory markers, and a right lower-lung patchy opacity, while oxygenation and overall stability do not mandate admission.",
+      "evidence": [
+        "Worsening cough, fever, CRP elevation, and a patchy right lower-lung opacity support pneumonia despite a non-focal lung examination.",
+        "Oxygen saturation of 95% and stable vital signs support outpatient treatment rather than admission.",
+        "No wheeze or asthma history makes bronchodilator-first management less appropriate."
+      ],
+      "distractors": {
+        "A": "Observation alone is insufficient once imaging supports pneumonia and symptoms are worsening.",
+        "B": "Myocarditis workup is not the next step without chest pain, arrhythmia, syncope, or heart failure signs.",
+        "D": "Admission and IV antibiotics are excessive for a stable adolescent with mild CAP and oxygen saturation of 95%.",
+        "E": "Salbutamol is not first-line without wheeze, bronchospasm, or asthma history."
+      }
+    },
+    "graph": {
+      "nodes": [
+        {
+          "id": "history_viral_prodrome",
+          "type": "history",
+          "label": "Recent viral URI",
+          "phrase": "influenza-like symptoms with nasal congestion, sore throat, and mild cough",
+          "tooltip": "A viral prodrome can precede secondary lower respiratory infection and makes the timeline clinically coherent."
+        },
+        {
+          "id": "sym_worse_cough_dyspnea",
+          "type": "symptom",
+          "label": "Worsening cough + exertional dyspnea",
+          "phrase": "cough is much worse, with fever and shortness of breath on exertion",
+          "tooltip": "Clinical worsening after initial URI symptoms suggests progression beyond an uncomplicated upper respiratory infection."
+        },
+        {
+          "id": "sign_fever",
+          "type": "sign",
+          "label": "Fever 38.9 C",
+          "phrase": "Temperature is 38.9 C",
+          "tooltip": "Fever after a viral prodrome suggests secondary bacterial infection rather than ongoing viral illness."
+        },
+        {
+          "id": "exam_stable_o2",
+          "type": "exam",
+          "label": "O2 saturation 95%",
+          "phrase": "oxygen saturation is 95%",
+          "tooltip": "O2 95% is below the normal threshold but above the typical admission cutoff (~92%). This supports outpatient treatment with close follow-up rather than inpatient care."
+        },
+        {
+          "id": "exam_no_wheeze_crackles",
+          "type": "exam",
+          "label": "No crackles or wheeze",
+          "phrase": "without obvious crackles or wheeze",
+          "tooltip": "Absence of classic auscultatory findings does not exclude early or mild pneumonia, but it weakens asthma or severe consolidation."
+        },
+        {
+          "id": "invest_inflammatory_markers",
+          "type": "investigation",
+          "label": "Mild inflammatory markers",
+          "phrase": "WBC 11.2 x 10^9/L with 58% neutrophils and 35% lymphocytes, and CRP 18 mg/L",
+          "tooltip": "Mild leukocytosis with elevated CRP supports bacterial lower respiratory infection without implying severe systemic illness."
+        },
+        {
+          "id": "invest_rll_opacity",
+          "type": "investigation",
+          "label": "Right lower-lung patchy opacity",
+          "phrase": "vague patchy opacity in the right lower lung",
+          "tooltip": "A focal radiographic opacity is the strongest objective clue for pneumonia when auscultation is not focal."
+        },
+        {
+          "id": "dx_mild_cap",
+          "type": "diagnosis",
+          "label": "Mild community-acquired pneumonia",
+          "tooltip": "Mild CAP is defined by pneumonia evidence without severe hypoxia, respiratory distress, or systemic compromise. Severity classification drives the treatment decision."
+        },
+        {
+          "id": "mgmt_oral_antibiotics",
+          "type": "management",
+          "label": "Oral antibiotics + 3-day follow-up",
+          "tooltip": "Mild CAP in a school-age child is typically caused by Streptococcus pneumoniae or atypical organisms. Oral amoxicillin-clavulanate provides adequate coverage; 3-day follow-up allows early detection of deterioration."
+        }
+      ],
+      "edges": [
+        {
+          "from": "history_viral_prodrome",
+          "to": "dx_mild_cap",
+          "label": "context_for"
+        },
+        {
+          "from": "sym_worse_cough_dyspnea",
+          "to": "dx_mild_cap",
+          "label": "symptom_of"
+        },
+        {
+          "from": "sign_fever",
+          "to": "dx_mild_cap",
+          "label": "sign_of"
+        },
+        {
+          "from": "invest_inflammatory_markers",
+          "to": "dx_mild_cap",
+          "label": "supports"
+        },
+        {
+          "from": "invest_rll_opacity",
+          "to": "dx_mild_cap",
+          "label": "investigation_supports"
+        },
+        {
+          "from": "exam_stable_o2",
+          "to": "mgmt_oral_antibiotics",
+          "label": "severity_supports"
+        },
+        {
+          "from": "exam_no_wheeze_crackles",
+          "to": "dx_mild_cap",
+          "label": "compatible_with"
+        },
+        {
+          "from": "dx_mild_cap",
+          "to": "mgmt_oral_antibiotics",
+          "label": "managed_by"
+        }
+      ],
+      "layout": {
+        "width": 900,
+        "height": 520,
+        "nodes": {
+          "invest_inflammatory_markers": {
+            "x": 126,
+            "y": 62
+          },
+          "history_viral_prodrome": {
+            "x": 126,
+            "y": 132
+          },
+          "sym_worse_cough_dyspnea": {
+            "x": 126,
+            "y": 198
+          },
+          "sign_fever": {
+            "x": 126,
+            "y": 270
+          },
+          "exam_no_wheeze_crackles": {
+            "x": 126,
+            "y": 342
+          },
+          "invest_rll_opacity": {
+            "x": 126,
+            "y": 414
+          },
+          "exam_stable_o2": {
+            "x": 126,
+            "y": 482
+          },
+          "dx_mild_cap": {
+            "x": 570,
+            "y": 228
+          },
+          "mgmt_oral_antibiotics": {
+            "x": 790,
+            "y": 265
+          }
+        }
+      }
+    },
+    "miniGraphs": [
+      {
+        "optionId": "A",
+        "optionText": "Continue observation with fluids and rest, with review in 1 week",
+        "contradicts": [
+          {
+            "label": "Right lower-lung patchy opacity",
+            "nodeId": "invest_rll_opacity",
+            "tooltip": "Radiographic opacity means pneumonia is already supported; observation alone undertreats it."
+          },
+          {
+            "label": "Worsening cough + fever",
+            "nodeIds": [
+              "sym_worse_cough_dyspnea",
+              "sign_fever"
+            ],
+            "tooltip": "Clinical worsening with fever after several days argues against simple supportive care only."
+          },
+          {
+            "label": "CRP 18 mg/L",
+            "nodeId": "invest_inflammatory_markers",
+            "tooltip": "CRP 18 mg/L exceeds the normal threshold and, combined with radiographic opacity, supports antibiotic treatment rather than observation."
+          }
+        ],
+        "summary": "Observation alone is too passive once symptoms worsen and imaging supports pneumonia."
+      },
+      {
+        "optionId": "B",
+        "optionText": "Obtain cardiac enzymes and an electrocardiogram immediately",
+        "missing": [
+          {
+            "label": "Chest pain",
+            "tooltip": "Myocarditis commonly presents with chest pain or discomfort when myocardial or pericardial inflammation is prominent."
+          },
+          {
+            "label": "Arrhythmia or syncope",
+            "tooltip": "ECG becomes more urgent when rhythm symptoms, syncope, or palpitations suggest cardiac involvement."
+          },
+          {
+            "label": "Heart failure signs",
+            "tooltip": "Signs such as a gallop rhythm, poor perfusion, or pulmonary crackles from fluid overload would raise concern for myocarditis-related cardiac dysfunction."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Right lower-lung opacity",
+            "nodeId": "invest_rll_opacity",
+            "tooltip": "A focal lung opacity gives a pulmonary explanation for cough, fever, and dyspnea."
+          }
+        ],
+        "summary": "Cardiac testing is not the next step without cardiac symptoms or heart failure signs."
+      },
+      {
+        "optionId": "D",
+        "optionText": "Admit for intravenous broad-spectrum antibiotics",
+        "supports": [
+          {
+            "label": "Pneumonia evidence",
+            "nodeIds": [
+              "invest_rll_opacity",
+              "sign_fever"
+            ],
+            "tooltip": "Antibiotic treatment is appropriate given the pneumonia evidence. The key question is severity: does this child need inpatient IV therapy or outpatient oral therapy?"
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "O2 saturation 95%",
+            "nodeId": "exam_stable_o2",
+            "tooltip": "Oxygenation is above the typical admission threshold (~92%) and does not mandate inpatient care in a stable adolescent."
+          },
+          {
+            "label": "Stable outpatient presentation",
+            "phrase": "heart rate 108/min, respiratory rate 22/min",
+            "tooltip": "Mild tachycardia and respiratory rate without distress or hypoxia support outpatient care."
+          }
+        ],
+        "missing": [
+          {
+            "label": "Severe respiratory distress",
+            "tooltip": "Admission is favored by severe work of breathing, exhaustion, cyanosis, or inability to maintain hydration."
+          }
+        ],
+        "summary": "IV antibiotics and admission are more than this stable presentation requires."
+      },
+      {
+        "optionId": "E",
+        "optionText": "Give nebulized salbutamol and reassess for bronchospasm",
+        "missing": [
+          {
+            "label": "Wheeze",
+            "nodeId": "exam_no_wheeze_crackles",
+            "tooltip": "Bronchodilator-first management needs wheeze or signs of reversible airflow obstruction."
+          },
+          {
+            "label": "Asthma history",
+            "tooltip": "Prior episodic wheeze, triggers, or known asthma would make salbutamol more plausible."
+          }
+        ],
+        "contradicts": [
+          {
+            "label": "Right lower-lung opacity",
+            "nodeId": "invest_rll_opacity",
+            "tooltip": "A focal opacity is not explained by isolated bronchospasm."
+          }
+        ],
+        "summary": "Bronchodilator treatment is not first-line when pneumonia evidence is stronger than bronchospasm."
+      }
+    ]
+  },
+  {
+    "id": "ped-pneumonia-normal-kg-archived",
+    "title": "Archived pneumonia working diagnosis",
     "domain": "Pediatrics",
     "topic": "Respiratory System",
     "difficulty": "medium",
     "source": "Previous respiratory exam question; Nelson respiratory system",
-    "taskLabel": "Pediatrics 2",
+    "taskLabel": "Archived Pediatrics 2",
     "reviewType": "normal",
     "defaultMode": "kg",
     "allowedModes": [
@@ -483,7 +794,8 @@
         ],
         "summary": "Sepsis is not the best working diagnosis when the presentation localizes to pneumonia."
       }
-    ]
+    ],
+    "archived": true
   },
   {
     "id": "ped-cf-flawed-both",

@@ -38,7 +38,7 @@ export function ReviewApp({
   const firstActiveEvidenceId = Array.isArray(activeEvidenceId) ? activeEvidenceId[0] : activeEvidenceId;
   const activeNode = hoverState.node ?? question.graph.nodes.find((node) => node.id === firstActiveEvidenceId);
   const canRegenerate = Boolean(question.regenerable);
-  const canEditGraph = question.reviewType === 'flawed' || question.reviewType === 'too_easy';
+  const canEditGraph = true;
 
   useEffect(() => {
     supportPaneRef.current?.scrollTo({ top: 0, left: 0 });
@@ -50,6 +50,16 @@ export function ReviewApp({
       graph: {
         ...question.graph,
         nodes: question.graph.nodes.map((node) => (node.id === nodeId ? { ...node, label } : node)),
+      },
+    });
+  }
+
+  function updateGraphNodeType(nodeId, type) {
+    onSaveQuestion({
+      ...question,
+      graph: {
+        ...question.graph,
+        nodes: question.graph.nodes.map((node) => (node.id === nodeId ? { ...node, type } : node)),
       },
     });
   }
@@ -79,8 +89,21 @@ export function ReviewApp({
     });
   }
 
+  function addGraphEdge(edge) {
+    onSaveQuestion({
+      ...question,
+      graph: {
+        ...question.graph,
+        edges: [
+          ...question.graph.edges,
+          edge,
+        ],
+      },
+    });
+  }
+
   function addGraphNode(partialNode) {
-    const id = `node_${Date.now()}`;
+    const id = partialNode.id || `node_${Date.now()}`;
     const edges = [...question.graph.edges];
     if (partialNode.connectNodeId && partialNode.relation) {
       edges.push({
@@ -104,6 +127,17 @@ export function ReviewApp({
           },
         ],
         edges,
+        layout: partialNode.x !== undefined && partialNode.y !== undefined
+          ? {
+              ...(question.graph.layout ?? {}),
+              width: question.graph.layout?.width ?? 900,
+              height: question.graph.layout?.height ?? 520,
+              nodes: {
+                ...(question.graph.layout?.nodes ?? {}),
+                [id]: { x: Math.round(partialNode.x), y: Math.round(partialNode.y) },
+              },
+            }
+          : question.graph.layout,
       },
     });
   }
@@ -189,8 +223,10 @@ export function ReviewApp({
               editable={canEditGraph}
               onEvidenceHover={handleEvidenceHover}
               onNodeLabelChange={updateGraphNodeLabel}
+              onNodeTypeChange={updateGraphNodeType}
               onNodeDelete={deleteGraphNode}
               onNodeAdd={addGraphNode}
+              onEdgeAdd={addGraphEdge}
               onEdgeLabelChange={updateGraphEdgeLabel}
               onGraphReset={() => onResetQuestion(question.id)}
               onLayoutChange={updateGraphLayout}

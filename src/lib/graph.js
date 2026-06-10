@@ -7,6 +7,7 @@ export const NODE_TYPES = {
   mechanism: { label: 'Mechanism', color: '#efe4ff', stroke: '#7c3fb4', column: 1 },
   anatomy: { label: 'Anatomy/Localization', color: '#edf1f5', stroke: '#60717f', column: 2 },
   diagnosis: { label: 'Diagnosis', color: '#e2f4dc', stroke: '#2e7d32', column: 3 },
+  management: { label: 'Management', color: '#e8f5e9', stroke: '#1b7f3a', column: 3 },
 };
 
 export function layoutGraph(graph) {

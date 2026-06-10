@@ -9,13 +9,15 @@ import {
 import { useLocalStorage } from '../lib/useLocalStorage.js';
 
 export function useReviewSession(initialQuestions) {
+  const activeInitialQuestions = initialQuestions.filter((question) => !question.archived);
+  const sessionQuestions = activeInitialQuestions.length ? activeInitialQuestions : initialQuestions;
   const [layoutOverrides, setLayoutOverrides] = useLocalStorage('medmcq_graph_layout_overrides_latest_v2', {});
   const [questions, setQuestions] = useState(() => (
-    applyLayoutOverrides(cloneQuestionList(initialQuestions), layoutOverrides)
+    applyLayoutOverrides(cloneQuestionList(sessionQuestions), layoutOverrides)
   ));
   const [setupOpen, setSetupOpen] = useState(true);
-  const [currentQuestionId, setCurrentQuestionId] = useState(initialQuestions[0].id);
-  const [reviewMode, setReviewMode] = useState(defaultModeForQuestion(initialQuestions[0]));
+  const [currentQuestionId, setCurrentQuestionId] = useState(sessionQuestions[0].id);
+  const [reviewMode, setReviewMode] = useState(defaultModeForQuestion(sessionQuestions[0]));
   const [bank, setBank] = useLocalStorage('medmcq_question_bank', []);
 
   const currentQuestion = useMemo(
@@ -48,12 +50,12 @@ export function useReviewSession(initialQuestions) {
   }
 
   function resetQuestion(questionId) {
-    const original = initialQuestions.find((question) => question.id === questionId);
+    const original = sessionQuestions.find((question) => question.id === questionId);
     if (original) updateQuestion(cloneQuestion(original));
   }
 
   function resetMiniGraph(questionId, optionId) {
-    const originalQuestion = initialQuestions.find((question) => question.id === questionId);
+    const originalQuestion = sessionQuestions.find((question) => question.id === questionId);
     const originalMiniGraph = originalQuestion?.miniGraphs?.find((miniGraph) => miniGraph.optionId === optionId);
     if (!originalMiniGraph) return;
 

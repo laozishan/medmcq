@@ -55,11 +55,11 @@ function MiniGraphCard({
   onMiniGraphReset,
 }) {
   const layout = useMiniLayerLayout(miniGraph);
-  const [deleteMode, setDeleteMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [dialogState, setDialogState] = useState(null);
 
   useEffect(() => {
-    setDeleteMode(false);
+    setEditMode(false);
     setDialogState(null);
   }, [miniGraph.optionId]);
 
@@ -97,10 +97,12 @@ function MiniGraphCard({
       label: payload.label,
       tooltip: payload.tooltip,
     };
-    if (payload.phrase) targetItem.phrase = payload.phrase;
-    else {
-      delete targetItem.phrase;
-      delete targetItem.evidencePhrase;
+    if (Object.prototype.hasOwnProperty.call(payload, 'phrase')) {
+      if (payload.phrase) targetItem.phrase = payload.phrase;
+      else {
+        delete targetItem.phrase;
+        delete targetItem.evidencePhrase;
+      }
     }
     if (payload.role === sourceRole) {
       targetItems.splice(item.sourceIndex, 0, targetItem);
@@ -129,27 +131,18 @@ function MiniGraphCard({
         <div className="mini-graph-tools" aria-label="Mini graph edit actions">
           <button
             type="button"
+            className={editMode ? 'active' : ''}
             onClick={() => {
-              setDeleteMode(false);
-              setDialogState({ mode: 'add' });
-            }}
-          >
-            Add
-          </button>
-          <button
-            type="button"
-            className={deleteMode ? 'active danger' : ''}
-            onClick={() => {
-              setDeleteMode((current) => !current);
+              setEditMode((current) => !current);
               setDialogState(null);
             }}
           >
-            Delete
+            Edit
           </button>
           <button
             type="button"
             onClick={() => {
-              setDeleteMode(false);
+              setEditMode(false);
               setDialogState(null);
               onMiniGraphReset?.(miniGraph.optionId);
             }}
@@ -164,10 +157,23 @@ function MiniGraphCard({
         style={{ height: layout.height }}
         viewBox={`0 0 ${layout.width} ${layout.height}`}
         aria-label={`Mini graph for ${miniGraph.optionText}`}
+        onDoubleClick={(event) => {
+          if (!editable || !editMode) return;
+          if (event.target !== event.currentTarget) return;
+          event.preventDefault();
+          setDialogState({ mode: 'add' });
+        }}
       >
         <MiniOptionNode option={layout.option} />
         {layout.nodes.map((item) => (
-          <MiniEvidenceEdge key={`edge-${item.key}`} item={item} option={layout.option} />
+          <MiniEvidenceEdge
+            key={`edge-${item.key}`}
+            item={item}
+            option={layout.option}
+            editable={editable}
+            editMode={editMode}
+            onEdit={() => setDialogState({ mode: 'edit', item })}
+          />
         ))}
         {layout.nodes.map((item) => (
           <MiniEvidenceNode
@@ -175,7 +181,7 @@ function MiniGraphCard({
             item={item}
             miniGraph={miniGraph}
             editable={editable}
-            deleteMode={deleteMode}
+            editMode={editMode}
             onEdit={() => setDialogState({ mode: 'edit', item })}
             onDelete={() => deleteMiniItem(item)}
             onEvidenceHover={onEvidenceHover}
@@ -227,7 +233,7 @@ function MiniOptionNode({ option }) {
   );
 }
 
-function MiniEvidenceEdge({ item, option }) {
+function MiniEvidenceEdge({ item, option, editable, editMode, onEdit }) {
   const config = ROLE_CONFIG[item.role];
   const fromX = item.x + MINI_NODE_WIDTH;
   const fromY = item.y + MINI_NODE_HEIGHT / 2;
@@ -238,7 +244,15 @@ function MiniEvidenceEdge({ item, option }) {
   const label = edgeLabelPoint(fromX, fromY, toX, toY, item.edgeOffset);
 
   return (
-    <g className="mini-edge">
+    <g
+      className="mini-edge"
+      onDoubleClick={(event) => {
+        if (!editable || !editMode) return;
+        event.preventDefault();
+        event.stopPropagation();
+        onEdit?.();
+      }}
+    >
       <path
         d={`M ${fromX} ${fromY} C ${midX} ${fromY}, ${midX} ${toY}, ${toX} ${toY}`}
         stroke={config.stroke}
@@ -253,7 +267,7 @@ function MiniEvidenceNode({
   item,
   miniGraph,
   editable,
-  deleteMode,
+  editMode,
   onEdit,
   onDelete,
   onEvidenceHover,
@@ -275,14 +289,24 @@ function MiniEvidenceNode({
       className="mini-evidence-node"
       transform={`translate(${item.x} ${item.y})`}
       onClick={(event) => {
-        if (!editable || deleteMode) return;
+        if (!editable || !editMode) return;
         event.preventDefault();
         event.stopPropagation();
         onEdit();
       }}
-      onMouseEnter={(event) => onEvidenceHover(evidenceTarget, event, hoverNode)}
-      onMouseMove={(event) => onEvidenceHover(evidenceTarget, event, hoverNode)}
-      onMouseLeave={() => onEvidenceHover(null)}
+      onDoubleClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      }}
+      onMouseEnter={(event) => {
+        if (!editMode) onEvidenceHover?.(evidenceTarget, event, hoverNode);
+      }}
+      onMouseMove={(event) => {
+        if (!editMode) onEvidenceHover?.(evidenceTarget, event, hoverNode);
+      }}
+      onMouseLeave={() => {
+        if (!editMode) onEvidenceHover?.(null);
+      }}
     >
       <rect
         width={MINI_NODE_WIDTH}
@@ -295,7 +319,7 @@ function MiniEvidenceNode({
       <foreignObject x="8" y="7" width={MINI_NODE_WIDTH - 16} height={MINI_NODE_HEIGHT - 14}>
         <div className="mini-node-label">{item.label}</div>
       </foreignObject>
-      {editable && deleteMode ? (
+      {editable && editMode ? (
         <g
           className="graph-node-delete mini-node-delete"
           transform={`translate(${MINI_NODE_WIDTH - 10} 8)`}
@@ -328,7 +352,6 @@ function MiniNodeDialog({ mode, item, onClose, onSubmit }) {
   const [role, setRole] = useState(item?.role ?? 'supports');
   const [label, setLabel] = useState(item?.label ?? '');
   const [tooltip, setTooltip] = useState(item?.tooltip ?? '');
-  const [phrase, setPhrase] = useState(item?.phrase ?? item?.evidencePhrase ?? '');
 
   function submit(event) {
     event.preventDefault();
@@ -336,7 +359,6 @@ function MiniNodeDialog({ mode, item, onClose, onSubmit }) {
       role,
       label: label.trim() || 'New clue',
       tooltip: tooltip.trim(),
-      phrase: phrase.trim(),
     });
   }
 
@@ -363,17 +385,8 @@ function MiniNodeDialog({ mode, item, onClose, onSubmit }) {
         </label>
 
         <label className="field">
-          <span>Description</span>
+          <span>Description <small>optional</small></span>
           <textarea value={tooltip} onChange={(event) => setTooltip(event.target.value)} />
-        </label>
-
-        <label className="field">
-          <span>Vignette phrase <small>optional</small></span>
-          <input
-            value={phrase}
-            onChange={(event) => setPhrase(event.target.value)}
-            placeholder="Exact wording to highlight in the vignette"
-          />
         </label>
 
         <button className="primary-action compact-action" type="submit">
